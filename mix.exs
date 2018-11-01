@@ -15,6 +15,8 @@ defmodule CtiKaltura.MixProject do
   #
   # Run "mix help deps" for examples and options.
   defp deps do
-    []
+    [
+      {:plug_cowboy, "~> 1.0"}
+    ]
   end
 end
