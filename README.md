@@ -1,4 +1,4 @@
-# Kaltura
+# CtiKaltura
 
 **TODO: Add description**
 

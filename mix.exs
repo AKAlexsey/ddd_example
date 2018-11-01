@@ -1,4 +1,4 @@
-defmodule Kaltura.MixProject do
+defmodule CtiKaltura.MixProject do
   use Mix.Project
 
   def project do
