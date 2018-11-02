@@ -10,7 +10,8 @@ defmodule KalturaServer.Application do
     children = [
       # Starts a worker by calling: KalturaServer.Worker.start_link(arg)
       # {KalturaServer.Worker, arg},
-      Plug.Cowboy.child_spec(scheme: :http, plug: KalturaServer.MyRouter, options: [port: 4001])
+      Plug.Cowboy.child_spec(scheme: :http, plug: KalturaServer.RequestProcessing.MainRouter, options: [port: 4001]),
+      {KalturaServer.Caching.MnesiaRepo, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
