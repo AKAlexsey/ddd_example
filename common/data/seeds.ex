@@ -1,4 +1,4 @@
-defmodule KalturaServer.Caching.Seeds do
+defmodule CtiKaltura.Seeds do
   def channel_urls do
     [
       {"channel0", "https://hexdocs.pm/plug/Plug.Conn.html#assign/3"},

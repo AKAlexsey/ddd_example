@@ -3,7 +3,8 @@ defmodule KalturaServer.Caching.MnesiaRepo do
   Bag for all cachin tables in project
   """
 
-  alias KalturaServer.Caching.{Channels, Seeds}
+  alias KalturaServer.Caching.Channels
+  alias CtiKaltura.Seeds
   use GenServer
 
   def start_link(opts \\ []) do

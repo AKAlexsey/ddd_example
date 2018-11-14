@@ -13,14 +13,26 @@ defmodule KalturaAdmin.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", KalturaAdmin do
-    pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
+  pipeline :auth do
+    plug KalturaAdmin.Authorization.Pipeline
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", KalturaAdmin do
-  #   pipe_through :api
-  # end
+  pipeline :ensure_auth do
+    plug Guardian.Plug.EnsureAuthenticated
+  end
+
+  scope "/", KalturaAdmin do
+    pipe_through [:browser, :auth]
+
+    get "/", PageController, :index
+    resources "/sessions", SessionController, only: [:new, :create]
+    post "/logout", SessionController, :logout
+  end
+
+  scope "/", KalturaAdmin do
+    pipe_through [:browser, :auth, :ensure_auth]
+
+    resources "/channels", ChannelController
+    resources "/users", UserController
+  end
 end
