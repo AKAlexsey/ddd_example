@@ -6,16 +6,14 @@
 use Mix.Config
 
 # General application configuration
-config :kaltura_admin,
-  ecto_repos: [KalturaAdmin.Repo]
+config :kaltura_admin, ecto_repos: [KalturaAdmin.Repo]
 
 # Configures the endpoint
 config :kaltura_admin, KalturaAdmin.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "toHibrVaZOP7yUT8rKUeqPXuNqbiDWP5JaRwct2R2Xn3Gm67Cv8CZSTOcws76Euu",
   render_errors: [view: KalturaAdmin.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: KalturaAdmin.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: KalturaAdmin.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -26,6 +24,8 @@ config :kaltura_admin, KalturaAdmin.Authorization.Guardian,
   issuer: "SimpleAuth",
   secret_key: "U7fWw3uDlga9DRB"
 
+config :kaltura_admin, :generators, context_app: :kaltura_admin
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

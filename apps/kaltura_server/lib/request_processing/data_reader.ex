@@ -18,7 +18,7 @@ defmodule KalturaServer.RequestProcessing.DataReader do
   def get_client_ip_address(%Plug.Conn{remote_ip: ip}) do
     ip
     |> Tuple.to_list()
-    |> Enum.map(& to_string(&1))
+    |> Enum.map(&to_string(&1))
     |> Enum.join(".")
   end
 end

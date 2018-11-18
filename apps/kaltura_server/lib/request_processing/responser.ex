@@ -5,8 +5,8 @@ defmodule KalturaServer.RequestProcessing.Responser do
 
   @spec make_response(Plug.Conn.t()) :: {Plug.Conn.t(), integer, binary}
   def make_response(
-         %Plug.Conn{assigns: %{ip_address: _ip_address, query: %{"channel" => channel}}} = conn
-       ) do
+        %Plug.Conn{assigns: %{ip_address: _ip_address, query: %{"channel" => channel}}} = conn
+      ) do
     case Channels.find_channel_url(channel) do
       {:ok, url} ->
         {

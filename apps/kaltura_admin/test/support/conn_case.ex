@@ -25,7 +25,7 @@ defmodule KalturaAdmin.ConnCase do
       import Ecto.Changeset
       import Ecto.Query
 
-      import KalturaAdmin.Router.Helpers
+      import KalturaAdminWeb.Router.Helpers
 
       # The default endpoint for testing
       @endpoint KalturaAdmin.Endpoint

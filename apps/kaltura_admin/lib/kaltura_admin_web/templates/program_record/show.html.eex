@@ -1,0 +1,23 @@
+<h1>Show Program record</h1>
+
+<ul>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @program_record.status %>
+  </li>
+
+  <li>
+    <strong>Codec:</strong>
+    <%= @program_record.codec %>
+  </li>
+
+  <li>
+    <strong>Path:</strong>
+    <%= @program_record.path %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: program_record_path(@conn, :edit, @program_record) %></span>
+<span><%= link "Back", to: program_record_path(@conn, :index) %></span>

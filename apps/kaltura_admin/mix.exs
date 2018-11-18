@@ -10,9 +10,9 @@ defmodule KalturaAdmin.Mixfile do
       deps_path: "../../deps",
       lockfile: "../../mix.lock",
       elixir: "~> 1.4",
-      elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
     ]
@@ -30,22 +30,27 @@ defmodule KalturaAdmin.Mixfile do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web", "../../common"]
+  defp elixirc_paths(_), do: ["lib", "web", "../../common"]
 
   # Specifies your project dependencies.
   #
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # Base
       {:phoenix, "~> 1.4"},
       {:phoenix_pubsub, "~> 1.0"},
+      {:plug_cowboy, umbrella: true},
+      {:cowboy, "~> 1.0"},
+      # Database
       {:phoenix_ecto, "~> 3.2"},
+      {:ecto_enum, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
+      # Tools
       {:phoenix_html, "~> 2.12.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"},
-      {:plug_cowboy, umbrella: true},
+      # Authorization
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
       {:guardian, "~> 1.0"}
@@ -62,7 +67,7 @@ defmodule KalturaAdmin.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

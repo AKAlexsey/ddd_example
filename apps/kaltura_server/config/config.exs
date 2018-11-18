@@ -29,5 +29,4 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
-config :kaltura_admin,
-  channel_handler: KalturaServer.ChannelHandler
+config :kaltura_admin, channel_handler: KalturaServer.ChannelHandler

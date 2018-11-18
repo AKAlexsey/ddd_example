@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Hello KalturaAdmin!</title>
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <%= if @current_user do %>
+            <li>
+              <%= link("Home", to: "/") %>
+            </li>
+            <li>
+              <%= link("Channels", to: channel_path(@conn, :index)) %>
+            </li>
+            <li>
+              <%= link("Users", to: user_path(@conn, :index)) %>
+            </li>
+            <li>
+              <%= link("Servers", to: server_path(@conn, :index)) %>
+            </li>
+            <li>
+              <%= link("Server groups", to: server_group_path(@conn, :index)) %>
+            </li>
+            <li>
+              <%= link("Regions", to: region_path(@conn, :index)) %>
+            </li>
+            <li>
+              <%= link("Subnets", to: subnet_path(@conn, :index)) %>
+            </li>
+            <li>
+              <%= link("Tv Streams", to: tv_stream_path(@conn, :index)) %>
+            </li>
+            <li>
+              <%= link("Programs", to: program_path(@conn, :index)) %>
+            </li>
+            <li>
+              <%= link("Program records", to: program_record_path(@conn, :index)) %>
+            </li>
+            <li>
+              <%= link("Logout", to: session_path(@conn, :logout), method: :post) %>
+            </li>
+          <% else %>
+            <li>
+              <%= link "Sign in", to: session_path(@conn, :new) %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+      <div>
+        <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+        <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      </div>
+
+      <main role="main">
+        <%= render @view_module, @view_template, assigns %>
+      </main>
+
+    </div> <!-- /container -->
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+  </body>
+</html>

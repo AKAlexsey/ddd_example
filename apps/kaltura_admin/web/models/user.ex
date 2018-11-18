@@ -1,5 +1,5 @@
 defmodule KalturaAdmin.User do
-  use KalturaAdmin.Web, :model
+  use KalturaAdminWeb, :model
 
   alias Comeonin.Argon2
 

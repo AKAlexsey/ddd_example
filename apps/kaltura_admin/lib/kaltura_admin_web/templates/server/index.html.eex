@@ -1,0 +1,50 @@
+<h1>Listing Servers</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Domain name</th>
+      <th>Ip</th>
+      <th>Port</th>
+      <th>Manage</th>
+      <th>Manage port</th>
+      <th>Status</th>
+      <th>Weight</th>
+      <th>Prefix</th>
+      <th>Healthcheck enabled</th>
+      <th>Healthcheck path</th>
+      <th>ServerGroups</th>
+      <th>Streaming ServerGroups</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for server <- @servers do %>
+    <tr>
+      <td><%= server.type %></td>
+      <td><%= server.domain_name %></td>
+      <td><%= server.ip %></td>
+      <td><%= server.port %></td>
+      <td><%= server.manage_ip %></td>
+      <td><%= server.manage_port %></td>
+      <td><%= server.status %></td>
+      <td><%= server.weight %></td>
+      <td><%= server.prefix %></td>
+      <td><%= server.healthcheck_enabled %></td>
+      <td><%= server.healthcheck_path %></td>
+      <td><%= decorate_server_groups(server.server_groups) %></td>
+      <td><%= decorate_server_groups(server.streaming_groups) %></td>
+
+      <td>
+        <span><%= link "Show", to: server_path(@conn, :show, server), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: server_path(@conn, :edit, server), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: server_path(@conn, :delete, server), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Server", to: server_path(@conn, :new) %></span>

@@ -1,0 +1,5 @@
+<h1>Edit Program record</h1>
+
+<%= render "form.html", Map.put(assigns, :action, program_record_path(@conn, :update, @program_record)) %>
+
+<span><%= link "Back", to: program_record_path(@conn, :index) %></span>

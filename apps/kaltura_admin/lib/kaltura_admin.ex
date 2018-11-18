@@ -11,7 +11,7 @@ defmodule KalturaAdmin do
       # Start the Ecto repository
       supervisor(KalturaAdmin.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(KalturaAdmin.Endpoint, []),
+      supervisor(KalturaAdmin.Endpoint, [])
       # Start your own worker by calling: KalturaAdmin.Worker.start_link(arg1, arg2, arg3)
       # worker(KalturaAdmin.Worker, [arg1, arg2, arg3]),
     ]

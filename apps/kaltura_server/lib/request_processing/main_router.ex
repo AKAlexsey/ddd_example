@@ -5,10 +5,10 @@ defmodule KalturaServer.RequestProcessing.MainRouter do
 
   import Plug.Conn, only: [send_resp: 3]
 
-  plug Plug.Logger, log: :debug
-  plug DataReader
-  plug :match
-  plug :dispatch
+  plug(Plug.Logger, log: :debug)
+  plug(DataReader)
+  plug(:match)
+  plug(:dispatch)
 
   get "/get_channel" do
     {response_conn, status, body} = Responser.make_response(conn)
