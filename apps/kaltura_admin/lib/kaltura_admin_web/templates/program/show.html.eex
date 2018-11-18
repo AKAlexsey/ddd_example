@@ -1,0 +1,28 @@
+<h1>Show Program</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @program.name %>
+  </li>
+
+  <li>
+    <strong>Start datetime:</strong>
+    <%= @program.start_datetime %>
+  </li>
+
+  <li>
+    <strong>End datetime:</strong>
+    <%= @program.end_datetime %>
+  </li>
+
+  <li>
+    <strong>Epg:</strong>
+    <%= @program.epg_id %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: program_path(@conn, :edit, @program) %></span>
+<span><%= link "Back", to: program_path(@conn, :index) %></span>

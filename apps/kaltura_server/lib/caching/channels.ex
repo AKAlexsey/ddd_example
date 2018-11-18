@@ -26,6 +26,7 @@ defmodule KalturaServer.Caching.Channels do
     case :mnesia.transaction(fn -> :mnesia.read(@table, channel) end) do
       {:atomic, [{@table, _, url}]} ->
         {:ok, url}
+
       _ ->
         {:error, :not_found}
     end

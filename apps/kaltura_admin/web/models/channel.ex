@@ -1,5 +1,5 @@
 defmodule KalturaAdmin.Channel do
-  use KalturaAdmin.Web, :model
+  use KalturaAdminWeb, :model
 
   schema "channels" do
     field :name, :string

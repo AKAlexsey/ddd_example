@@ -1,0 +1,5 @@
+<h1>Edit Subnet</h1>
+
+<%= render "form.html", Map.put(assigns, :action, subnet_path(@conn, :update, @subnet)) %>
+
+<span><%= link "Back", to: subnet_path(@conn, :index) %></span>

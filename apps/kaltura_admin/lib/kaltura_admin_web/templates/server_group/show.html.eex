@@ -1,0 +1,37 @@
+<h1>Show Server group</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @server_group.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @server_group.description %>
+  </li>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @server_group.status %>
+  </li>
+
+  <li>
+    <strong>Regions:</strong>
+    <%= decorate_collection(@server_group.regions) %>
+  </li>
+
+  <li>
+    <strong>TvStreams:</strong>
+    <%= decorate_collection(@server_group.tv_streams) %>
+  </li>
+
+  <li>
+    <strong>Servers:</strong>
+    <%= decorate_collection(@server_group.servers, :domain_name) %>
+  </li>
+</ul>
+
+<span><%= link "Edit", to: server_group_path(@conn, :edit, @server_group) %></span>
+<span><%= link "Back", to: server_group_path(@conn, :index) %></span>

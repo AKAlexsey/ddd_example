@@ -1,0 +1,30 @@
+<h1>Listing Program records</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Codec</th>
+      <th>Path</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for program_record <- @program_records do %>
+    <tr>
+      <td><%= program_record.status %></td>
+      <td><%= program_record.codec %></td>
+      <td><%= program_record.path %></td>
+
+      <td>
+        <span><%= link "Show", to: program_record_path(@conn, :show, program_record), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: program_record_path(@conn, :edit, program_record), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: program_record_path(@conn, :delete, program_record), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Program record", to: program_record_path(@conn, :new) %></span>

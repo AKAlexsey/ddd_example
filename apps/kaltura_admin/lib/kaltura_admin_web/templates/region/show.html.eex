@@ -1,0 +1,28 @@
+<h1>Show Region</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @region.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @region.description %>
+  </li>
+
+  <li>
+    <strong>Server groups</strong>
+    <%= decorate_server_groups(@region.server_groups) %>
+  </li>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @region.status %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: region_path(@conn, :edit, @region) %></span>
+<span><%= link "Back", to: region_path(@conn, :index) %></span>

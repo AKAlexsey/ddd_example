@@ -1,0 +1,72 @@
+<h1>Show Server</h1>
+
+<ul>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @server.type %>
+  </li>
+
+  <li>
+    <strong>Domain name:</strong>
+    <%= @server.domain_name %>
+  </li>
+
+  <li>
+    <strong>Ip:</strong>
+    <%= @server.ip %>
+  </li>
+
+  <li>
+    <strong>Port:</strong>
+    <%= @server.port %>
+  </li>
+
+  <li>
+    <strong>Manage:</strong>
+    <%= @server.manage_ip %>
+  </li>
+
+  <li>
+    <strong>Manage port:</strong>
+    <%= @server.manage_port %>
+  </li>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @server.status %>
+  </li>
+
+  <li>
+    <strong>Weight:</strong>
+    <%= @server.weight %>
+  </li>
+
+  <li>
+    <strong>Prefix:</strong>
+    <%= @server.prefix %>
+  </li>
+
+  <li>
+    <strong>Healthcheck enabled:</strong>
+    <%= @server.healthcheck_enabled %>
+  </li>
+
+  <li>
+    <strong>Healthcheck path:</strong>
+    <%= @server.healthcheck_path %>
+  </li>
+
+  <li>
+    <strong>ServerGroups</strong>
+    <%= decorate_server_groups(@server.server_groups) %>
+  </li>
+
+  <li>
+    <strong>Streaming ServerGroups</strong>
+    <%= decorate_server_groups(@server.streaming_groups) %>
+  </li>
+</ul>
+
+<span><%= link "Edit", to: server_path(@conn, :edit, @server) %></span>
+<span><%= link "Back", to: server_path(@conn, :index) %></span>

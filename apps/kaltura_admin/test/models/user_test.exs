@@ -3,7 +3,12 @@ defmodule KalturaAdmin.UserTest do
 
   alias KalturaAdmin.User
 
-  @valid_attrs %{email: "some email", first_name: "some first_name", last_name: "some last_name", password_hash: "some password_hash"}
+  @valid_attrs %{
+    email: "some email",
+    first_name: "some first_name",
+    last_name: "some last_name",
+    password_hash: "some password_hash"
+  }
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

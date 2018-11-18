@@ -1,0 +1,18 @@
+<h1>Show Subnet</h1>
+
+<ul>
+
+  <li>
+    <strong>Cidr:</strong>
+    <%= @subnet.cidr %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @subnet.name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: subnet_path(@conn, :edit, @subnet) %></span>
+<span><%= link "Back", to: subnet_path(@conn, :index) %></span>
