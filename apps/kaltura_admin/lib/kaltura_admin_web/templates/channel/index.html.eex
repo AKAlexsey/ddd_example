@@ -16,7 +16,7 @@
       <td style="max-width: 700px; overflow: hidden;"><%= channel.url %></td>
 
       <td class="text-right">
-        <span>span><%= link "Show", to: channel_path(@conn, :show, channel), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Show", to: channel_path(@conn, :show, channel), class: "btn btn-default btn-xs" %></span>
         <span><%= link "Edit", to: channel_path(@conn, :edit, channel), class: "btn btn-default btn-xs" %></span>
         <span><%= link "Delete", to: channel_path(@conn, :delete, channel), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
       </td>

@@ -1,7 +1,8 @@
 defmodule KalturaAdmin.Area.Subnet do
   use Ecto.Schema
+  use Observable, :notifier
   import Ecto.Changeset
-  alias KalturaAdmin.Area.Region
+  alias KalturaAdmin.Area.{Region, SubnetObserver}
 
   @cast_fields [:cidr, :region_id, :name]
   @required_fields [:cidr, :region_id]
@@ -20,5 +21,11 @@ defmodule KalturaAdmin.Area.Subnet do
     subnet
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
+  end
+
+  observations do
+    action(:insert, [SubnetObserver])
+    action(:update, [SubnetObserver])
+    action(:delete, [SubnetObserver])
   end
 end

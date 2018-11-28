@@ -53,7 +53,7 @@ defmodule KalturaAdmin.Content do
   def create_tv_stream(attrs \\ %{}) do
     %TvStream{}
     |> TvStream.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert_and_notify()
   end
 
   @doc """
@@ -71,7 +71,7 @@ defmodule KalturaAdmin.Content do
   def update_tv_stream(%TvStream{} = tv_stream, attrs) do
     tv_stream
     |> TvStream.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update_and_notify()
   end
 
   @doc """
@@ -87,7 +87,7 @@ defmodule KalturaAdmin.Content do
 
   """
   def delete_tv_stream(%TvStream{} = tv_stream) do
-    Repo.delete(tv_stream)
+    Repo.delete_and_notify(tv_stream)
   end
 
   @doc """
@@ -149,7 +149,7 @@ defmodule KalturaAdmin.Content do
   def create_program(attrs \\ %{}) do
     %Program{}
     |> Program.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert_and_notify()
   end
 
   @doc """
@@ -167,7 +167,7 @@ defmodule KalturaAdmin.Content do
   def update_program(%Program{} = program, attrs) do
     program
     |> Program.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update_and_notify()
   end
 
   @doc """
@@ -183,7 +183,7 @@ defmodule KalturaAdmin.Content do
 
   """
   def delete_program(%Program{} = program) do
-    Repo.delete(program)
+    Repo.delete_and_notify(program)
   end
 
   @doc """
@@ -245,7 +245,7 @@ defmodule KalturaAdmin.Content do
   def create_program_record(attrs \\ %{}) do
     %ProgramRecord{}
     |> ProgramRecord.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert_and_notify()
   end
 
   @doc """
@@ -263,7 +263,7 @@ defmodule KalturaAdmin.Content do
   def update_program_record(%ProgramRecord{} = program_record, attrs) do
     program_record
     |> ProgramRecord.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update_and_notify()
   end
 
   @doc """
@@ -279,7 +279,7 @@ defmodule KalturaAdmin.Content do
 
   """
   def delete_program_record(%ProgramRecord{} = program_record) do
-    Repo.delete(program_record)
+    Repo.delete_and_notify(program_record)
   end
 
   @doc """

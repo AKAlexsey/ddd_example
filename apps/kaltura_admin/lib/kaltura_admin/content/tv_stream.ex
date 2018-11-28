@@ -1,6 +1,8 @@
 defmodule KalturaAdmin.Content.TvStream do
   use Ecto.Schema
+  use Observable, :notifier
   import Ecto.Changeset
+  alias KalturaAdmin.Content.TvStreamObserver
   alias KalturaAdmin.{ActiveStatus, Repo, Servers}
   alias KalturaAdmin.Servers.{ServerGroupsTvStream, ServerGroup}
 
@@ -51,5 +53,11 @@ defmodule KalturaAdmin.Content.TvStream do
     |> Repo.preload(:server_group_tv_streams)
     |> cast(%{server_group_tv_streams: Servers.make_request_server_group_params(id, ids)}, [])
     |> cast_assoc(:server_group_tv_streams, with: &ServerGroupsTvStream.tv_stream_changeset/2)
+  end
+
+  observations do
+    action(:insert, [TvStreamObserver])
+    action(:update, [TvStreamObserver])
+    action(:delete, [TvStreamObserver])
   end
 end
