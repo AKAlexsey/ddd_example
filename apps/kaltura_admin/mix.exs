@@ -46,6 +46,7 @@ defmodule KalturaAdmin.Mixfile do
       {:phoenix_ecto, "~> 3.2"},
       {:ecto_enum, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
+      {:ecto_observable, "~> 0.3.1"},
       # Tools
       {:phoenix_html, "~> 2.12.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},

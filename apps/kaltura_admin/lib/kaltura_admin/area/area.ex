@@ -53,7 +53,7 @@ defmodule KalturaAdmin.Area do
   def create_region(attrs \\ %{}) do
     %Region{}
     |> Region.changeset(add_empty_server_group_ids(attrs))
-    |> Repo.insert()
+    |> Repo.insert_and_notify()
   end
 
   @doc """
@@ -71,7 +71,7 @@ defmodule KalturaAdmin.Area do
   def update_region(%Region{} = region, attrs) do
     region
     |> Region.changeset(add_empty_server_group_ids(attrs))
-    |> Repo.update()
+    |> Repo.update_and_notify()
   end
 
   defp add_empty_server_group_ids(%{server_group_ids: ids} = attrs), do: attrs
@@ -94,7 +94,7 @@ defmodule KalturaAdmin.Area do
 
   """
   def delete_region(%Region{} = region) do
-    Repo.delete(region)
+    Repo.delete_and_notify(region)
   end
 
   @doc """
@@ -194,7 +194,7 @@ defmodule KalturaAdmin.Area do
   def create_subnet(attrs \\ %{}) do
     %Subnet{}
     |> Subnet.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert_and_notify()
   end
 
   @doc """
@@ -212,7 +212,7 @@ defmodule KalturaAdmin.Area do
   def update_subnet(%Subnet{} = subnet, attrs) do
     subnet
     |> Subnet.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update_and_notify()
   end
 
   @doc """
@@ -228,7 +228,7 @@ defmodule KalturaAdmin.Area do
 
   """
   def delete_subnet(%Subnet{} = subnet) do
-    Repo.delete(subnet)
+    Repo.delete_and_notify(subnet)
   end
 
   @doc """

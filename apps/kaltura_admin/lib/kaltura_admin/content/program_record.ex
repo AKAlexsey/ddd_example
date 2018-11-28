@@ -1,7 +1,8 @@
 defmodule KalturaAdmin.Content.ProgramRecord do
   use Ecto.Schema
+  use Observable, :notifier
   import Ecto.Changeset
-  alias KalturaAdmin.Content.Program
+  alias KalturaAdmin.Content.{Program, ProgramRecordObserver}
   alias KalturaAdmin.Servers.Server
   alias KalturaAdmin.{RecordingStatus, RecordCodec}
 
@@ -24,5 +25,11 @@ defmodule KalturaAdmin.Content.ProgramRecord do
     program_record
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
+  end
+
+  observations do
+    action(:insert, [ProgramRecordObserver])
+    action(:update, [ProgramRecordObserver])
+    action(:delete, [ProgramRecordObserver])
   end
 end

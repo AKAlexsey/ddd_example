@@ -60,7 +60,7 @@ defmodule KalturaAdmin.Servers do
   def create_server(attrs \\ %{}) do
     %Server{}
     |> Server.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert_and_notify()
   end
 
   @doc """
@@ -78,7 +78,7 @@ defmodule KalturaAdmin.Servers do
   def update_server(%Server{} = server, attrs) do
     server
     |> Server.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update_and_notify()
   end
 
   @doc """
@@ -94,7 +94,7 @@ defmodule KalturaAdmin.Servers do
 
   """
   def delete_server(%Server{} = server) do
-    Repo.delete(server)
+    Repo.delete_and_notify(server)
   end
 
   @doc """
@@ -157,7 +157,7 @@ defmodule KalturaAdmin.Servers do
   def create_server_group(attrs \\ %{}) do
     %ServerGroup{}
     |> ServerGroup.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert_and_notify()
   end
 
   @doc """
@@ -175,7 +175,7 @@ defmodule KalturaAdmin.Servers do
   def update_server_group(%ServerGroup{} = server_group, attrs) do
     server_group
     |> ServerGroup.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update_and_notify()
   end
 
   @doc """
@@ -191,7 +191,7 @@ defmodule KalturaAdmin.Servers do
 
   """
   def delete_server_group(%ServerGroup{} = server_group) do
-    Repo.delete(server_group)
+    Repo.delete_and_notify(server_group)
   end
 
   @doc """
