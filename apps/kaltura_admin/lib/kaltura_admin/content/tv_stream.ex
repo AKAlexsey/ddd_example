@@ -1,10 +1,10 @@
 defmodule KalturaAdmin.Content.TvStream do
   use Ecto.Schema
-  use Observable, :notifier
   import Ecto.Changeset
-  alias KalturaAdmin.Content.TvStreamObserver
+  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
   alias KalturaAdmin.{ActiveStatus, Repo, Servers}
   alias KalturaAdmin.Servers.{ServerGroupsTvStream, ServerGroup}
+  use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [:stream_path, :status, :name, :code_name, :description, :dvr_enabled, :epg_id]
   @required_fields [:stream_path, :status, :name, :code_name, :dvr_enabled, :epg_id]
@@ -31,7 +31,7 @@ defmodule KalturaAdmin.Content.TvStream do
   end
 
   @doc false
-  def changeset(%{id: id} = tv_stream, attrs) do
+  def changeset(tv_stream, attrs) do
     tv_stream
     |> cast_server_groups(attrs)
     |> cast(attrs, @cast_fields)
@@ -53,11 +53,5 @@ defmodule KalturaAdmin.Content.TvStream do
     |> Repo.preload(:server_group_tv_streams)
     |> cast(%{server_group_tv_streams: Servers.make_request_server_group_params(id, ids)}, [])
     |> cast_assoc(:server_group_tv_streams, with: &ServerGroupsTvStream.tv_stream_changeset/2)
-  end
-
-  observations do
-    action(:insert, [TvStreamObserver])
-    action(:update, [TvStreamObserver])
-    action(:delete, [TvStreamObserver])
   end
 end
