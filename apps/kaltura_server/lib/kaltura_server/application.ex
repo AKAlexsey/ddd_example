@@ -14,8 +14,7 @@ defmodule KalturaServer.Application do
         scheme: :http,
         plug: KalturaServer.RequestProcessing.MainRouter,
         options: [port: 4001]
-      ),
-      {KalturaServer.Caching.MnesiaRepo, []}
+      )
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

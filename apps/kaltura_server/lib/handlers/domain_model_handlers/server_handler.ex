@@ -1,15 +1,15 @@
-defmodule KalturaServer.DomainModelHandlers.RegionHandler do
+defmodule KalturaServer.DomainModelHandlers.ServerHandler do
   @moduledoc false
 
   require Amnesia
   require Amnesia.Helper
-  alias DomainModel.Region
+  alias DomainModel.Server
 
   def handle(action, attrs) when action in [:insert, :update] do
     Amnesia.transaction do
-      %Region{}
+      %Server{}
       |> struct(attrs)
-      |> Region.write()
+      |> Server.write()
     end
     :ok
   end

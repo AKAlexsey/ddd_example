@@ -24,7 +24,7 @@ defmodule KalturaAdmin.Mixfile do
   def application do
     [
       mod: {KalturaAdmin, []},
-      extra_applications: [:logger]
+      extra_applications: [:logger, :amnesia]
     ]
   end
 

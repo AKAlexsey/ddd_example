@@ -2,7 +2,7 @@ alias KalturaAdmin.Content.TvStream
 alias KalturaAdmin.Protocols.NotifyServerAttrs
 
 defimpl NotifyServerAttrs, for: TvStream do
-  @permitted_attrs [:id, :stream_path, :epg_id, :dvr_enabled, :status]
+  @permitted_attrs [:id, :epg_id, :stream_path, :status, :name, :code_name]
 
   def get(%TvStream{} = record) do
     record
