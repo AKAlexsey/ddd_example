@@ -1,11 +1,12 @@
 defmodule KalturaAdmin.Servers.ServerGroup do
   use Ecto.Schema
-  use Observable, :notifier
   import Ecto.Changeset
   alias KalturaAdmin.{ActiveStatus, Servers, Repo}
-  alias KalturaAdmin.Servers.{Server, ServerGroupsTvStream, ServerGroupServer, ServerGroupObserver}
+  alias KalturaAdmin.Servers.{Server, ServerGroupsTvStream, ServerGroupServer}
+  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
   alias KalturaAdmin.Area.{Region, RegionServerGroup}
   alias KalturaAdmin.Content.TvStream
+  use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [:name, :description, :status]
   @required_fields [:name, :status]
@@ -107,11 +108,5 @@ defmodule KalturaAdmin.Servers.ServerGroup do
     changeset
     |> cast(%{server_group_servers: Servers.make_request_server_params(id, ids)}, [])
     |> cast_assoc(:server_group_servers, with: &ServerGroupServer.server_group_changeset/2)
-  end
-
-  observations do
-    action(:insert, [ServerGroupObserver])
-    action(:update, [ServerGroupObserver])
-    action(:delete, [ServerGroupObserver])
   end
 end

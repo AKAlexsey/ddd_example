@@ -1,10 +1,11 @@
 defmodule KalturaAdmin.Area.Region do
   use Ecto.Schema
-  use Observable, :notifier
   import Ecto.Changeset
   alias KalturaAdmin.{ActiveStatus, Area, Repo}
-  alias KalturaAdmin.Area.{RegionServerGroup, RegionObserver}
+  alias KalturaAdmin.Area.{RegionServerGroup}
+  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
   alias KalturaAdmin.Servers.ServerGroup
+  use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [:name, :description, :status]
   @required_fields [:name, :status]
@@ -49,11 +50,5 @@ defmodule KalturaAdmin.Area.Region do
     changeset
     |> cast(%{region_server_groups: Area.make_request_server_group_params(id, sg_ids)}, [])
     |> cast_assoc(:region_server_groups, with: &RegionServerGroup.region_association_changeset/2)
-  end
-
-  observations do
-    action(:insert, [RegionObserver])
-    action(:update, [RegionObserver])
-    action(:delete, [RegionObserver])
   end
 end

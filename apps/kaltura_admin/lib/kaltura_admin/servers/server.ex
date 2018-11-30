@@ -1,9 +1,10 @@
 defmodule KalturaAdmin.Servers.Server do
   use Ecto.Schema
-  use Observable, :notifier
   import Ecto.Changeset
   alias KalturaAdmin.{ServerType, ActiveStatus, Servers, Repo}
-  alias KalturaAdmin.Servers.{ServerGroup, ServerGroupServer, StreamingServerGroup, ServerObserver}
+  alias KalturaAdmin.Servers.{ServerGroup, ServerGroupServer, StreamingServerGroup}
+  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
+  use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [
     :type,
@@ -101,11 +102,5 @@ defmodule KalturaAdmin.Servers.Server do
       []
     )
     |> cast_assoc(:streaming_server_groups, with: &StreamingServerGroup.server_changeset/2)
-  end
-
-  observations do
-    action(:insert, [ServerObserver])
-    action(:update, [ServerObserver])
-    action(:delete, [ServerObserver])
   end
 end

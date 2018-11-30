@@ -1,9 +1,10 @@
 defmodule KalturaAdmin.Content.Program do
   use Ecto.Schema
-  use Observable, :notifier
   import Ecto.Changeset
 
-  alias KalturaAdmin.Content.{TvStream, ProgramObserver}
+  alias KalturaAdmin.Content.TvStream
+  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
+  use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [:name, :start_datetime, :end_datetime, :epg_id]
   @required_fields [:name, :start_datetime, :end_datetime, :epg_id]
@@ -24,11 +25,5 @@ defmodule KalturaAdmin.Content.Program do
     program
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
-  end
-
-  observations do
-    action(:insert, [ProgramObserver])
-    action(:update, [ProgramObserver])
-    action(:delete, [ProgramObserver])
   end
 end

@@ -53,11 +53,6 @@ defmodule KalturaAdmin.ChannelController do
       {:ok, channel} ->
         %{"name" => name, "url" => url} = channel_params
 
-        Application.get_env(:kaltura_admin, :channel_handler).handle(:channel_updated, %{
-          name: name,
-          url: url
-        })
-
         conn
         |> put_flash(:info, "Channel updated successfully.")
         |> redirect(to: channel_path(conn, :show, channel))
