@@ -9,5 +9,6 @@ defimpl NotifyServerAttrs, for: ServerGroup do
     |> Map.from_struct()
     |> Map.split(@permitted_attrs)
     |> (fn {permitted, _filtered} -> permitted end).()
+    |> Map.merge(%{server_ids: []}) # TODO implement requesting server ids
   end
 end

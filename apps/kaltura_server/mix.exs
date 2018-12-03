@@ -27,7 +27,8 @@ defmodule KalturaServer.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:plug_cowboy, umbrella: true}
+      {:plug_cowboy, umbrella: true},
+      {:amnesia, "~> 0.2.7"}
     ]
   end
 end

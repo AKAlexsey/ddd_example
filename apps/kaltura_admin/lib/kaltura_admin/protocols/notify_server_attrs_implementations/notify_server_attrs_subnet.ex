@@ -2,7 +2,7 @@ alias KalturaAdmin.Area.Subnet
 alias KalturaAdmin.Protocols.NotifyServerAttrs
 
 defimpl NotifyServerAttrs, for: Subnet do
-  @permitted_attrs [:id, :cidr, :name]
+  @permitted_attrs [:id, :region_id, :cidr, :name]
 
   def get(%Subnet{} = record) do
     record
