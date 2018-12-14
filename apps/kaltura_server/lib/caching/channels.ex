@@ -6,6 +6,8 @@ defmodule KalturaServer.Caching.Channels do
   * Finding appropriate data for client
   """
 
+  # TODO Plug model. Remove it after making real request processing.
+
   @table __MODULE__
 
   def init_table do

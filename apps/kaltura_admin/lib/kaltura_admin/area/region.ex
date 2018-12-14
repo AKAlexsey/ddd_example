@@ -2,7 +2,7 @@ defmodule KalturaAdmin.Area.Region do
   use Ecto.Schema
   import Ecto.Changeset
   alias KalturaAdmin.{ActiveStatus, Area, Repo}
-  alias KalturaAdmin.Area.{RegionServerGroup}
+  alias KalturaAdmin.Area.{RegionServerGroup, Subnet}
   alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
   alias KalturaAdmin.Servers.ServerGroup
   use DomainModelNotifier, observers: [DomainModelObserver]
@@ -23,6 +23,8 @@ defmodule KalturaAdmin.Area.Region do
     )
 
     many_to_many(:server_groups, ServerGroup, join_through: RegionServerGroup)
+
+    has_many(:subnets, Subnet, foreign_key: :region_id)
 
     timestamps()
   end

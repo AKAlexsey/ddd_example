@@ -6,7 +6,7 @@ defmodule KalturaAdmin.Observers.DomainModelObserver do
 
   @handler Application.get_env(:kaltura_server, :domain_model_handler)
 
-  def handler, do: @handler
+  defp handler, do: @handler
 
   def handle_notify({:insert, record}) do
     handler().handle(:insert, %{

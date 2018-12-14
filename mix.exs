@@ -5,6 +5,7 @@ defmodule CtiKaltura.MixProject do
     [
       apps_path: "apps",
       start_permanent: Mix.env() == :prod,
+      apps: [:kaltura_admin, :kaltura_server],
       deps: deps()
     ]
   end
