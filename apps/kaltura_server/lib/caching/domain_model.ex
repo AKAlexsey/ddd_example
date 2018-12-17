@@ -52,12 +52,13 @@ defdatabase DomainModel do
           }
   end
 
-  deftable ServerGroup, [:id, :name, :status, :server_ids], type: :ordered_set do
+  deftable ServerGroup, [:id, :name, :status, :server_ids, :region_ids], type: :ordered_set do
     @type t :: %ServerGroup{
             id: integer,
             name: String.t(),
             status: atom,
-            server_ids: list(integer)
+            server_ids: list(integer),
+            region_ids: list(integer)
           }
   end
 

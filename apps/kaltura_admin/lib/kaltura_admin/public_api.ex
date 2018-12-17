@@ -1,11 +1,24 @@
 defmodule KalturaAdmin.PublicApi do
   @moduledoc """
-  Public interface for manipulations with domain model
+  Содержит функции для запроса данных для кеширования.
   """
 
-  alias KalturaAdmin.Workers.DomainModelCache
+  alias KalturaAdmin.Services.DomainModelCache
 
   def cache_domain_model_at_server do
-    DomainModelCache.perform()
+    Task.async(fn ->
+      DomainModelCache.get_all_records()
+    end)
+
+    :ok
+  end
+
+  def cache_model_record(model, id) do
+    Task.async(fn ->
+      DomainModelCache.get_one_record(model, id)
+      IO.puts("!!!! get_model #{model} #{id}}")
+    end)
+
+    :ok
   end
 end
