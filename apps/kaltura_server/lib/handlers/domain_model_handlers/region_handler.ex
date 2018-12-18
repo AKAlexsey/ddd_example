@@ -4,6 +4,7 @@ defmodule KalturaServer.DomainModelHandlers.RegionHandler do
   require Amnesia
   require Amnesia.Helper
   alias DomainModel.Region
+  import KalturaServer.Utils, only: [differences_between_arrays: 2]
 
   @joined_attributes_and_models [
     subnet_ids: "Subnet",
@@ -64,30 +65,5 @@ defmodule KalturaServer.DomainModelHandlers.RegionHandler do
     %Region{}
     |> struct(attrs)
     |> Region.write()
-  end
-
-  # TODO функция очень медленная в сущности делает следующее:
-  # (arr1 -- arr2) ++ (arr2 -- arr1)
-  # Но мы не можем положиться на строчку выше т.к. она иногда возвраащает некорректное значение.
-  # Например:
-  # iex> [4,5,6,7,8,9,10,11,12] -- [4,5,6,7] #=> '\b\t\n\v\f'
-  # iex> [4,5,6,7,8] -- [4,5,6,7] #=> '\b\t\n\v\f'
-  defp differences_between_arrays(arr1, arr2) do
-    set1 = MapSet.new(arr1)
-    set2 = MapSet.new(arr2)
-    difference1 = calculate_difference(set1, set2)
-    difference2 = calculate_difference(set2, set1)
-    difference1 ++ difference2
-  end
-
-  defp calculate_difference(set1, set2) do
-    set1
-    |> Enum.reduce([], fn elem, accumulator ->
-      if MapSet.member?(set2, elem) do
-        accumulator
-      else
-        accumulator ++ [elem]
-      end
-    end)
   end
 end
