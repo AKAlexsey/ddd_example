@@ -4,6 +4,7 @@ defmodule KalturaAdmin.Servers.Server do
   alias KalturaAdmin.{ServerType, ActiveStatus, Servers, Repo}
   alias KalturaAdmin.Servers.{ServerGroup, ServerGroupServer, StreamingServerGroup}
   alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
+  alias KalturaAdmin.Content.ProgramRecord
   use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [
@@ -51,6 +52,8 @@ defmodule KalturaAdmin.Servers.Server do
     )
 
     many_to_many(:streaming_groups, ServerGroup, join_through: StreamingServerGroup)
+
+    has_many(:program_records, ProgramRecord, foreign_key: :server_id)
 
     timestamps()
   end
