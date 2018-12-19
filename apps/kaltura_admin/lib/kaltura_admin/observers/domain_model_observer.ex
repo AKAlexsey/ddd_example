@@ -17,7 +17,8 @@ defmodule KalturaAdmin.Observers.DomainModelObserver do
     :ok
   end
 
-  def handle_notify({:update, [_old_record, new_record]}) do
+  def handle_notify({:update, [old_record, new_record]}) do
+    IO.puts("!!!! update old_Record #{inspect(old_record)}\n new_Record #{inspect(new_record)}}}")
     handler().handle(:update, %{
       model_name: model_name(new_record),
       attrs: NotifyServerAttrs.get(new_record)

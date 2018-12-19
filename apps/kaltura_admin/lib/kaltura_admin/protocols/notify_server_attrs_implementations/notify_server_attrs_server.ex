@@ -20,13 +20,15 @@ defimpl NotifyServerAttrs, for: Server do
   ]
 
   def get(%Server{} = record) do
-    record
+    attrs = record
     |> Map.from_struct()
     |> Map.split(@permitted_attrs)
     |> (fn {permitted, _filtered} -> permitted end).()
     |> preload_server_group_ids(record)
     |> preload_streaming_server_group_ids(record)
     |> preload_program_record_ids(record)
+    IO.puts("!!! attrs #{inspect(attrs)}}")
+    attrs
   end
 
   defp preload_server_group_ids(attrs, %{server_groups: server_groups})
