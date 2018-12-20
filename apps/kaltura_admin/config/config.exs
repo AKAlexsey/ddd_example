@@ -26,6 +26,8 @@ config :kaltura_admin, KalturaAdmin.Authorization.Guardian,
 
 config :kaltura_admin, :generators, context_app: :kaltura_admin
 
+config :kaltura_admin, :public_api, module: KalturaAdmin.PublicApi
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

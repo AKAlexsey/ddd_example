@@ -1,16 +1,12 @@
 defmodule KalturaServer.DomainModelHandlers.ServerHandler do
   @moduledoc false
 
-  require Amnesia
-  require Amnesia.Helper
   alias DomainModel.Server
 
-  def handle(action, attrs) when action in [:insert, :update] do
-    Amnesia.transaction do
-      %Server{}
-      |> struct(attrs)
-      |> Server.write()
-    end
-    :ok
-  end
+  use KalturaServer.DomainModelHandlers.AbstractHandler,
+    table: Server,
+    joined_attributes_and_models: [
+      server_group_ids: "ServerGroup",
+      program_record_ids: "ProgramRecord"
+    ]
 end

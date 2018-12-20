@@ -4,6 +4,7 @@ defmodule KalturaAdmin.Content.TvStream do
   alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
   alias KalturaAdmin.{ActiveStatus, Repo, Servers}
   alias KalturaAdmin.Servers.{ServerGroupsTvStream, ServerGroup}
+  alias KalturaAdmin.Content.Program
   use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [:stream_path, :status, :name, :code_name, :description, :dvr_enabled, :epg_id]
@@ -27,6 +28,7 @@ defmodule KalturaAdmin.Content.TvStream do
 
     many_to_many(:server_groups, ServerGroup, join_through: ServerGroupsTvStream)
 
+    has_many(:programs, Program, foreign_key: :tv_stream_id)
     timestamps()
   end
 

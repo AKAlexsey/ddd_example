@@ -1,16 +1,11 @@
 defmodule KalturaServer.DomainModelHandlers.SubnetHandler do
   @moduledoc false
 
-  require Amnesia
-  require Amnesia.Helper
   alias DomainModel.Subnet
 
-  def handle(action, attrs) when action in [:insert, :update] do
-    Amnesia.transaction do
-      %Subnet{}
-      |> struct(attrs)
-      |> Subnet.write()
-    end
-    :ok
-  end
+  use KalturaServer.DomainModelHandlers.AbstractHandler,
+    table: Subnet,
+    joined_attributes_and_models: [
+      region_id: "Region"
+    ]
 end

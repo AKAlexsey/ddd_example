@@ -1,6 +1,6 @@
 defmodule KalturaServer.Handlers.DomainModelHandler do
   @moduledoc """
-  Handle notifications after Create Update Delete actions with database.
+  Handle notifications after Create Update Delete Refresh RefreshByRequest events with database.
   """
   alias KalturaServer.Handlers.AbstractHandler
 
@@ -51,8 +51,11 @@ defmodule KalturaServer.Handlers.DomainModelHandler do
     :ok
   end
 
-  def handle(action, %{model_name: name, attrs: attrs}) do
-    IO.puts("!!! DomainModelHandler action: #{action}, model: #{name}, attrs: #{inspect(attrs)}")
+  def handle(event, %{model_name: name, attrs: attrs}) do
+    raise "KalturaServer.Handlers.DomainModelHandler unknown model name #{inspect(name)} event: #{
+            event
+          } attrs #{inspect(attrs)}"
+
     :ok
   end
 end

@@ -4,7 +4,7 @@ defmodule KalturaAdmin.Authorization.Guardian do
   alias KalturaAdmin.Repo
   alias KalturaAdmin.User
 
-  def subject_for_token(user = %User{}, _), do: {:ok, "User:#{user.id}"}
+  def subject_for_token(%User{} = user, _), do: {:ok, "User:#{user.id}"}
   def subject_for_token(_, _), do: {:error, "Unknown resource type"}
 
   def subject_from_token("User:" <> id, _), do: {:ok, Repo.get(User, id)}

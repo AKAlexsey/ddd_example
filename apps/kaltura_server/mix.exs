@@ -28,7 +28,8 @@ defmodule KalturaServer.MixProject do
   defp deps do
     [
       {:plug_cowboy, umbrella: true},
-      {:amnesia, "~> 0.2.7"}
+      {:amnesia, "~> 0.2.7"},
+      {:kaltura_admin, in_umbrella: true}
     ]
   end
 end
