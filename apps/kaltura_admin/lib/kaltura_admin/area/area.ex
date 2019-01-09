@@ -18,7 +18,8 @@ defmodule KalturaAdmin.Area do
 
   """
   def list_regions(preload \\ []) do
-    Repo.all(Region)
+    Region
+    |> Repo.all()
     |> Repo.preload(preload)
   end
 
@@ -74,8 +75,8 @@ defmodule KalturaAdmin.Area do
     |> Repo.update_and_notify()
   end
 
-  defp add_empty_server_group_ids(%{server_group_ids: ids} = attrs), do: attrs
-  defp add_empty_server_group_ids(%{"server_group_ids" => ids} = attrs), do: attrs
+  defp add_empty_server_group_ids(%{server_group_ids: _ids} = attrs), do: attrs
+  defp add_empty_server_group_ids(%{"server_group_ids" => _ids} = attrs), do: attrs
 
   defp add_empty_server_group_ids(attrs) do
     Map.put(attrs, "server_group_ids", [])
@@ -159,7 +160,8 @@ defmodule KalturaAdmin.Area do
 
   """
   def list_subnetss(preload \\ []) do
-    Repo.all(Subnet)
+    Subnet
+    |> Repo.all()
     |> Repo.preload(preload)
   end
 

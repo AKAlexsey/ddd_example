@@ -41,7 +41,8 @@ defmodule KalturaAdmin.TvStreamController do
 
   def show(conn, %{"id" => id}) do
     tv_stream =
-      Content.get_tv_stream!(id)
+      id
+      |> Content.get_tv_stream!()
       |> Repo.preload(:server_groups)
 
     render(conn, "show.html", tv_stream: tv_stream, current_user: load_user(conn))
