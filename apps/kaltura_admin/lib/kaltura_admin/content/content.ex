@@ -18,7 +18,8 @@ defmodule KalturaAdmin.Content do
 
   """
   def list_tv_streams(preload \\ []) do
-    Repo.all(TvStream)
+    TvStream
+    |> Repo.all()
     |> Repo.preload(preload)
   end
 

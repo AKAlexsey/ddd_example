@@ -10,7 +10,8 @@ defmodule KalturaAdmin.SessionController do
   end
 
   def create(conn, %{"session" => %{"email" => email, "password" => password}}) do
-    authorize(email, password)
+    email
+    |> authorize(password)
     |> case do
       {:ok, user} ->
         conn

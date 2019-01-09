@@ -27,16 +27,16 @@ defmodule KalturaAdmin.SubnetController do
   end
 
   def show(conn, %{"id" => id}) do
-    subnet =
-      Area.get_subnet!(id)
+    subnet = id
+      |> Area.get_subnet!()
       |> Repo.preload(:region)
 
     render(conn, "show.html", subnet: subnet, current_user: load_user(conn))
   end
 
   def edit(conn, %{"id" => id}) do
-    subnet =
-      Area.get_subnet!(id)
+    subnet = id
+      |> Area.get_subnet!()
       |> Repo.preload(:region)
 
     changeset = Area.change_subnet(subnet)
@@ -44,9 +44,7 @@ defmodule KalturaAdmin.SubnetController do
   end
 
   def update(conn, %{"id" => id, "subnet" => subnet_params}) do
-    subnet =
-      Area.get_subnet!(id)
-      |> Repo.preload(:region)
+    subnet = Area.get_subnet!(id)
 
     case Area.update_subnet(subnet, subnet_params) do
       {:ok, subnet} ->

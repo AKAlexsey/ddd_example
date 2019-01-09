@@ -53,7 +53,8 @@ defmodule KalturaServer.DomainModelHandlers.AbstractHandler do
       end
 
       defp refresh_linked_tables_if_necessary(%{id: id} = attrs) do
-        @table.read(id)
+        id
+        |> @table.read()
         |> check_record_attributes(attrs)
       end
 

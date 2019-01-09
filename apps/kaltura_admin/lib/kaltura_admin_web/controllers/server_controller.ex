@@ -33,16 +33,16 @@ defmodule KalturaAdmin.ServerController do
   end
 
   def show(conn, %{"id" => id}) do
-    server =
-      Servers.get_server!(id)
+    server = id
+      |> Servers.get_server!()
       |> Repo.preload([:server_groups, :streaming_groups])
 
     render(conn, "show.html", server: server, current_user: load_user(conn))
   end
 
   def edit(conn, %{"id" => id}) do
-    server =
-      Servers.get_server!(id)
+    server = id
+      |> Servers.get_server!()
       |> Repo.preload([:server_groups, :streaming_groups])
 
     changeset = Servers.change_server(server)
@@ -60,7 +60,6 @@ defmodule KalturaAdmin.ServerController do
   def update(conn, %{"id" => id, "server" => server_params}) do
     server =
       Servers.get_server!(id)
-      |> Repo.preload(:server_groups)
 
     case Servers.update_server(server, server_params) do
       {:ok, server} ->

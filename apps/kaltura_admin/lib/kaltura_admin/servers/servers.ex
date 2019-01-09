@@ -25,7 +25,8 @@ defmodule KalturaAdmin.Servers do
 
   """
   def list_servers(preload \\ []) do
-    Repo.all(Server)
+    Server
+    |> Repo.all()
     |> Repo.preload(preload)
   end
 
@@ -122,7 +123,8 @@ defmodule KalturaAdmin.Servers do
 
   """
   def list_server_groups(preload \\ []) do
-    Repo.all(ServerGroup)
+    ServerGroup
+    |> Repo.all()
     |> Repo.preload(preload)
   end
 
@@ -246,8 +248,7 @@ defmodule KalturaAdmin.Servers do
   def make_request_region_params(server_group_id, region_ids) do
     region_ids = ids_to_integer(region_ids)
 
-    existing_rsg =
-      from(
+    existing_rsg = from(
         rsg in RegionServerGroup,
         where: rsg.server_group_id == ^server_group_id and rsg.region_id in ^region_ids
       )
@@ -266,8 +267,7 @@ defmodule KalturaAdmin.Servers do
   def make_request_tv_stream_params(server_group_id, tv_stream_ids) do
     tv_stream_ids = ids_to_integer(tv_stream_ids)
 
-    existing_sgts =
-      from(
+    existing_sgts = from(
         sgts in ServerGroupsTvStream,
         where: sgts.server_group_id == ^server_group_id and sgts.tv_stream_id in ^tv_stream_ids
       )
@@ -287,8 +287,7 @@ defmodule KalturaAdmin.Servers do
   def make_request_server_group_params(tv_stream_id, server_group_ids) do
     server_group_ids = ids_to_integer(server_group_ids)
 
-    existing_sgts =
-      from(
+    existing_sgts = from(
         sgts in ServerGroupsTvStream,
         where: sgts.tv_stream_id == ^tv_stream_id and sgts.server_group_id in ^server_group_ids
       )
@@ -309,8 +308,7 @@ defmodule KalturaAdmin.Servers do
   def make_request_server_params(server_group_id, server_ids) do
     server_ids = ids_to_integer(server_ids)
 
-    existing_sgs =
-      from(
+    existing_sgs = from(
         sgs in ServerGroupServer,
         where: sgs.server_group_id == ^server_group_id and sgs.server_id in ^server_ids
       )
@@ -330,8 +328,7 @@ defmodule KalturaAdmin.Servers do
   def make_request_server_group_for_server_params(server_id, server_group_ids) do
     server_group_ids = ids_to_integer(server_group_ids)
 
-    existing_sgs =
-      from(
+    existing_sgs = from(
         sgs in ServerGroupServer,
         where: sgs.server_id == ^server_id and sgs.server_group_id in ^server_group_ids
       )
@@ -352,8 +349,7 @@ defmodule KalturaAdmin.Servers do
   def make_request_streamin_server_group_params(server_id, server_group_ids) do
     server_group_ids = ids_to_integer(server_group_ids)
 
-    existing_sgs =
-      from(
+    existing_sgs = from(
         sgs in StreamingServerGroup,
         where: sgs.server_id == ^server_id and sgs.server_group_id in ^server_group_ids
       )
