@@ -33,7 +33,8 @@ defmodule KalturaAdmin.ServerController do
   end
 
   def show(conn, %{"id" => id}) do
-    server = id
+    server =
+      id
       |> Servers.get_server!()
       |> Repo.preload([:server_groups, :streaming_groups])
 
@@ -41,7 +42,8 @@ defmodule KalturaAdmin.ServerController do
   end
 
   def edit(conn, %{"id" => id}) do
-    server = id
+    server =
+      id
       |> Servers.get_server!()
       |> Repo.preload([:server_groups, :streaming_groups])
 
@@ -58,8 +60,7 @@ defmodule KalturaAdmin.ServerController do
   end
 
   def update(conn, %{"id" => id, "server" => server_params}) do
-    server =
-      Servers.get_server!(id)
+    server = Servers.get_server!(id)
 
     case Servers.update_server(server, server_params) do
       {:ok, server} ->

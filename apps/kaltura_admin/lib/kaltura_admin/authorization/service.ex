@@ -1,5 +1,5 @@
 defmodule KalturaAdmin.Authorization.Service do
-  @defmodule """
+  @moduledoc """
   Contains logic for performing authorization
   """
 
@@ -10,18 +10,17 @@ defmodule KalturaAdmin.Authorization.Service do
   def authorize(email, password) do
     user = Repo.get_by(User, email: email)
 
-    result =
-      cond do
-        user && checkpw(password, user.password_hash) ->
-          {:ok, user}
+    cond do
+      user && checkpw(password, user.password_hash) ->
+        {:ok, user}
 
-        user ->
-          {:error, :unauthorized}
+      user ->
+        {:error, :unauthorized}
 
-        true ->
-          dummy_checkpw
-          {:error, :not_found}
-      end
+      true ->
+        dummy_checkpw()
+        {:error, :not_found}
+    end
   end
 
   # TODO substitute to macro. For authomatic preloading before each controller action

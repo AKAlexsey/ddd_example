@@ -20,7 +20,10 @@ defmodule KalturaAdmin.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      alias KalturaAdmin.Repo
+      alias KalturaAdmin.{Repo, Factory, User}
+      alias KalturaAdmin.Authorization.Guardian, as: GuardImpl
+      alias Plug.Conn
+      alias Guardian.Plug, as: GPlug
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
@@ -29,6 +32,11 @@ defmodule KalturaAdmin.ConnCase do
 
       # The default endpoint for testing
       @endpoint KalturaAdmin.Endpoint
+
+      @spec authorize(Conn.t(), User.t()) :: Conn.t()
+      def authorize(conn, user) do
+        GPlug.sign_in(conn, GuardImpl, user)
+      end
     end
   end
 

@@ -19,7 +19,7 @@ defmodule KalturaAdmin.Area.RegionServerGroup do
   def changeset(region_server_group, attrs) do
     region_server_group
     |> cast(attrs, @cast_fields)
-    |> validate_required([:region_id, :server_group_id])
+    |> validate_required(@required_fields)
     |> assoc_constraint(:region)
     |> assoc_constraint(:server_group)
   end

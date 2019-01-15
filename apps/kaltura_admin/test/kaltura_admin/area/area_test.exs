@@ -2,42 +2,50 @@ defmodule KalturaAdmin.AreaTest do
   use KalturaAdmin.DataCase
 
   alias KalturaAdmin.Area
+  import Mock
+  @domain_model_handler_module Application.get_env(:kaltura_server, :domain_model_handler)
 
   describe "regions" do
     alias KalturaAdmin.Area.Region
 
-    @valid_attrs %{description: "some description", name: "some name", status: 42}
-    @update_attrs %{
-      description: "some updated description",
-      name: "some updated name",
-      status: 43
+    @valid_attrs %{
+      description: "Old description",
+      name: "Old name",
+      status: :active
     }
+
+    @update_attrs %{
+      description: "New description",
+      name: "New name",
+      status: :inactive
+    }
+
     @invalid_attrs %{description: nil, name: nil, status: nil}
 
     def region_fixture(attrs \\ %{}) do
-      {:ok, region} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Area.create_region()
+      {:ok, region} = Factory.insert(:region, Enum.into(attrs, @valid_attrs))
 
       region
     end
 
     test "list_regions/0 returns all regions" do
       region = region_fixture()
-      assert Area.list_regions() == [region]
+      assert Enum.map(Area.list_regions(), & &1.id) == [region.id]
     end
 
     test "get_region!/1 returns the region with given id" do
       region = region_fixture()
-      assert Area.get_region!(region.id) == region
+      assert Area.get_region!(region.id).id == region.id
     end
 
     test "create_region/1 with valid data creates a region" do
-      assert {:ok, %Region{} = region} = Area.create_region(@valid_attrs)
-      assert region.description == "some description"
-      assert region.name == "some name"
-      assert region.status == 42
+      with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
+        assert {:ok, %Region{} = region} = Area.create_region(@valid_attrs)
+        assert region.description == "Old description"
+        assert region.name == "Old name"
+        assert region.status == :active
+        assert_called(@domain_model_handler_module.handle(:insert, %{model_name: "Region"}))
+      end
     end
 
     test "create_region/1 with invalid data returns error changeset" do
@@ -45,23 +53,29 @@ defmodule KalturaAdmin.AreaTest do
     end
 
     test "update_region/2 with valid data updates the region" do
-      region = region_fixture()
-      assert {:ok, %Region{} = region} = Area.update_region(region, @update_attrs)
-      assert region.description == "some updated description"
-      assert region.name == "some updated name"
-      assert region.status == 43
+      with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
+        region = region_fixture()
+        assert {:ok, %Region{} = region} = Area.update_region(region, @update_attrs)
+        assert region.description == "New description"
+        assert region.name == "New name"
+        assert region.status == :inactive
+        assert_called(@domain_model_handler_module.handle(:update, %{model_name: "Region"}))
+      end
     end
 
     test "update_region/2 with invalid data returns error changeset" do
       region = region_fixture()
       assert {:error, %Ecto.Changeset{}} = Area.update_region(region, @invalid_attrs)
-      assert region == Area.get_region!(region.id)
+      assert region.id == Area.get_region!(region.id).id
     end
 
     test "delete_region/1 deletes the region" do
-      region = region_fixture()
-      assert {:ok, %Region{}} = Area.delete_region(region)
-      assert_raise Ecto.NoResultsError, fn -> Area.get_region!(region.id) end
+      with_mock @domain_model_handler_module, handle: fn :delete, %{} -> :ok end do
+        region = region_fixture()
+        assert {:ok, %Region{}} = Area.delete_region(region)
+        assert_raise Ecto.NoResultsError, fn -> Area.get_region!(region.id) end
+        assert_called(@domain_model_handler_module.handle(:delete, %{model_name: "Region"}))
+      end
     end
 
     test "change_region/1 returns a region changeset" do
@@ -78,10 +92,7 @@ defmodule KalturaAdmin.AreaTest do
     @invalid_attrs %{cidr: nil, name: nil}
 
     def subnet_fixture(attrs \\ %{}) do
-      {:ok, subnet} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Area.create_subnet()
+      {:ok, subnet} = Factory.insert(:subnet, Enum.into(attrs, @valid_attrs))
 
       subnet
     end
@@ -97,9 +108,14 @@ defmodule KalturaAdmin.AreaTest do
     end
 
     test "create_subnet/1 with valid data creates a subnet" do
-      assert {:ok, %Subnet{} = subnet} = Area.create_subnet(@valid_attrs)
-      assert subnet.cidr == "some cidr"
-      assert subnet.name == "some name"
+      with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
+        {:ok, region} = Factory.insert(:region)
+        attrs = Map.put(@valid_attrs, :region_id, region.id)
+        assert {:ok, %Subnet{} = subnet} = Area.create_subnet(attrs)
+        assert subnet.cidr == "some cidr"
+        assert subnet.name == "some name"
+        assert_called(@domain_model_handler_module.handle(:insert, %{model_name: "Subnet"}))
+      end
     end
 
     test "create_subnet/1 with invalid data returns error changeset" do
@@ -107,10 +123,13 @@ defmodule KalturaAdmin.AreaTest do
     end
 
     test "update_subnet/2 with valid data updates the subnet" do
-      subnet = subnet_fixture()
-      assert {:ok, %Subnet{} = subnet} = Area.update_subnet(subnet, @update_attrs)
-      assert subnet.cidr == "some updated cidr"
-      assert subnet.name == "some updated name"
+      with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
+        subnet = subnet_fixture()
+        assert {:ok, %Subnet{} = subnet} = Area.update_subnet(subnet, @update_attrs)
+        assert subnet.cidr == "some updated cidr"
+        assert subnet.name == "some updated name"
+        assert_called(@domain_model_handler_module.handle(:update, %{model_name: "Subnet"}))
+      end
     end
 
     test "update_subnet/2 with invalid data returns error changeset" do
@@ -120,9 +139,12 @@ defmodule KalturaAdmin.AreaTest do
     end
 
     test "delete_subnet/1 deletes the subnet" do
-      subnet = subnet_fixture()
-      assert {:ok, %Subnet{}} = Area.delete_subnet(subnet)
-      assert_raise Ecto.NoResultsError, fn -> Area.get_subnet!(subnet.id) end
+      with_mock @domain_model_handler_module, handle: fn :delete, %{} -> :ok end do
+        subnet = subnet_fixture()
+        assert {:ok, %Subnet{}} = Area.delete_subnet(subnet)
+        assert_raise Ecto.NoResultsError, fn -> Area.get_subnet!(subnet.id) end
+        assert_called(@domain_model_handler_module.handle(:delete, %{model_name: "Subnet"}))
+      end
     end
 
     test "change_subnet/1 returns a subnet changeset" do

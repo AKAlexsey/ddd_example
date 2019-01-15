@@ -32,7 +32,6 @@ defmodule KalturaAdminWeb.Router do
   scope "/", KalturaAdmin do
     pipe_through([:browser, :auth, :ensure_auth])
 
-    resources("/channels", ChannelController)
     resources("/users", UserController)
     resources("/servers", ServerController)
     resources("/server_groups", ServerGroupController)

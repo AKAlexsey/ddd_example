@@ -1,4 +1,4 @@
-defmodule KalturaAdmin.ModelCase do
+defmodule KalturaAdmin.DataCase do
   @moduledoc """
   This module defines the test case to be used by
   model tests.

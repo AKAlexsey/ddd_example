@@ -1,6 +1,6 @@
 import http from "k6/http"
 import { getEnvironmentHost, getEnvironmentPort, getRandomNumber } from './lib/utils.js'
-
+// TODO удалил каналы в рамках ликвидации технического долга
 const host = getEnvironmentHost();
 const port = getEnvironmentPort();
 
