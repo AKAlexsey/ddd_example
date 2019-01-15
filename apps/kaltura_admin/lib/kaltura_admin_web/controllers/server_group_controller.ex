@@ -40,7 +40,8 @@ defmodule KalturaAdmin.ServerGroupController do
   end
 
   def show(conn, %{"id" => id}) do
-    server_group = id
+    server_group =
+      id
       |> Servers.get_server_group!()
       |> Repo.preload([:regions, :tv_streams, :servers])
 

@@ -24,7 +24,8 @@ defimpl NotifyServerAttrs, for: TvStream do
   end
 
   defp preload_server_group_ids(attrs, %{id: tv_stream_id}) do
-    server_group_ids = from(
+    server_group_ids =
+      from(
         sgts in ServerGroupsTvStream,
         select: sgts.server_group_id,
         where: sgts.tv_stream_id == ^tv_stream_id
@@ -41,7 +42,8 @@ defimpl NotifyServerAttrs, for: TvStream do
   end
 
   defp preload_program_ids(attrs, %{id: tv_stream_id}) do
-    program_ids = from(
+    program_ids =
+      from(
         p in Program,
         select: p.id,
         where: p.tv_stream_id == ^tv_stream_id

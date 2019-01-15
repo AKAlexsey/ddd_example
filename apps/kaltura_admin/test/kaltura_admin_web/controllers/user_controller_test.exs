@@ -4,12 +4,18 @@ defmodule KalturaAdmin.UserControllerTest do
   alias KalturaAdmin.User
 
   @valid_attrs %{
-    email: "some email",
-    first_name: "some first_name",
-    last_name: "some last_name",
-    password_hash: "some password_hash"
+    email: Faker.Internet.email(),
+    first_name: Faker.Name.first_name(),
+    last_name: Faker.Name.last_name(),
+    password: "qweasd123"
   }
   @invalid_attrs %{}
+
+  setup tags do
+    {:ok, user} = Factory.insert(:admin)
+
+    {:ok, conn: authorize(tags[:conn], user)}
+  end
 
   test "lists all entries on index", %{conn: conn} do
     conn = get(conn, user_path(conn, :index))
@@ -23,7 +29,7 @@ defmodule KalturaAdmin.UserControllerTest do
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = post(conn, user_path(conn, :create), user: @valid_attrs)
-    user = Repo.get_by!(User, @valid_attrs)
+    user = Repo.get_by!(User, %{email: Map.get(@valid_attrs, :email)})
     assert redirected_to(conn) == user_path(conn, :show, user.id)
   end
 
@@ -54,7 +60,7 @@ defmodule KalturaAdmin.UserControllerTest do
     user = Repo.insert!(%User{})
     conn = put(conn, user_path(conn, :update, user), user: @valid_attrs)
     assert redirected_to(conn) == user_path(conn, :show, user)
-    assert Repo.get_by(User, @valid_attrs)
+    assert Repo.get_by(User, %{email: Map.get(@valid_attrs, :email)})
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

@@ -1,7 +1,7 @@
 defmodule KalturaServer.RequestProcessing.MainRouter do
   use Plug.Router
 
-  alias KalturaServer.RequestProcessing.{DataReader, Responser}
+  alias KalturaServer.RequestProcessing.DataReader
 
   import Plug.Conn, only: [send_resp: 3]
 
@@ -10,10 +10,10 @@ defmodule KalturaServer.RequestProcessing.MainRouter do
   plug(:match)
   plug(:dispatch)
 
-  get "/get_channel" do
-    {response_conn, status, body} = Responser.make_response(conn)
-    send_resp(response_conn, status, body)
-  end
+  #  get "/" do
+  #    {response_conn, status, body} = Responser.make_response(conn)
+  #    send_resp(response_conn, status, body)
+  #  end
 
   match _ do
     send_resp(conn, 404, "oops")

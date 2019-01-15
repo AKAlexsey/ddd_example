@@ -21,6 +21,7 @@ defmodule KalturaAdmin.ChannelCase do
       use Phoenix.ChannelTest
 
       alias KalturaAdmin.Repo
+      alias KalturaAdmin.Factory
       import Ecto
       import Ecto.Changeset
       import Ecto.Query

@@ -10,6 +10,8 @@ defmodule KalturaAdmin.Content.TvStream do
   @cast_fields [:stream_path, :status, :name, :code_name, :description, :dvr_enabled, :epg_id]
   @required_fields [:stream_path, :status, :name, :code_name, :dvr_enabled, :epg_id]
 
+  @type t :: %__MODULE__{}
+
   schema "tv_streams" do
     field(:code_name, :string)
     field(:description, :string, null: true)

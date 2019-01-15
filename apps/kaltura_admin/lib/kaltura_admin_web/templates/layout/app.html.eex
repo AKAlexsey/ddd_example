@@ -20,9 +20,6 @@
               <%= link("Home", to: "/") %>
             </li>
             <li>
-              <%= link("Channels", to: channel_path(@conn, :index)) %>
-            </li>
-            <li>
               <%= link("Users", to: user_path(@conn, :index)) %>
             </li>
             <li>

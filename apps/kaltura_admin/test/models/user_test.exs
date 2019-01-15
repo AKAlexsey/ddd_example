@@ -4,10 +4,10 @@ defmodule KalturaAdmin.UserTest do
   alias KalturaAdmin.User
 
   @valid_attrs %{
-    email: "some email",
-    first_name: "some first_name",
-    last_name: "some last_name",
-    password_hash: "some password_hash"
+    email: Faker.Internet.email(),
+    first_name: Faker.Name.first_name(),
+    last_name: Faker.Name.last_name(),
+    password: "qweasd123"
   }
   @invalid_attrs %{}
 

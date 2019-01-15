@@ -15,7 +15,6 @@ defmodule KalturaServer.DomainModelHandlers.AbstractHandler do
       @joined_attributes_and_models unquote(joined_attributes_and_models)
       @kaltura_server_public_api Application.get_env(:kaltura_admin, :public_api)[:module]
 
-
       def handle(action, attrs) when action in [:insert, :update, :refresh] do
         Amnesia.transaction do
           refresh_linked_tables_if_necessary(attrs)

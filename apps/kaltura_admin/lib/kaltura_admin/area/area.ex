@@ -79,7 +79,16 @@ defmodule KalturaAdmin.Area do
   defp add_empty_server_group_ids(%{"server_group_ids" => _ids} = attrs), do: attrs
 
   defp add_empty_server_group_ids(attrs) do
-    Map.put(attrs, "server_group_ids", [])
+    Map.put(attrs, appropriate_map_key(attrs, :server_group_ids), [])
+  end
+
+  defp appropriate_map_key(attrs, key_name) do
+    attrs
+    |> Map.keys()
+    |> List.first()
+    |> (fn first_element ->
+          if(is_atom(first_element), do: key_name, else: to_string(key_name))
+        end).()
   end
 
   @doc """

@@ -1,44 +1,45 @@
 defmodule KalturaAdminWeb.SubnetControllerTest do
-  use KalturaAdminWeb.ConnCase
+  use KalturaAdmin.ConnCase
 
-  alias KalturaAdmin.Area
-
-  @create_attrs %{cidr: "some cidr", name: "some name"}
-  @update_attrs %{cidr: "some updated cidr", name: "some updated name"}
+  @create_attrs %{cidr: "#{Faker.Internet.ip_v4_address()}/30", name: "Old name"}
+  @update_attrs %{cidr: "#{Faker.Internet.ip_v4_address()}/30", name: "New name"}
   @invalid_attrs %{cidr: nil, name: nil}
 
-  def fixture(:subnet) do
-    {:ok, subnet} = Area.create_subnet(@create_attrs)
-    subnet
+  setup tags do
+    {:ok, user} = Factory.insert(:admin)
+
+    {:ok, conn: authorize(tags[:conn], user)}
   end
 
   describe "index" do
     test "lists all subnetss", %{conn: conn} do
-      conn = get(conn, Routes.subnet_path(conn, :index))
+      conn = get(conn, subnet_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Subnetss"
     end
   end
 
   describe "new subnet" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.subnet_path(conn, :new))
+      conn = get(conn, subnet_path(conn, :new))
       assert html_response(conn, 200) =~ "New Subnet"
     end
   end
 
   describe "create subnet" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.subnet_path(conn, :create), subnet: @create_attrs)
+      {:ok, region} = Factory.insert(:region)
+      create_attrs = Map.merge(@create_attrs, %{region_id: region.id})
+      create_response = post(conn, subnet_path(conn, :create), subnet: create_attrs)
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.subnet_path(conn, :show, id)
+      assert %{id: id} = redirected_params(create_response)
+      assert redirected_to(create_response) == subnet_path(create_response, :show, id)
 
-      conn = get(conn, Routes.subnet_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Subnet"
+      show_response = get(conn, subnet_path(conn, :show, id))
+      assert html_response(show_response, 200) =~ "Show Subnet"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.subnet_path(conn, :create), subnet: @invalid_attrs)
+      conn = post(conn, subnet_path(conn, :create), subnet: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Subnet"
     end
   end
@@ -47,7 +48,7 @@ defmodule KalturaAdminWeb.SubnetControllerTest do
     setup [:create_subnet]
 
     test "renders form for editing chosen subnet", %{conn: conn, subnet: subnet} do
-      conn = get(conn, Routes.subnet_path(conn, :edit, subnet))
+      conn = get(conn, subnet_path(conn, :edit, subnet))
       assert html_response(conn, 200) =~ "Edit Subnet"
     end
   end
@@ -56,15 +57,15 @@ defmodule KalturaAdminWeb.SubnetControllerTest do
     setup [:create_subnet]
 
     test "redirects when data is valid", %{conn: conn, subnet: subnet} do
-      conn = put(conn, Routes.subnet_path(conn, :update, subnet), subnet: @update_attrs)
-      assert redirected_to(conn) == Routes.subnet_path(conn, :show, subnet)
+      update_response = put(conn, subnet_path(conn, :update, subnet), subnet: @update_attrs)
+      assert redirected_to(update_response) == subnet_path(update_response, :show, subnet)
 
-      conn = get(conn, Routes.subnet_path(conn, :show, subnet))
-      assert html_response(conn, 200) =~ "some updated cidr"
+      show_response = get(conn, subnet_path(conn, :show, subnet))
+      assert html_response(show_response, 200) =~ "New name"
     end
 
     test "renders errors when data is invalid", %{conn: conn, subnet: subnet} do
-      conn = put(conn, Routes.subnet_path(conn, :update, subnet), subnet: @invalid_attrs)
+      conn = put(conn, subnet_path(conn, :update, subnet), subnet: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Subnet"
     end
   end
@@ -73,17 +74,17 @@ defmodule KalturaAdminWeb.SubnetControllerTest do
     setup [:create_subnet]
 
     test "deletes chosen subnet", %{conn: conn, subnet: subnet} do
-      conn = delete(conn, Routes.subnet_path(conn, :delete, subnet))
-      assert redirected_to(conn) == Routes.subnet_path(conn, :index)
+      delete_response = delete(conn, subnet_path(conn, :delete, subnet))
+      assert redirected_to(delete_response) == subnet_path(delete_response, :index)
 
       assert_error_sent(404, fn ->
-        get(conn, Routes.subnet_path(conn, :show, subnet))
+        get(conn, subnet_path(conn, :show, subnet))
       end)
     end
   end
 
   defp create_subnet(_) do
-    subnet = fixture(:subnet)
+    {:ok, subnet} = Factory.insert(:subnet)
     {:ok, subnet: subnet}
   end
 end

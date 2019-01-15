@@ -1,44 +1,48 @@
 defmodule KalturaAdminWeb.ProgramRecordControllerTest do
-  use KalturaAdminWeb.ConnCase
+  use KalturaAdmin.ConnCase
 
-  alias KalturaAdmin.Content
-
-  @create_attrs %{codec: 42, path: "some path", status: 42}
-  @update_attrs %{codec: 43, path: "some updated path", status: 43}
+  @create_attrs %{codec: :HLS, path: "/content", status: :planned}
+  @update_attrs %{codec: :HLS, path: "/content", status: :planned}
   @invalid_attrs %{codec: nil, path: nil, status: nil}
 
-  def fixture(:program_record) do
-    {:ok, program_record} = Content.create_program_record(@create_attrs)
-    program_record
+  setup tags do
+    {:ok, user} = Factory.insert(:admin)
+
+    {:ok, conn: authorize(tags[:conn], user)}
   end
 
   describe "index" do
     test "lists all program_records", %{conn: conn} do
-      conn = get(conn, Routes.program_record_path(conn, :index))
+      conn = get(conn, program_record_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Program records"
     end
   end
 
   describe "new program_record" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.program_record_path(conn, :new))
+      conn = get(conn, program_record_path(conn, :new))
       assert html_response(conn, 200) =~ "New Program record"
     end
   end
 
   describe "create program_record" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.program_record_path(conn, :create), program_record: @create_attrs)
+      {:ok, server} = Factory.insert(:server)
+      {:ok, program} = Factory.insert(:program)
+      create_attrs = Map.merge(@create_attrs, %{server_id: server.id, program_id: program.id})
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.program_record_path(conn, :show, id)
+      create_response =
+        post(conn, program_record_path(conn, :create), program_record: create_attrs)
 
-      conn = get(conn, Routes.program_record_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Program record"
+      assert %{id: id} = redirected_params(create_response)
+      assert redirected_to(create_response) == program_record_path(create_response, :show, id)
+
+      show_response = get(conn, program_record_path(conn, :show, id))
+      assert html_response(show_response, 200) =~ "Show Program record"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.program_record_path(conn, :create), program_record: @invalid_attrs)
+      conn = post(conn, program_record_path(conn, :create), program_record: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Program record"
     end
   end
@@ -50,7 +54,7 @@ defmodule KalturaAdminWeb.ProgramRecordControllerTest do
       conn: conn,
       program_record: program_record
     } do
-      conn = get(conn, Routes.program_record_path(conn, :edit, program_record))
+      conn = get(conn, program_record_path(conn, :edit, program_record))
       assert html_response(conn, 200) =~ "Edit Program record"
     end
   end
@@ -59,24 +63,25 @@ defmodule KalturaAdminWeb.ProgramRecordControllerTest do
     setup [:create_program_record]
 
     test "redirects when data is valid", %{conn: conn, program_record: program_record} do
-      conn =
+      update_response =
         put(
           conn,
-          Routes.program_record_path(conn, :update, program_record),
+          program_record_path(conn, :update, program_record),
           program_record: @update_attrs
         )
 
-      assert redirected_to(conn) == Routes.program_record_path(conn, :show, program_record)
+      assert redirected_to(update_response) ==
+               program_record_path(update_response, :show, program_record)
 
-      conn = get(conn, Routes.program_record_path(conn, :show, program_record))
-      assert html_response(conn, 200) =~ "some updated path"
+      show_response = get(conn, program_record_path(conn, :show, program_record))
+      assert html_response(show_response, 200) =~ "/content"
     end
 
     test "renders errors when data is invalid", %{conn: conn, program_record: program_record} do
       conn =
         put(
           conn,
-          Routes.program_record_path(conn, :update, program_record),
+          program_record_path(conn, :update, program_record),
           program_record: @invalid_attrs
         )
 
@@ -88,17 +93,17 @@ defmodule KalturaAdminWeb.ProgramRecordControllerTest do
     setup [:create_program_record]
 
     test "deletes chosen program_record", %{conn: conn, program_record: program_record} do
-      conn = delete(conn, Routes.program_record_path(conn, :delete, program_record))
-      assert redirected_to(conn) == Routes.program_record_path(conn, :index)
+      delete_response = delete(conn, program_record_path(conn, :delete, program_record))
+      assert redirected_to(delete_response) == program_record_path(delete_response, :index)
 
       assert_error_sent(404, fn ->
-        get(conn, Routes.program_record_path(conn, :show, program_record))
+        get(conn, program_record_path(conn, :show, program_record))
       end)
     end
   end
 
   defp create_program_record(_) do
-    program_record = fixture(:program_record)
+    {:ok, program_record} = Factory.insert(:program_record)
     {:ok, program_record: program_record}
   end
 end

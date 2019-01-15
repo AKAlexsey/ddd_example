@@ -10,15 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will halt execution if something goes wrong.
 
-alias KalturaAdmin.{Channel, Repo, User}
-alias CtiKaltura.Seeds
-
-Seeds.channel_urls
-|> Enum.each(fn {channel, url} ->
-  %Channel{}
-  |> Channel.changeset(%{name: channel, url: url})
-  |> Repo.insert!()
-end)
+alias KalturaAdmin.{Repo, User}
 
 %User{}
 |> User.changeset(%{

@@ -1,32 +1,29 @@
 defmodule KalturaAdmin.ServerControllerTest do
   use KalturaAdmin.ConnCase
 
-  alias KalturaAdmin.Servers
-
   @create_attrs %{
     domain_name: "some domain_name",
     healthcheck_enabled: true,
     healthcheck_path: "some healthcheck_path",
-    ip: "some ip",
-    manage_ip: "some manage_ip",
+    ip: Faker.Internet.ip_v4_address(),
+    manage_ip: Faker.Internet.ip_v4_address(),
     manage_port: 42,
     port: 42,
     prefix: "some prefix",
-    status: 42,
-    type: 42,
+    status: :active,
+    type: :edge,
     weight: 42
   }
   @update_attrs %{
     domain_name: "some updated domain_name",
     healthcheck_enabled: false,
     healthcheck_path: "some updated healthcheck_path",
-    ip: "some updated ip",
-    manage_ip: "some updated manage_ip",
+    ip: Faker.Internet.ip_v4_address(),
+    manage_ip: Faker.Internet.ip_v4_address(),
     manage_port: 43,
     port: 43,
-    prefix: "some updated prefix",
-    status: 43,
-    type: 43,
+    status: :active,
+    type: :edge,
     weight: 43
   }
   @invalid_attrs %{
@@ -43,38 +40,39 @@ defmodule KalturaAdmin.ServerControllerTest do
     weight: nil
   }
 
-  def fixture(:server) do
-    {:ok, server} = Servers.create_server(@create_attrs)
-    server
+  setup tags do
+    {:ok, user} = Factory.insert(:admin)
+
+    {:ok, conn: authorize(tags[:conn], user)}
   end
 
   describe "index" do
     test "lists all servers", %{conn: conn} do
-      conn = get(conn, Routes.server_path(conn, :index))
+      conn = get(conn, server_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing Servers"
     end
   end
 
   describe "new server" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, Routes.server_path(conn, :new))
+      conn = get(conn, server_path(conn, :new))
       assert html_response(conn, 200) =~ "New Server"
     end
   end
 
   describe "create server" do
     test "redirects to show when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.server_path(conn, :create), server: @create_attrs)
+      create_response = post(conn, server_path(conn, :create), server: @create_attrs)
 
-      assert %{id: id} = redirected_params(conn)
-      assert redirected_to(conn) == Routes.server_path(conn, :show, id)
+      assert %{id: id} = redirected_params(create_response)
+      assert redirected_to(create_response) == server_path(create_response, :show, id)
 
-      conn = get(conn, Routes.server_path(conn, :show, id))
-      assert html_response(conn, 200) =~ "Show Server"
+      show_response = get(conn, server_path(conn, :show, id))
+      assert html_response(show_response, 200) =~ "Show Server"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.server_path(conn, :create), server: @invalid_attrs)
+      conn = post(conn, server_path(conn, :create), server: @invalid_attrs)
       assert html_response(conn, 200) =~ "New Server"
     end
   end
@@ -83,7 +81,7 @@ defmodule KalturaAdmin.ServerControllerTest do
     setup [:create_server]
 
     test "renders form for editing chosen server", %{conn: conn, server: server} do
-      conn = get(conn, Routes.server_path(conn, :edit, server))
+      conn = get(conn, server_path(conn, :edit, server))
       assert html_response(conn, 200) =~ "Edit Server"
     end
   end
@@ -92,15 +90,15 @@ defmodule KalturaAdmin.ServerControllerTest do
     setup [:create_server]
 
     test "redirects when data is valid", %{conn: conn, server: server} do
-      conn = put(conn, Routes.server_path(conn, :update, server), server: @update_attrs)
-      assert redirected_to(conn) == Routes.server_path(conn, :show, server)
+      update_response = put(conn, server_path(conn, :update, server), server: @update_attrs)
+      assert redirected_to(update_response) == server_path(update_response, :show, server)
 
-      conn = get(conn, Routes.server_path(conn, :show, server))
-      assert html_response(conn, 200) =~ "some updated domain_name"
+      show_response = get(conn, server_path(conn, :show, server))
+      assert html_response(show_response, 200) =~ "some updated domain_name"
     end
 
     test "renders errors when data is invalid", %{conn: conn, server: server} do
-      conn = put(conn, Routes.server_path(conn, :update, server), server: @invalid_attrs)
+      conn = put(conn, server_path(conn, :update, server), server: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit Server"
     end
   end
@@ -109,17 +107,17 @@ defmodule KalturaAdmin.ServerControllerTest do
     setup [:create_server]
 
     test "deletes chosen server", %{conn: conn, server: server} do
-      conn = delete(conn, Routes.server_path(conn, :delete, server))
-      assert redirected_to(conn) == Routes.server_path(conn, :index)
+      delete_response = delete(conn, server_path(conn, :delete, server))
+      assert redirected_to(delete_response) == server_path(delete_response, :index)
 
       assert_error_sent(404, fn ->
-        get(conn, Routes.server_path(conn, :show, server))
+        get(conn, server_path(conn, :show, server))
       end)
     end
   end
 
   defp create_server(_) do
-    server = fixture(:server)
+    {:ok, server} = Factory.insert(:server)
     {:ok, server: server}
   end
 end
