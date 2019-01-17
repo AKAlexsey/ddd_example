@@ -13,7 +13,7 @@ defmodule KalturaAdmin.Protocols.NotifyServerAttrsTest do
     test "For ProgramRecord schema" do
       {:ok, program_record} = Factory.insert(:program_record)
       result = NotifyServerAttrs.get(program_record)
-      assert map_has_keys?(result, [:id, :program_id, :server_id, :status, :codec, :path])
+      assert map_has_keys?(result, [:id, :program_id, :server_id, :status, :protocol, :path])
     end
 
     test "For Region schema" do
@@ -64,6 +64,7 @@ defmodule KalturaAdmin.Protocols.NotifyServerAttrsTest do
                :epg_id,
                :stream_path,
                :status,
+               :protocol,
                :name,
                :code_name,
                :server_group_ids,

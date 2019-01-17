@@ -2,7 +2,7 @@ alias KalturaAdmin.Content.ProgramRecord
 alias KalturaAdmin.Protocols.NotifyServerAttrs
 
 defimpl NotifyServerAttrs, for: ProgramRecord do
-  @permitted_attrs [:id, :program_id, :server_id, :status, :codec, :path]
+  @permitted_attrs [:id, :program_id, :server_id, :status, :protocol, :path]
 
   def get(%ProgramRecord{} = record) do
     record

@@ -4,16 +4,16 @@ defmodule KalturaAdmin.Content.ProgramRecord do
   alias KalturaAdmin.Content.Program
   alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
   alias KalturaAdmin.Servers.Server
-  alias KalturaAdmin.{RecordingStatus, RecordCodec}
+  alias KalturaAdmin.{RecordingStatus, StreamProtocol}
   use DomainModelNotifier, observers: [DomainModelObserver]
 
-  @cast_fields [:status, :codec, :path, :server_id, :program_id]
-  @required_fields [:status, :codec, :path, :server_id, :program_id]
+  @cast_fields [:status, :protocol, :path, :server_id, :program_id]
+  @required_fields [:status, :protocol, :path, :server_id, :program_id]
 
   schema "program_records" do
     field(:path, :string)
     field(:status, RecordingStatus)
-    field(:codec, RecordCodec)
+    field(:protocol, StreamProtocol)
 
     belongs_to(:server, Server)
     belongs_to(:program, Program)

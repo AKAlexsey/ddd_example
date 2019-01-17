@@ -7,7 +7,7 @@ defmodule KalturaAdmin.ProgramRecordFactory do
   @default_attrs %{
     path: "/#{Faker.Lorem.word()}",
     status: :planned,
-    codec: :HLS
+    protocol: :HLS
   }
 
   def build(attrs) do

@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Status</th>
-      <th>Codec</th>
+      <th>Protocol</th>
       <th>Path</th>
 
       <th></th>
@@ -14,7 +14,7 @@
 <%= for program_record <- @program_records do %>
     <tr>
       <td><%= program_record.status %></td>
-      <td><%= program_record.codec %></td>
+      <td><%= program_record.protocol %></td>
       <td><%= program_record.path %></td>
 
       <td>

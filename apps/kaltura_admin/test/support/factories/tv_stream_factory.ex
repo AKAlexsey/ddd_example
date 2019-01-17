@@ -11,6 +11,7 @@ defmodule KalturaAdmin.TvStreamFactory do
     epg_id: Faker.Lorem.word(),
     name: Faker.Lorem.word(),
     status: :active,
+    protocol: :HLS,
     stream_path: "/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
   }
 

@@ -8,8 +8,8 @@
   </li>
 
   <li>
-    <strong>Codec:</strong>
-    <%= @program_record.codec %>
+    <strong>Protocol:</strong>
+    <%= @program_record.protocol %>
   </li>
 
   <li>

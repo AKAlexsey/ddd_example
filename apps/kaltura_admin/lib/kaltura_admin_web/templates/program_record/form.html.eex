@@ -12,9 +12,9 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :codec, class: "control-label" %>
-    <%= select f, :codec, record_codecs(), class: "form-control" %>
-    <%= error_tag f, :codec %>
+    <%= label f, :protocol, class: "control-label" %>
+    <%= select f, :protocol, stream_protocols(), class: "form-control" %>
+    <%= error_tag f, :protocol %>
   </div>
 
   <div class="form-group">

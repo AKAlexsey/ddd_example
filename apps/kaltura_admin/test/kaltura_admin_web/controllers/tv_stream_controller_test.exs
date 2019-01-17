@@ -8,6 +8,7 @@ defmodule KalturaAdminWeb.TvStreamControllerTest do
     epg_id: Faker.Lorem.word(),
     name: Faker.Lorem.word(),
     status: :active,
+    protocol: :HLS,
     stream_path: "/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
   }
   @update_attrs %{
@@ -17,6 +18,7 @@ defmodule KalturaAdminWeb.TvStreamControllerTest do
     epg_id: Faker.Lorem.word(),
     name: Faker.Lorem.word(),
     status: :active,
+    protocol: :HLS,
     stream_path: "/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
   }
   @invalid_attrs %{
@@ -26,6 +28,7 @@ defmodule KalturaAdminWeb.TvStreamControllerTest do
     epg_id: nil,
     name: nil,
     status: nil,
+    protocol: nil,
     stream_path: nil
   }
 

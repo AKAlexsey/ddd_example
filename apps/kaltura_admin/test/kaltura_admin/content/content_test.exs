@@ -15,6 +15,7 @@ defmodule KalturaAdmin.ContentTest do
       epg_id: "some epg_id",
       name: "some name",
       status: :active,
+      protocol: :HLS,
       stream_path: "some stream_path"
     }
     @update_attrs %{
@@ -24,6 +25,7 @@ defmodule KalturaAdmin.ContentTest do
       epg_id: "some updated epg_id",
       name: "some updated name",
       status: :inactive,
+      protocol: :HLS,
       stream_path: "some updated stream_path"
     }
     @invalid_attrs %{
@@ -33,6 +35,7 @@ defmodule KalturaAdmin.ContentTest do
       epg_id: nil,
       name: nil,
       status: nil,
+      protocol: nil,
       stream_path: nil
     }
 
@@ -194,9 +197,9 @@ defmodule KalturaAdmin.ContentTest do
   describe "program_records" do
     alias KalturaAdmin.Content.ProgramRecord
 
-    @valid_attrs %{codec: :HLS, path: "some path", status: :planned}
-    @update_attrs %{codec: :MPD, path: "some updated path", status: :running}
-    @invalid_attrs %{codec: nil, path: nil, status: nil}
+    @valid_attrs %{protocol: :HLS, path: "some path", status: :planned}
+    @update_attrs %{protocol: :MPD, path: "some updated path", status: :running}
+    @invalid_attrs %{protocol: nil, path: nil, status: nil}
 
     def program_record_fixture(attrs \\ %{}) do
       {:ok, program_record} = Factory.insert(:program_record, Enum.into(attrs, @valid_attrs))
@@ -221,7 +224,7 @@ defmodule KalturaAdmin.ContentTest do
         attrs = Map.merge(@valid_attrs, %{server_id: server.id, program_id: program.id})
         assert {:ok, %ProgramRecord{} = program_record} = Content.create_program_record(attrs)
 
-        assert program_record.codec == :HLS
+        assert program_record.protocol == :HLS
         assert program_record.path == "some path"
         assert program_record.status == :planned
 
@@ -245,7 +248,7 @@ defmodule KalturaAdmin.ContentTest do
         assert {:ok, %ProgramRecord{} = program_record} =
                  Content.update_program_record(program_record, attrs)
 
-        assert program_record.codec == :MPD
+        assert program_record.protocol == :MPD
         assert program_record.path == "some updated path"
         assert program_record.status == :running
 

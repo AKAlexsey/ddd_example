@@ -5,6 +5,7 @@
     <tr>
       <th>Stream path</th>
       <th>Status</th>
+      <th>Protocol</th>
       <th>Name</th>
       <th>Code name</th>
       <th>Description</th>
@@ -18,9 +19,10 @@
   <tbody>
 <%= for tv_stream <- @tv_streams do %>
     <tr>
+      <td><%= tv_stream.name %></td>
       <td><%= tv_stream.stream_path %></td>
       <td><%= tv_stream.status %></td>
-      <td><%= tv_stream.name %></td>
+      <td><%= tv_stream.protocol %></td>
       <td><%= tv_stream.code_name %></td>
       <td><%= tv_stream.description %></td>
       <td><%= tv_stream.dvr_enabled %></td>

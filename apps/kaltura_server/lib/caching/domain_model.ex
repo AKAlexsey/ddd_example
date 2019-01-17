@@ -7,6 +7,7 @@ defdatabase DomainModel do
              :epg_id,
              :stream_path,
              :status,
+             :protocol,
              :name,
              :code_name,
              :server_group_ids,
@@ -18,6 +19,7 @@ defdatabase DomainModel do
             epg_id: String.t(),
             stream_path: String.t(),
             status: atom,
+            protocol: atom,
             name: String.t(),
             code_name: String.t(),
             server_group_ids: list(integer),
@@ -93,14 +95,14 @@ defdatabase DomainModel do
           }
   end
 
-  deftable ProgramRecord, [:id, :program_id, :server_id, :status, :codec, :path],
+  deftable ProgramRecord, [:id, :program_id, :server_id, :status, :protocol, :path],
     type: :ordered_set do
     @type t :: %ProgramRecord{
             id: integer,
             program_id: integer,
             server_id: integer,
             status: atom,
-            codec: atom,
+            protocol: atom,
             path: String.t()
           }
   end

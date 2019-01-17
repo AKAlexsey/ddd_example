@@ -3,6 +3,11 @@
 <ul>
 
   <li>
+    <strong>Name:</strong>
+    <%= @tv_stream.name %>
+  </li>
+
+  <li>
     <strong>Stream path:</strong>
     <%= @tv_stream.stream_path %>
   </li>
@@ -13,8 +18,8 @@
   </li>
 
   <li>
-    <strong>Name:</strong>
-    <%= @tv_stream.name %>
+    <strong>Protocol:</strong>
+    <%= @tv_stream.protocol %>
   </li>
 
   <li>
