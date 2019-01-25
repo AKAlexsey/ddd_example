@@ -7,7 +7,7 @@ defmodule KalturaServer.Workers.AfterStartCallback do
 
   @kaltura_admin_public_api Application.get_env(:kaltura_admin, :public_api)[:module]
 
-  def start_link() do
+  def start_link do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 

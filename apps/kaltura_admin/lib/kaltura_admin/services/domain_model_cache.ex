@@ -3,8 +3,8 @@ defmodule KalturaAdmin.Services.DomainModelCache do
   Содержит логику подгрузки моделей данных из базы.
   """
 
-  alias KalturaAdmin.Repo
   alias KalturaAdmin.Protocols.NotifyServerAttrs
+  alias KalturaAdmin.Repo
 
   import Ecto.Query, only: [from: 2]
 

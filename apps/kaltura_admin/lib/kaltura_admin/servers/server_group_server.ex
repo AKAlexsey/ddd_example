@@ -1,4 +1,6 @@
 defmodule KalturaAdmin.Servers.ServerGroupServer do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias KalturaAdmin.Servers.{Server, ServerGroup}

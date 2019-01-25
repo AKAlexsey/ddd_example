@@ -8,4 +8,8 @@ defmodule KalturaServer.DomainModelHandlers.SubnetHandler do
     joined_attributes_and_models: [
       region_id: "Region"
     ]
+
+  def before_write(%{cidr: cidr} = struct) do
+    Map.put(struct, :parsed_cidr, CIDR.parse(cidr))
+  end
 end

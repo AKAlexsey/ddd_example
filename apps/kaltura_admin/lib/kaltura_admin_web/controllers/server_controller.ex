@@ -1,7 +1,7 @@
 defmodule KalturaAdmin.ServerController do
   use KalturaAdminWeb, :controller
 
-  alias KalturaAdmin.{Servers, Repo}
+  alias KalturaAdmin.{Repo, Servers}
   alias KalturaAdmin.Servers.Server
 
   def index(conn, _params) do

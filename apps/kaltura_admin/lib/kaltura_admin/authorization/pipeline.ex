@@ -1,4 +1,6 @@
 defmodule KalturaAdmin.Authorization.Pipeline do
+  @moduledoc false
+
   use Guardian.Plug.Pipeline,
     otp_app: :auth_ex,
     error_handler: KalturaAdmin.Authorization.ErrorHandler,

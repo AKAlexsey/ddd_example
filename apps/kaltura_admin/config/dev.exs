@@ -53,4 +53,4 @@ config :kaltura_admin, KalturaAdmin.Repo,
   password: "postgres",
   database: "kaltura_admin_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 80

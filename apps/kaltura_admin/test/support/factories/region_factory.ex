@@ -1,14 +1,15 @@
 defmodule KalturaAdmin.RegionFactory do
-  alias KalturaAdmin.{Repo, Factory}
+  alias KalturaAdmin.Repo
   alias KalturaAdmin.Area.Region
 
   Faker.start()
 
-  @default_attrs %{
-    name: Faker.Lorem.word(),
-    description: Faker.Lorem.sentence(),
-    status: :active
-  }
+  def default_attrs,
+    do: %{
+      name: Faker.Lorem.word(),
+      description: Faker.Lorem.sentence(),
+      status: :active
+    }
 
   def build(attrs) do
     %Region{}
@@ -16,7 +17,7 @@ defmodule KalturaAdmin.RegionFactory do
   end
 
   defp prepare_attrs(attrs) do
-    @default_attrs
+    default_attrs()
     |> Map.merge(attrs)
   end
 

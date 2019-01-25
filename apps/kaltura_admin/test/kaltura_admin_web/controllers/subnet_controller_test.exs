@@ -1,5 +1,5 @@
 defmodule KalturaAdminWeb.SubnetControllerTest do
-  use KalturaAdmin.ConnCase
+  use KalturaAdmin.ConnCase, async: false
 
   @create_attrs %{cidr: "#{Faker.Internet.ip_v4_address()}/30", name: "Old name"}
   @update_attrs %{cidr: "#{Faker.Internet.ip_v4_address()}/30", name: "New name"}

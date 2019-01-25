@@ -1,7 +1,7 @@
 defmodule KalturaAdmin.SessionController do
   use KalturaAdminWeb, :controller
-  alias KalturaAdmin.Authorization.Guardian, as: GuardImpl
   alias Guardian.Plug, as: GPlug
+  alias KalturaAdmin.Authorization.Guardian, as: GuardImpl
 
   plug(:scrub_params, "session" when action in ~w(create)a)
 

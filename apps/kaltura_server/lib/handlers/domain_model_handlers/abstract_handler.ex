@@ -44,7 +44,22 @@ defmodule KalturaServer.DomainModelHandlers.AbstractHandler do
       defp write_to_table(attrs) do
         @table.__struct__
         |> struct(attrs)
+        |> before_write()
         |> @table.write()
+      end
+
+      @doc """
+      This functions calls right before writing to the mnesia table.
+      Argument is table structure based on passed attributes.
+
+      Could be used for preprocessing data before writing. For example:
+      * Adding calculated attributes;
+      * Preprocessing the attributes before writing;
+      * Some other manipulations with attributes.
+      """
+      @spec before_write(map()) :: map()
+      def before_write(struct) do
+        struct
       end
 
       defp delete_from_table(id) do
@@ -109,6 +124,8 @@ defmodule KalturaServer.DomainModelHandlers.AbstractHandler do
 
       defp notify(model_name, id),
         do: @kaltura_server_public_api.cache_model_record(model_name, id)
+
+      defoverridable before_write: 1
     end
   end
 end

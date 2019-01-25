@@ -1,10 +1,12 @@
 defmodule KalturaAdmin.Content.ProgramRecord do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias KalturaAdmin.Content.Program
-  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
-  alias KalturaAdmin.Servers.Server
+  alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
   alias KalturaAdmin.{RecordingStatus, StreamProtocol}
+  alias KalturaAdmin.Servers.Server
   use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [:status, :protocol, :path, :server_id, :program_id]

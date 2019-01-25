@@ -1,9 +1,11 @@
 defmodule KalturaAdmin.Area.Subnet do
+  @moduledoc false
+
   use Ecto.Schema
   use Observable, :notifier
   import Ecto.Changeset
   alias KalturaAdmin.Area.Region
-  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
+  alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
   use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [:cidr, :region_id, :name]

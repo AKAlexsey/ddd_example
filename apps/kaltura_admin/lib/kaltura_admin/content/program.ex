@@ -1,9 +1,11 @@
 defmodule KalturaAdmin.Content.Program do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias KalturaAdmin.Content.{TvStream, ProgramRecord}
-  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
+  alias KalturaAdmin.Content.{ProgramRecord, TvStream}
+  alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
   use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [:name, :start_datetime, :end_datetime, :epg_id, :tv_stream_id]
