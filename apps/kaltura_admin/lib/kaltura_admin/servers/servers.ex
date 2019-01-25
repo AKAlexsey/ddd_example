@@ -4,16 +4,15 @@ defmodule KalturaAdmin.Servers do
   """
 
   import Ecto.Query, warn: false
+  alias KalturaAdmin.Area.RegionServerGroup
   alias KalturaAdmin.Repo
 
   alias KalturaAdmin.Servers.{
     Server,
-    ServerGroupsTvStream,
     ServerGroupServer,
+    ServerGroupsTvStream,
     StreamingServerGroup
   }
-
-  alias KalturaAdmin.Area.RegionServerGroup
 
   @doc """
   Returns the list of servers.

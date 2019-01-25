@@ -19,9 +19,10 @@ defmodule CtiKaltura.MixProject do
     [
       {:plug_cowboy, "~> 1.0"},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
-      {:faker, "~> 0.11", only: :test},
+      {:faker, "~> 0.11", only: [:dev, :test]},
       # Tools
       {:cidr, ">= 1.1.0"},
+      {:yaml_elixir, "~> 2.1"},
       # Testing
       {:mock, "~> 0.3.0", only: :test}
     ]

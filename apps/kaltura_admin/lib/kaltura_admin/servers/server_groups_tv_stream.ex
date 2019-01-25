@@ -1,4 +1,6 @@
 defmodule KalturaAdmin.Servers.ServerGroupsTvStream do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias KalturaAdmin.Content.TvStream

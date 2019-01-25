@@ -4,16 +4,17 @@ defmodule KalturaAdmin.TvStreamFactory do
 
   Faker.start()
 
-  @default_attrs %{
-    code_name: Faker.Lorem.word(),
-    description: Faker.Lorem.sentence(),
-    dvr_enabled: false,
-    epg_id: Faker.Lorem.word(),
-    name: Faker.Lorem.word(),
-    status: :active,
-    protocol: :HLS,
-    stream_path: "/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
-  }
+  def default_attrs,
+    do: %{
+      code_name: Faker.Lorem.word(),
+      description: Faker.Lorem.sentence(),
+      dvr_enabled: false,
+      epg_id: Faker.Lorem.word(),
+      name: Faker.Lorem.word(),
+      status: :active,
+      protocol: :HLS,
+      stream_path: "/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
+    }
 
   def build(attrs) do
     %TvStream{}
@@ -21,7 +22,7 @@ defmodule KalturaAdmin.TvStreamFactory do
   end
 
   defp prepare_attrs(attrs) do
-    @default_attrs
+    default_attrs()
     |> Map.merge(attrs)
   end
 

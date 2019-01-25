@@ -3,7 +3,7 @@ defmodule KalturaAdmin.Authorization.Service do
   Contains logic for performing authorization
   """
 
-  alias KalturaAdmin.{User, Repo}
+  alias KalturaAdmin.{Repo, User}
   import Comeonin.Argon2, only: [checkpw: 2, dummy_checkpw: 0]
 
   @spec authorize(email :: binary, password :: binary) :: {:ok}

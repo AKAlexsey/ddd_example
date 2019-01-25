@@ -1,8 +1,8 @@
 defmodule KalturaAdmin.ProgramRecordView do
   use KalturaAdminWeb, :view
 
-  alias KalturaAdmin.Servers
   alias KalturaAdmin.Content
+  alias KalturaAdmin.Servers
 
   def dvr_servers do
     # TODO request only DVR servers

@@ -1,9 +1,11 @@
 defmodule KalturaAdmin.Area.Region do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias KalturaAdmin.{ActiveStatus, Area, Repo}
   alias KalturaAdmin.Area.{RegionServerGroup, Subnet}
-  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
+  alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
   alias KalturaAdmin.Servers.ServerGroup
   use DomainModelNotifier, observers: [DomainModelObserver]
 

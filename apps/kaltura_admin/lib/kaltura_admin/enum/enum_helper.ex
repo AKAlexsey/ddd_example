@@ -3,11 +3,11 @@ defmodule KalturaAdmin.EnumHelper do
   Contains repeating functions for using enums
   """
 
-  alias KalturaAdmin.{ServerType, ActiveStatus, RecordingStatus, StreamProtocol}
+  alias KalturaAdmin.{ActiveStatus, RecordingStatus, ServerType, StreamProtocol}
 
-  def server_types, do: enum_for_select(ServerType)
   def active_statuses, do: enum_for_select(ActiveStatus)
   def recording_statuses, do: enum_for_select(RecordingStatus)
+  def server_types, do: enum_for_select(ServerType)
   def stream_protocols, do: enum_for_select(StreamProtocol)
 
   defp enum_for_select(module) do

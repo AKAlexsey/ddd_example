@@ -4,10 +4,11 @@ defmodule KalturaAdmin.SubnetFactory do
 
   Faker.start()
 
-  @default_attrs %{
-    cidr: "#{Faker.Internet.ip_v4_address()}/30",
-    name: Faker.Lorem.word()
-  }
+  def default_attrs,
+    do: %{
+      cidr: "#{Faker.Internet.ip_v4_address()}/30",
+      name: Faker.Lorem.word()
+    }
 
   def build(attrs) do
     %Subnet{}
@@ -15,16 +16,16 @@ defmodule KalturaAdmin.SubnetFactory do
   end
 
   defp prepare_attrs(attrs) do
-    @default_attrs
+    default_attrs()
+    |> Map.merge(attrs)
     |> (fn
-          %{region_id: id} = attrs_map ->
+          %{region_id: _id} = attrs_map ->
             attrs_map
 
           attrs_map ->
             {:ok, %{id: region_id}} = Factory.insert(:region)
             Map.put(attrs_map, :region_id, region_id)
         end).()
-    |> Map.merge(attrs)
   end
 
   def insert(attrs) do

@@ -1,10 +1,12 @@
 defmodule KalturaAdmin.Servers.Server do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
-  alias KalturaAdmin.{ServerType, ActiveStatus, Servers, Repo}
-  alias KalturaAdmin.Servers.{ServerGroup, ServerGroupServer, StreamingServerGroup}
-  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
+  alias KalturaAdmin.{ActiveStatus, Repo, Servers, ServerType}
   alias KalturaAdmin.Content.ProgramRecord
+  alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
+  alias KalturaAdmin.Servers.{ServerGroup, ServerGroupServer, StreamingServerGroup}
   use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [

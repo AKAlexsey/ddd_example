@@ -1,4 +1,6 @@
 defmodule KalturaAdmin.Authorization.Guardian do
+  @moduledoc false
+
   use Guardian, otp_app: :kaltura_admin
 
   alias KalturaAdmin.Repo

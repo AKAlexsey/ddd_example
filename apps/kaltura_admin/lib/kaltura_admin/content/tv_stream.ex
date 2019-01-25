@@ -1,13 +1,24 @@
 defmodule KalturaAdmin.Content.TvStream do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
-  alias KalturaAdmin.Observers.{DomainModelObserver, DomainModelNotifier}
   alias KalturaAdmin.{ActiveStatus, Repo, Servers, StreamProtocol}
-  alias KalturaAdmin.Servers.{ServerGroupsTvStream, ServerGroup}
   alias KalturaAdmin.Content.Program
+  alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
+  alias KalturaAdmin.Servers.{ServerGroup, ServerGroupsTvStream}
   use DomainModelNotifier, observers: [DomainModelObserver]
 
-  @cast_fields [:stream_path, :status, :protocol, :name, :code_name, :description, :dvr_enabled, :epg_id]
+  @cast_fields [
+    :stream_path,
+    :status,
+    :protocol,
+    :name,
+    :code_name,
+    :description,
+    :dvr_enabled,
+    :epg_id
+  ]
   @required_fields [:stream_path, :status, :protocol, :name, :code_name, :dvr_enabled, :epg_id]
 
   @type t :: %__MODULE__{}

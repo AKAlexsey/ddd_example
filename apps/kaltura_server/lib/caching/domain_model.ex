@@ -59,8 +59,14 @@ defdatabase DomainModel do
           }
   end
 
-  deftable Subnet, [:id, :region_id, :cidr, :name], type: :ordered_set do
-    @type t :: %Subnet{id: integer, region_id: integer, cidr: String.t(), name: String.t()}
+  deftable Subnet, [:id, :region_id, :cidr, :parsed_cidr, :name], type: :ordered_set do
+    @type t :: %Subnet{
+            id: integer,
+            region_id: integer,
+            cidr: String.t(),
+            parsed_cidr: any,
+            name: String.t()
+          }
   end
 
   deftable Region, [:id, :name, :status, :subnet_ids, :server_group_ids], type: :ordered_set do
@@ -105,5 +111,19 @@ defdatabase DomainModel do
             protocol: atom,
             path: String.t()
           }
+  end
+
+  # TODO Probably there is some native way to make table struct from mnesia query result.
+  # But i had not found it.
+  def make_table_record(attrs) do
+    list_attrs = Tuple.to_list(attrs)
+    table = hd(list_attrs)
+    values = Enum.slice(list_attrs, 1..-1)
+
+    table.attributes()
+    |> Keyword.keys()
+    |> Enum.zip(values)
+    |> Enum.into(%{})
+    |> table.__struct__()
   end
 end
