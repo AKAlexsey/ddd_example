@@ -1,7 +1,8 @@
-defmodule KalturaServer.RequestProcessing.ResponserTest do
-  use KalturaServer.PlugTestCase, async: false
+defmodule KalturaServer.RequestProcessing.VodResponserTest do
+  Faker.start()
 
-  alias KalturaServer.RequestProcessing.Responser
+  use KalturaServer.PlugTestCase, async: false
+  alias KalturaServer.RequestProcessing.VodResponser
 
   describe "#make_response" do
     setup do
@@ -82,27 +83,24 @@ defmodule KalturaServer.RequestProcessing.ResponserTest do
           weight: 30
         })
 
-      %{id: tv_stream_id, stream_path: stream_path, epg_id: epg_id} = Factory.insert(:tv_stream)
-
       Factory.insert(:server_group, %{
         id: server_group_id,
         region_ids: [region_id],
-        server_ids: [s_id1, s_id2, s_id3, s_id4, s_id5, best_server1_id, best_server2_id],
-        tv_stream_ids: [tv_stream_id]
+        server_ids: [s_id1, s_id2, s_id3, s_id4, s_id5, best_server1_id, best_server2_id]
       })
 
+      vod_path = "#{Faker.Lorem.word()}/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
+
       conn =
-        conn(:get, "/btv/live/hls/#{epg_id}")
+        conn(:get, "/vod/#{vod_path}")
         |> Map.put(:assigns, %{
-          protocol: :hls,
-          type: :live,
-          resource_id: epg_id,
+          vod_path: vod_path,
           ip_address: "123.123.123.123"
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
-      redirect_path_without_port = "http://#{domain_name1}/hls/#{stream_path}"
-      redirect_path_with_port = "http://#{domain_name2}:#{port}/hls/#{stream_path}"
+      redirect_path_without_port = "http://#{domain_name1}/vod/#{vod_path}"
+      redirect_path_with_port = "http://#{domain_name2}:#{port}/vod/#{vod_path}"
 
       {:ok,
        conn: conn,
@@ -115,7 +113,7 @@ defmodule KalturaServer.RequestProcessing.ResponserTest do
       conn: conn,
       redirect_path_with_port: redirect_path
     } do
-      assert {redirect_conn, 302, ""} = Responser.make_response(conn)
+      assert {redirect_conn, 302, ""} = VodResponser.make_response(conn)
 
       assert redirect_conn.resp_headers == [
                {"cache-control", "max-age=0, private, must-revalidate"},
@@ -129,7 +127,7 @@ defmodule KalturaServer.RequestProcessing.ResponserTest do
       port_server_id: port_server_id
     } do
       Amnesia.transaction(fn -> DomainModel.Server.delete(port_server_id) end)
-      assert {redirect_conn, 302, ""} = Responser.make_response(conn)
+      assert {redirect_conn, 302, ""} = VodResponser.make_response(conn)
 
       assert redirect_conn.resp_headers == [
                {"cache-control", "max-age=0, private, must-revalidate"},
@@ -140,11 +138,11 @@ defmodule KalturaServer.RequestProcessing.ResponserTest do
 
   describe "#make_response fail scenarios" do
     setup do
+      vod_path = "#{Faker.Lorem.word()}/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
+
       conn = %Plug.Conn{
         assigns: %{
-          protocol: :hls,
-          type: :live,
-          resource_id: "resource_1234",
+          vod_path: vod_path,
           ip_address: "124.123.123.123"
         },
         remote_ip: {124, 123, 123, 123},
@@ -154,16 +152,15 @@ defmodule KalturaServer.RequestProcessing.ResponserTest do
       {:ok, conn: conn}
     end
 
-    test "Return 500 error if server can not be found", %{conn: conn} do
-      assert {^conn, 500, "Server not found"} = Responser.make_response(conn)
+    test "Return 400 error if passed is not connection", %{
+      conn: %{assigns: assigns}
+    } do
+      invalid_conn = %{assigns: assigns}
+      assert {^invalid_conn, 400, "Request invalid"} = VodResponser.make_response(invalid_conn)
     end
 
-    test "Return 400 error if request type does not match to any function", %{
-      conn: %{assigns: assigns} = conn
-    } do
-      new_assigns = Map.put(assigns, :type, :wrong_type)
-      new_conn = Map.put(conn, :assigns, new_assigns)
-      assert {^new_conn, 400, "Request invalid"} = Responser.make_response(new_conn)
+    test "Return 500 error if server can not be found", %{conn: conn} do
+      assert {^conn, 500, "Server not found"} = VodResponser.make_response(conn)
     end
   end
 end

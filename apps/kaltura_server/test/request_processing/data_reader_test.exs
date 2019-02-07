@@ -8,7 +8,8 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       {:ok,
        ip_address: {123, 123, 123, 123},
        str_ip_address: "123.123.123.123",
-       resource_id: "resource_1234"}
+       resource_id: "resource_1234",
+       vod_path: "onlime/cowex/ru"}
     end
 
     test "set assigns right. request: live, protocol: hls", %{
@@ -19,7 +20,6 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "hls",
-                 type: :live,
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
@@ -34,7 +34,6 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "mpd",
-                 type: :live,
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
@@ -49,7 +48,6 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "mpd_wv",
-                 type: :live,
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
@@ -64,7 +62,6 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "mpd_pr",
-                 type: :live,
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
@@ -79,7 +76,6 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "hls",
-                 type: :catchup,
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
@@ -94,7 +90,6 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "mpd",
-                 type: :catchup,
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
@@ -109,7 +104,6 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "mpd_wv",
-                 type: :catchup,
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
@@ -124,11 +118,23 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "mpd_pr",
-                 type: :catchup,
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
              } = DataReader.call(build_conn(ip_address, "/btv/catchup/mpd_pr/#{res_id}"), %{})
+    end
+
+    test "set assigns right. request: vod", %{
+      ip_address: ip_address,
+      str_ip_address: str_ip_address,
+      vod_path: vod_path
+    } do
+      assert %Plug.Conn{
+               assigns: %{
+                 ip_address: ^str_ip_address,
+                 vod_path: ^vod_path
+               }
+             } = DataReader.call(build_conn(ip_address, "/vod/#{vod_path}"), %{})
     end
 
     test "Return plug assigns if request type is wrong", %{
@@ -139,8 +145,7 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       %Plug.Conn{assigns: response_assigns} =
         DataReader.call(build_conn(ip_address, "/btv/life/hls/#{res_id}"), %{})
 
-      assert %{ip_address: str_ip_address, protocol: "", resource_id: "", type: :""} ==
-               response_assigns
+      assert %{ip_address: str_ip_address} == response_assigns
     end
 
     test "Return plug assigns if request protocol is wrong", %{
@@ -151,8 +156,7 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       %Plug.Conn{assigns: response_assigns} =
         DataReader.call(build_conn(ip_address, "/btv/live/hlss/#{res_id}"), %{})
 
-      assert %{ip_address: str_ip_address, protocol: "", resource_id: "", type: :""} ==
-               response_assigns
+      assert %{ip_address: str_ip_address} == response_assigns
     end
 
     test "Return plug assigns if request resource format is wrong", %{
@@ -162,8 +166,7 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       %Plug.Conn{assigns: response_assigns} =
         DataReader.call(build_conn(ip_address, "/btv/live/hls/asd123!"), %{})
 
-      assert %{ip_address: str_ip_address, protocol: "", resource_id: "", type: :""} ==
-               response_assigns
+      assert %{ip_address: str_ip_address} == response_assigns
     end
   end
 

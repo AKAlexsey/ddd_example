@@ -5,25 +5,34 @@ defmodule KalturaServer.Application do
 
   use Application
 
+  alias KalturaServer.RequestProcessing.MainRouter
+  alias KalturaServer.Workers.AfterStartCallback
+  alias Plug.Cowboy
+
   def start(_type, _args) do
     # List all child processes to be supervised
     children = [
       {
-        KalturaServer.Workers.AfterStartCallback,
-        {KalturaServer.Workers.AfterStartCallback, :start_link, []},
+        AfterStartCallback,
+        {AfterStartCallback, :start_link, []},
         :transient,
         5000,
         :worker,
-        [KalturaServer.Workers.AfterStartCallback]
+        [AfterStartCallback]
       },
-      Plug.Cowboy.child_spec(
+      Cowboy.child_spec(
         scheme: :http,
-        plug: KalturaServer.RequestProcessing.MainRouter,
-        options: [port: 4001]
+        plug: MainRouter,
+        options: [port: main_router_port()]
       )
     ]
 
     opts = [strategy: :one_for_one, name: KalturaServer.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp main_router_port do
+    Application.get_env(:kaltura_server, MainRouter)[:port]
+    |> Keyword.get(Mix.env(), 4001)
   end
 end

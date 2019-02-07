@@ -15,27 +15,30 @@ defmodule KalturaServer.RequestProcessing.DataReader do
   end
 
   def call(%Plug.Conn{remote_ip: remote_ip} = conn, _opts) do
-    {type, protocol, resource_id} = get_path_data(conn)
-
     conn
-    |> assign(:protocol, protocol)
-    |> assign(:type, type)
-    |> assign(:resource_id, resource_id)
+    |> assign_request_data()
     |> assign(:ip_address, string_ip_address(remote_ip))
   end
 
-  defp get_path_data(%Plug.Conn{request_path: "/btv/" <> rest_path}) do
+  defp assign_request_data(%Plug.Conn{request_path: "/btv/" <> rest_path} = conn) do
     case Regex.run(@path_data_regex, rest_path) do
-      [_whole_path, request_type, protocol, resource] ->
-        {String.to_atom(request_type), protocol, resource}
+      [_whole_path, _type, protocol, resource_id] ->
+        conn
+        |> assign(:protocol, protocol)
+        |> assign(:resource_id, resource_id)
 
       _result ->
-        {:"", "", ""}
+        conn
     end
   end
 
-  defp get_path_data(%Plug.Conn{request_path: _}) do
-    {:"", "", ""}
+  defp assign_request_data(%Plug.Conn{request_path: "/vod/" <> vod_path} = conn) do
+    conn
+    |> assign(:vod_path, vod_path)
+  end
+
+  defp assign_request_data(%Plug.Conn{request_path: _} = conn) do
+    conn
   end
 
   defp string_ip_address(ip_address) do

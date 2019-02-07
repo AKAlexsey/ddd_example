@@ -1,17 +1,17 @@
 import http from "k6/http"
-import { getEnvironmentHost, getEnvironmentPort, randomCodec, randomEpg } from './lib/utils.js'
+import { getEnvironmentHost, getEnvironmentPort, randomVodPath } from './lib/utils.js'
 
 const host = getEnvironmentHost();
 const port = getEnvironmentPort();
 
 function sendRequest() {
-    const requestUrl = `http://${host}:${port}/btv/live/${randomCodec()}/${randomEpg()}`;
+    const requestUrl = `http://${host}:${port}/vod/${randomVodPath()}`;
     const response = http.get(requestUrl);
     return response;
 }
 
 // To run test install k6 and simply run its file with appropriate options from the root project folder
-// k6 run --vus 300 --rps 200 --duration 300s load_testing/test_live.js
+// k6 run --vus 300 --rps 200 --duration 300s load_testing/test_vod.js
 // Where:
 // --rps - requests per second number. By specification it must be at most 5000
 // --duration - could be any. Must specify measure - minutes(m) seconds(s). For example 5s, 120s, 1m, 1m30s

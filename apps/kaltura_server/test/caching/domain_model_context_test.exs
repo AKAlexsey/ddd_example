@@ -293,6 +293,106 @@ defmodule KalturaServer.DomainModelContextTest do
     end
   end
 
+  describe "#get_region_server_ids #1 check best server choosing" do
+    setup do
+      server_group1_id = 1
+      server_group2_id = 2
+      server_group3_id = 3
+
+      region1_id = 1
+      region2_id = 2
+      region3_id = 3
+
+      %{id: server1_id} =
+        Factory.insert(:server, %{
+          status: :active,
+          type: :edge,
+          healthcheck_enabled: true,
+          server_group_ids: [server_group1_id]
+        })
+
+      %{id: server2_id} =
+        Factory.insert(:server, %{
+          status: :active,
+          type: :dvr,
+          healthcheck_enabled: true,
+          server_group_ids: [server_group1_id, server_group3_id]
+        })
+
+      %{id: server3_id} =
+        Factory.insert(:server, %{
+          status: :active,
+          type: :edge,
+          healthcheck_enabled: false,
+          server_group_ids: [server_group1_id, server_group3_id]
+        })
+
+      %{id: server4_id} =
+        Factory.insert(:server, %{
+          status: :inactive,
+          type: :edge,
+          healthcheck_enabled: true,
+          server_group_ids: [server_group1_id, server_group2_id, server_group3_id]
+        })
+
+      %{id: server5_id} =
+        Factory.insert(:server, %{
+          status: :active,
+          type: :edge,
+          healthcheck_enabled: true,
+          server_group_ids: [server_group1_id, server_group2_id]
+        })
+
+      Factory.insert(:server_group, %{
+        id: server_group1_id,
+        server_ids: [server1_id, server2_id, server3_id, server4_id, server5_id],
+        region_ids: [region1_id]
+      })
+
+      Factory.insert(:server_group, %{
+        id: server_group2_id,
+        server_ids: [server4_id, server5_id],
+        region_ids: [region2_id, region3_id]
+      })
+
+      Factory.insert(:server_group, %{
+        id: server_group3_id,
+        region_ids: [region3_id]
+      })
+
+      region1 = Factory.insert(:region, %{id: region1_id, server_group_ids: [server_group1_id]})
+      region2 = Factory.insert(:region, %{id: region2_id, server_group_ids: [server_group2_id]})
+      region3 = Factory.insert(:region, %{id: region3_id, server_group_ids: [server_group3_id]})
+
+      {:ok,
+       region1_server_ids: [server1_id, server2_id, server3_id, server4_id, server5_id],
+       region2_server_ids: [server4_id, server5_id],
+       region1: region1,
+       region2: region2,
+       region3: region3}
+    end
+
+    test "Return appropriate server_ids #1", %{
+      region1_server_ids: server_ids,
+      region1: region
+    } do
+      assert server_ids == DomainModelContext.get_region_server_ids(region)
+    end
+
+    test "Return appropriate server_ids #2", %{
+      region2_server_ids: server_ids,
+      region2: region
+    } do
+      assert server_ids == DomainModelContext.get_region_server_ids(region)
+    end
+
+    test "Return [] if region does not have servers", %{
+      region3: region
+    } do
+      assert [] == DomainModelContext.get_region_server_ids(region)
+    end
+  end
+
   describe "#get_appropriate_servers #2 return empty list if appropriate data is missing" do
     test "Return [] if empty list passed as argument" do
       assert [] == DomainModelContext.get_appropriate_servers([])
