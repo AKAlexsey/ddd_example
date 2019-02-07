@@ -54,3 +54,7 @@ config :kaltura_admin, KalturaAdmin.Repo,
   database: "kaltura_admin_dev",
   hostname: "localhost",
   pool_size: 80
+
+if File.exists?("apps/kaltura_admin/config/dev.custom.exs") do
+  import_config("dev.custom.exs")
+end

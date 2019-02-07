@@ -35,7 +35,7 @@ end
 
 {:ok, region_names} =
   YamlElixir.read_from_file(
-    "/home/akurdyukov/RubymineProjects/cti_kaltura/apps/kaltura_admin/priv/repo/seed_data/region_names.yml"
+    "#{File.cwd!}/apps/kaltura_admin/priv/repo/seed_data/region_names.yml"
   )
 
 region_ids =
@@ -46,7 +46,7 @@ region_ids =
 
 {:ok, subnet_cidrs} =
   YamlElixir.read_from_file(
-    "/home/akurdyukov/RubymineProjects/cti_kaltura/apps/kaltura_admin/priv/repo/seed_data/subnet_cidrs.yml"
+    "#{File.cwd!}/apps/kaltura_admin/priv/repo/seed_data/subnet_cidrs.yml"
   )
 
 subnet_ids =
@@ -63,7 +63,7 @@ max_port = 1024
 
 {:ok, server_domains} =
   YamlElixir.read_from_file(
-    "/home/akurdyukov/RubymineProjects/cti_kaltura/apps/kaltura_admin/priv/repo/seed_data/server_domains.yml"
+    "#{File.cwd!}/apps/kaltura_admin/priv/repo/seed_data/server_domains.yml"
   )
 
 server_ids =
@@ -80,7 +80,7 @@ server_ids =
 
 {:ok, tv_stream_data} =
   YamlElixir.read_from_file(
-    "/home/akurdyukov/RubymineProjects/cti_kaltura/apps/kaltura_admin/priv/repo/seed_data/tv_stream_data.yml"
+    "#{File.cwd!}/apps/kaltura_admin/priv/repo/seed_data/tv_stream_data.yml"
   )
 
 tv_stream_ids =

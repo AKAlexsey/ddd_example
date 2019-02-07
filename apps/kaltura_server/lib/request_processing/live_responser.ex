@@ -1,14 +1,6 @@
-defmodule KalturaServer.RequestProcessing.Responser do
+defmodule KalturaServer.RequestProcessing.LiveResponser do
   @moduledoc """
-  Contains logic for processing request.
-
-  It WILL process three types of request:
-  * http://<cti_cdn_domain>/btv/live/<epg_id>
-  * http://<cti_cdn_domain>/btv/catchup/<program_id>
-  * http://<cti_cdn_domain>/vod/<content_provider_domain>
-
-  For NOW implemented
-  * http://<cti_cdn_domain>/btv/live/<epg_id>
+  Contains logic for processing LIVE request.
   """
 
   import Plug.Conn
@@ -16,7 +8,7 @@ defmodule KalturaServer.RequestProcessing.Responser do
   alias KalturaServer.DomainModelContext, as: Context
 
   @spec make_response(Plug.Conn.t()) :: {Plug.Conn.t(), integer, binary}
-  def make_response(%Plug.Conn{assigns: %{type: :live}} = conn) do
+  def make_response(%Plug.Conn{} = conn) do
     {conn, %{}}
     |> put_resource_params()
     |> put_server_domain_data()
@@ -51,7 +43,7 @@ defmodule KalturaServer.RequestProcessing.Responser do
          {%Plug.Conn{assigns: %{ip_address: ip_address}} = conn,
           %{tv_stream_id: tv_stream_id} = data}
        ) do
-    case ClosestEdgeServerService.perform(ip_address, tv_stream_id) do
+    case ClosestEdgeServerService.perform(ip_address, tv_stream_id: tv_stream_id) do
       %{domain_name: domain_name, port: port} ->
         {conn, Map.merge(data, %{domain_name: domain_name, port: port})}
 

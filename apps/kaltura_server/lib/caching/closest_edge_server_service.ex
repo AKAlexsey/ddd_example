@@ -5,7 +5,21 @@ defmodule KalturaServer.ClosestEdgeServerService do
 
   alias KalturaServer.DomainModelContext, as: Context
 
-  def perform(ip_address, tv_stream_id) do
+  def perform(ip_address) do
+    Context.get_subnets_for_ip(ip_address)
+    |> Enum.reduce_while(nil, fn subnet, acc ->
+      subnet
+      |> Context.get_subnet_region()
+      |> Context.get_region_server_ids()
+      |> Context.get_appropriate_servers()
+      |> case do
+        [] -> {:cont, acc}
+        servers -> {:halt, choose_best_server(servers)}
+      end
+    end)
+  end
+
+  def perform(ip_address, tv_stream_id: tv_stream_id) do
     Context.get_subnets_for_ip(ip_address)
     |> Enum.reduce_while(nil, fn subnet, acc ->
       subnet

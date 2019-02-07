@@ -5,7 +5,7 @@ defmodule KalturaServer.RequestProcessing.MainRouter do
 
   use Plug.Router
 
-  alias KalturaServer.RequestProcessing.{DataReader, Responser}
+  alias KalturaServer.RequestProcessing.{DataReader, LiveResponser, VodResponser}
 
   import Plug.Conn, only: [send_resp: 3]
 
@@ -15,7 +15,12 @@ defmodule KalturaServer.RequestProcessing.MainRouter do
   plug(:dispatch)
 
   get "/btv/live/*_rest" do
-    {response_conn, status, body} = Responser.make_response(conn)
+    {response_conn, status, body} = LiveResponser.make_response(conn)
+    send_resp(response_conn, status, body)
+  end
+
+  get "/vod/*_vod_path" do
+    {response_conn, status, body} = VodResponser.make_response(conn)
     send_resp(response_conn, status, body)
   end
 

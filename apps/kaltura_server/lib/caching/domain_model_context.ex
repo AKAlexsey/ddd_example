@@ -97,6 +97,26 @@ defmodule KalturaServer.DomainModelContext do
   def get_appropriate_server_group_ids(nil, _tv_stream_id), do: []
 
   @doc """
+  Get region server groups
+  """
+  @spec get_region_server_ids(map() | nil) :: list(integer) | []
+  def get_region_server_ids(%{server_group_ids: server_group_ids}) do
+    Amnesia.transaction(fn ->
+      :mnesia.select(@server_group_table_name, [
+        {
+          {:_, :"$1", :_, :_, :"$4", :_, :"$6"},
+          [make_in_mnesia_clause(server_group_ids, :"$1")],
+          [:"$4"]
+        }
+      ])
+      |> List.flatten()
+      |> Enum.uniq()
+    end)
+  end
+
+  def get_region_server_ids(nil), do: []
+
+  @doc """
   Request from the mensia servers with given IDs and:
   * type == :edge;
   * status == :active;
