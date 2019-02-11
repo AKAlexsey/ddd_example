@@ -10,12 +10,12 @@ defmodule KalturaAdmin.Services.DomainModelCache do
 
   @caching_models [
     {KalturaAdmin.Area.Region, [:subnets, :server_groups]},
-    {KalturaAdmin.Area.Subnet, []},
-    {KalturaAdmin.Content.Program, [:program_records]},
-    {KalturaAdmin.Content.ProgramRecord, []},
+    {KalturaAdmin.Area.Subnet, [:region]},
+    {KalturaAdmin.Content.Program, [:program_records, :tv_stream]},
+    {KalturaAdmin.Content.ProgramRecord, [:program, :server]},
     {KalturaAdmin.Content.TvStream, [:server_groups, :programs]},
     {KalturaAdmin.Servers.Server, [:server_groups, :streaming_groups, :program_records]},
-    {KalturaAdmin.Servers.ServerGroup, [:servers, :tv_streams]}
+    {KalturaAdmin.Servers.ServerGroup, [:servers, :tv_streams, :regions]}
   ]
 
   @handler Application.get_env(:kaltura_server, :domain_model_handler)
@@ -28,7 +28,7 @@ defmodule KalturaAdmin.Services.DomainModelCache do
       model
       |> Repo.all()
       |> Repo.preload(preloads)
-      |> Enum.each(&cache_record(&1, :refresh))
+      |> Enum.each(&cache_record(&1, :refresh_by_request))
     end)
   end
 
