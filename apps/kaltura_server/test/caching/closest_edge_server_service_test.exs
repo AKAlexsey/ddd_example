@@ -8,7 +8,7 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
     {:ok, tv_stream_id: tv_stream_id}
   end
 
-  describe "#perform/1 fails scenarios" do
+  describe "#perform if TvStream is not given fails scenarios" do
     test "Return nil if no Subnets for given IP" do
       assert is_nil(ClosestEdgeServerService.perform("149.149.149.149"))
     end
@@ -46,7 +46,7 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
     end
   end
 
-  describe "#perform/1 success scenarios" do
+  describe "#perform if TvStream is not given success scenarios" do
     setup do
       subnet_id = 1343
       region_id = 1343
@@ -114,81 +114,20 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
       server_ids: server_ids,
       region_id: region_id
     } do
-      %{id: best_server_id} =
-        best_server =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
-
       Factory.insert(:server_group, %{
         id: server_group_id,
         region_ids: [region_id],
-        server_ids: server_ids ++ [best_server_id],
+        server_ids: server_ids,
         tv_stream_ids: [tv_stream_id]
       })
 
-      assert best_server == ClosestEdgeServerService.perform("197.197.197.197")
+      assert ClosestEdgeServerService.perform("197.197.197.197").id in server_ids
 
-      delete_servers(server_ids ++ [best_server_id])
-    end
-
-    test "Return Random sever if available servers are several", %{
-      server_group_id: server_group_id,
-      tv_stream_id: tv_stream_id,
-      server_ids: server_ids,
-      region_id: region_id
-    } do
-      %{id: best_server1_id} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
-
-      %{id: best_server2_id} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
-
-      %{id: best_server3_id} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
-
-      all_server_ids = server_ids ++ [best_server1_id, best_server2_id, best_server3_id]
-
-      Factory.insert(:server_group, %{
-        id: server_group_id,
-        region_ids: [region_id],
-        server_ids: all_server_ids,
-        tv_stream_ids: [tv_stream_id]
-      })
-
-      assert ClosestEdgeServerService.perform("197.197.197.197").id in [
-               best_server1_id,
-               best_server2_id,
-               best_server3_id
-             ]
-
-      delete_servers(all_server_ids)
+      delete_servers(server_ids)
     end
   end
 
-  describe "#perform/2 fails scenarios" do
+  describe "#perform if TvStream given fails scenarios" do
     test "Return nil if no Subnets for given IP", %{tv_stream_id: tv_stream_id} do
       assert is_nil(
                ClosestEdgeServerService.perform("196.196.196.196", tv_stream_id: tv_stream_id)
@@ -386,7 +325,7 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
     end
   end
 
-  describe "#perform/2 success scenarios" do
+  describe "#perform if TvStream given success scenarios" do
     setup do
       subnet_id = 1342
       region_id = 1342
@@ -454,78 +393,71 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
       server_ids: server_ids,
       region_id: region_id
     } do
-      %{id: best_server_id} =
-        best_server =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
-
       Factory.insert(:server_group, %{
         id: server_group_id,
         region_ids: [region_id],
-        server_ids: server_ids ++ [best_server_id],
+        server_ids: server_ids,
         tv_stream_ids: [tv_stream_id]
       })
 
-      assert best_server ==
-               ClosestEdgeServerService.perform("196.196.196.196", tv_stream_id: tv_stream_id)
+      assert ClosestEdgeServerService.perform("196.196.196.196", tv_stream_id: tv_stream_id).id in server_ids
 
-      delete_servers(server_ids ++ [best_server_id])
+      delete_servers(server_ids)
+    end
+  end
+
+  describe "#sum_weights" do
+    test "Return 0 if no servers given" do
+      assert 0 == ClosestEdgeServerService.sum_weights([])
     end
 
-    test "Return Random sever if available servers are several", %{
-      server_group_id: server_group_id,
-      tv_stream_id: tv_stream_id,
-      server_ids: server_ids,
-      region_id: region_id
-    } do
-      %{id: best_server1_id} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
+    test "Return sum of server weights #1" do
+      server1 = Factory.insert(:server, %{weight: 20})
+      assert 20 == ClosestEdgeServerService.sum_weights([server1])
+    end
 
-      %{id: best_server2_id} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
+    test "Return sum of server weights #2" do
+      server1 = Factory.insert(:server, %{weight: 30})
+      server2 = Factory.insert(:server, %{weight: 15})
+      assert 45 == ClosestEdgeServerService.sum_weights([server1, server2])
+    end
 
-      %{id: best_server3_id} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
+    test "Return sum of server weights #3" do
+      server1 = Factory.insert(:server, %{weight: 30})
+      server2 = Factory.insert(:server, %{weight: 9})
+      server3 = Factory.insert(:server, %{weight: 7})
+      assert 46 == ClosestEdgeServerService.sum_weights([server1, server2, server3])
+    end
+  end
 
-      all_server_ids = server_ids ++ [best_server1_id, best_server2_id, best_server3_id]
+  describe "#choose_server" do
+    test "Return empty map if no servers given" do
+      assert %{} == ClosestEdgeServerService.choose_server([], 20)
+    end
 
-      Factory.insert(:server_group, %{
-        id: server_group_id,
-        region_ids: [region_id],
-        server_ids: all_server_ids,
-        tv_stream_ids: [tv_stream_id]
-      })
+    test "Return empty map if random number is less than zero" do
+      server = Factory.insert(:server, %{weight: 10})
+      assert %{} == ClosestEdgeServerService.choose_server([server], -1)
+    end
 
-      assert ClosestEdgeServerService.perform("196.196.196.196", tv_stream_id: tv_stream_id).id in [
-               best_server1_id,
-               best_server2_id,
-               best_server3_id
-             ]
+    test "Return empty map if random number is zero" do
+      server = Factory.insert(:server, %{weight: 10})
+      assert %{} == ClosestEdgeServerService.choose_server([server], 0)
+    end
 
-      delete_servers(all_server_ids)
+    test "Return server with appropriate weight" do
+      server1 = Factory.insert(:server, %{weight: 10})
+      server2 = Factory.insert(:server, %{weight: 20})
+      server3 = Factory.insert(:server, %{weight: 30})
+      servers_list = [server1, server2, server3]
+      assert server1 == ClosestEdgeServerService.choose_server(servers_list, 1)
+      assert server1 == ClosestEdgeServerService.choose_server(servers_list, 10)
+      assert server2 == ClosestEdgeServerService.choose_server(servers_list, 11)
+      assert server2 == ClosestEdgeServerService.choose_server(servers_list, 15)
+      assert server2 == ClosestEdgeServerService.choose_server(servers_list, 30)
+      assert server3 == ClosestEdgeServerService.choose_server(servers_list, 31)
+      assert server3 == ClosestEdgeServerService.choose_server(servers_list, 55)
+      assert server3 == ClosestEdgeServerService.choose_server(servers_list, 60)
     end
   end
 

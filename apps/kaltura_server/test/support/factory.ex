@@ -8,7 +8,9 @@ defmodule KalturaServer.Factory do
     Server,
     ServerGroup,
     Subnet,
-    TvStream
+    TvStream,
+    Program,
+    ProgramRecord
   }
 
   Faker.start()
@@ -33,6 +35,14 @@ defmodule KalturaServer.Factory do
 
   def insert(:tv_stream, attrs) do
     TvStream.insert(attrs)
+  end
+
+  def insert(:program, attrs) do
+    Program.insert(attrs)
+  end
+
+  def insert(:program_record, attrs) do
+    ProgramRecord.insert(attrs)
   end
 
   def insert(model_name, attrs) do

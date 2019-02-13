@@ -3,7 +3,7 @@ defmodule KalturaServer.DomainModelFactories.TvStream do
 
   use KalturaServer.DomainModelFactories.AbstractFactory, table: DomainModel.TvStream
 
-  def default_region_attrs do
+  def default_attrs do
     epg_id = "#{Faker.Lorem.word()}#{:rand.uniform(100)}"
 
     %{
@@ -28,7 +28,7 @@ defmodule KalturaServer.DomainModelFactories.TvStream do
   end
 
   defp prepare_attrs(attrs) do
-    default_region_attrs()
+    default_attrs()
     |> Map.merge(attrs)
   end
 end

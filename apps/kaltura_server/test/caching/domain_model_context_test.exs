@@ -44,6 +44,57 @@ defmodule KalturaServer.DomainModelContextTest do
     end
   end
 
+  describe "#find_program" do
+    test "Return Program if it exist" do
+      program = Factory.insert(:program)
+      assert program == DomainModelContext.find_program(program.epg_id)
+    end
+
+    test "Return nil if program does not exist" do
+      assert is_nil(DomainModelContext.find_program("p_epg_123412341234"))
+    end
+  end
+
+  describe "#find_program_record" do
+    test "Return ProgramRecord if it exist" do
+      %{id: program_id} = Factory.insert(:program)
+      program_record = Factory.insert(:program_record, %{program_id: program_id, protocol: :MPD})
+      assert program_record == DomainModelContext.find_program_record(program_id, :MPD)
+    end
+
+    test "Return nil if ProgramRecord with given protocol does not exist" do
+      %{id: program_id} = Factory.insert(:program)
+      Factory.insert(:program_record, %{program_id: program_id, protocol: :MPD})
+      assert is_nil(DomainModelContext.find_program_record(program_id, :HLS))
+    end
+
+    test "Return nil if ProgramRecord for given Program does not exist" do
+      %{id: program_id} = Factory.insert(:program)
+      assert is_nil(DomainModelContext.find_program_record(program_id, :HLS))
+    end
+  end
+
+  describe "#find_dvr_server" do
+    test "Return Server if it exist and have appropriate rights" do
+      server = Factory.insert(:server, %{type: :dvr, state: :active})
+      assert server == DomainModelContext.find_dvr_server(server.id)
+    end
+
+    test "Return nil if Server is not DVR" do
+      %{id: server_id} = Factory.insert(:server, %{type: :edge, status: :active})
+      assert is_nil(DomainModelContext.find_dvr_server(server_id))
+    end
+
+    test "Return nil if Server is not Active" do
+      %{id: server_id} = Factory.insert(:server, %{type: :dvr, status: :inactive})
+      assert is_nil(DomainModelContext.find_dvr_server(server_id))
+    end
+
+    test "Return nil if Server does not exist" do
+      assert is_nil(DomainModelContext.find_dvr_server(-1))
+    end
+  end
+
   describe "#get_subnets_for_ip" do
     setup do
       cidr1 = "147.147.147.147/30"
