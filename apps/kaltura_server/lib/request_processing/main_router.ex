@@ -5,7 +5,12 @@ defmodule KalturaServer.RequestProcessing.MainRouter do
 
   use Plug.Router
 
-  alias KalturaServer.RequestProcessing.{DataReader, LiveResponser, VodResponser}
+  alias KalturaServer.RequestProcessing.{
+    CatchupResponser,
+    DataReader,
+    LiveResponser,
+    VodResponser
+  }
 
   import Plug.Conn, only: [send_resp: 3]
 
@@ -16,6 +21,11 @@ defmodule KalturaServer.RequestProcessing.MainRouter do
 
   get "/btv/live/*_rest" do
     {response_conn, status, body} = LiveResponser.make_response(conn)
+    send_resp(response_conn, status, body)
+  end
+
+  get "/btv/catchup/*_rest" do
+    {response_conn, status, body} = CatchupResponser.make_response(conn)
     send_resp(response_conn, status, body)
   end
 

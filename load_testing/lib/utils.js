@@ -42,6 +42,9 @@ export function randomEpg() {
     return `epg_${getRandomNumber(249)}`;
 }
 
+export function randomProgramEpg() {
+    return `p_epg_${getRandomNumber(20)}`;
+}
 
 export function randomVodPath() {
     return `${randomLoremWord()}/${randomLoremWord()}/${randomLoremWord()}`;

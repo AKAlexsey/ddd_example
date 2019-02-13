@@ -9,7 +9,7 @@ defmodule KalturaAdmin.ProgramFactory do
       name: Faker.Lorem.word(),
       start_datetime: ~N[2010-04-17 14:00:00],
       end_datetime: ~N[2010-04-17 14:00:00],
-      epg_id: "program#{:rand.uniform(10)}"
+      epg_id: "p_epg_#{:rand.uniform(10000)}"
     }
 
   def build(attrs) do

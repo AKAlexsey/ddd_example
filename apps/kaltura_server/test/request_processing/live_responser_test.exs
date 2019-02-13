@@ -18,48 +18,6 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
         server_group_ids: [server_group_id]
       })
 
-      %{id: s_id1} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :inactive,
-          type: :edge,
-          healthcheck_enabled: true
-        })
-
-      %{id: s_id2} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
-          healthcheck_enabled: true
-        })
-
-      %{id: s_id3} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: false
-        })
-
-      %{id: s_id4} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 10
-        })
-
-      %{id: s_id5} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 20
-        })
-
       %{domain_name: domain_name1} =
         Factory.insert(:server, %{
           id: best_server1_id,
@@ -87,7 +45,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
       Factory.insert(:server_group, %{
         id: server_group_id,
         region_ids: [region_id],
-        server_ids: [s_id1, s_id2, s_id3, s_id4, s_id5, best_server1_id, best_server2_id],
+        server_ids: [best_server1_id, best_server2_id],
         tv_stream_ids: [tv_stream_id]
       })
 
@@ -112,14 +70,17 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
 
     test "Redirect to right path if appropriate server exist #1", %{
       conn: conn,
-      redirect_path_with_port: redirect_path
+      redirect_path_without_port: redirect_path1,
+      redirect_path_with_port: redirect_path2
     } do
-      assert {redirect_conn, 302, ""} = LiveResponser.make_response(conn)
+      assert {%{
+                resp_headers: [
+                  {"cache-control", "max-age=0, private, must-revalidate"},
+                  {"location", redirect_path}
+                ]
+              }, 302, ""} = LiveResponser.make_response(conn)
 
-      assert redirect_conn.resp_headers == [
-               {"cache-control", "max-age=0, private, must-revalidate"},
-               {"location", redirect_path}
-             ]
+      assert redirect_path in [redirect_path1, redirect_path2]
     end
 
     test "Redirect to right path if appropriate server exist #2", %{

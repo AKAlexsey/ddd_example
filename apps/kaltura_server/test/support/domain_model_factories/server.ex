@@ -3,7 +3,7 @@ defmodule KalturaServer.DomainModelFactories.Server do
 
   use KalturaServer.DomainModelFactories.AbstractFactory, table: DomainModel.Server
 
-  def default_region_attrs do
+  def default_attrs do
     %{
       id: next_table_id(),
       domain_name: Faker.Lorem.word(),
@@ -29,7 +29,7 @@ defmodule KalturaServer.DomainModelFactories.Server do
   end
 
   defp prepare_attrs(attrs) do
-    default_region_attrs()
+    default_attrs()
     |> Map.merge(attrs)
     |> (fn
           %{server_group_ids: []} = write_attrs ->

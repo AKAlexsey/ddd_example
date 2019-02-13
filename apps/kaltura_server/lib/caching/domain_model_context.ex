@@ -6,22 +6,21 @@ defmodule KalturaServer.DomainModelContext do
   require Amnesia
   require Amnesia.Helper
 
-  @tv_stream_table_name :"Elixir.DomainModel.TvStream"
-  @subnet_table_name :"Elixir.DomainModel.Subnet"
-  @region_table_name :"Elixir.DomainModel.Region"
-  @server_group_table_name :"Elixir.DomainModel.ServerGroup"
-  @server_table_name :"Elixir.DomainModel.Server"
-
   @doc """
   Looking for tv_stream by epg_id. If there is no such stream return nil.
   """
   @spec find_tv_stream(binary, atom | binary) :: map() | nil
   def find_tv_stream(epg_id, protocol \\ nil) do
     Amnesia.transaction(fn ->
-      :mnesia.select(@tv_stream_table_name, [
+      :mnesia.select(DomainModel.TvStream, [
         {
           {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9"},
-          [{:andalso, {:==, :"$2", epg_id}, {:==, :"$5", normalize_protocol(protocol)}}],
+          [
+            make_and_mnesia_clause([
+              {:==, :"$2", epg_id},
+              {:==, :"$5", normalize_protocol(protocol)}
+            ])
+          ],
           [:"$$"]
         }
       ])
@@ -43,26 +42,96 @@ defmodule KalturaServer.DomainModelContext do
   end
 
   @doc """
+  Find Program by epg_id or return nil.
+  """
+  @spec find_program(binary) :: map() | nil
+  def find_program(epg_id) do
+    Amnesia.transaction(fn ->
+      :mnesia.select(DomainModel.Program, [
+        {
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5"},
+          [{:==, :"$4", epg_id}],
+          [:"$$"]
+        }
+      ])
+    end)
+    |> get_transaction_result_value()
+    |> make_domain_model_table_result()
+  end
+
+  @doc """
+  Find ProgramRecord by program_id and protocol or return nil.
+  """
+  @spec find_program_record(integer, atom) :: map() | nil
+  def find_program_record(program_id, protocol) do
+    Amnesia.transaction(fn ->
+      :mnesia.select(DomainModel.ProgramRecord, [
+        {
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6"},
+          [
+            make_and_mnesia_clause([
+              {:==, :"$2", program_id},
+              {:==, :"$5", normalize_protocol(protocol)}
+            ])
+          ],
+          [:"$$"]
+        }
+      ])
+    end)
+    |> get_transaction_result_value()
+    |> make_domain_model_table_result()
+  end
+
+  @doc """
+  Find DVR Server by ID or return nil.
+  """
+  @spec find_dvr_server(integer) :: map() | nil
+  def find_dvr_server(server_id) do
+    Amnesia.transaction(fn ->
+      :mnesia.select(DomainModel.Server, [
+        {
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$11",
+           :"$12"},
+          [
+            make_and_mnesia_clause([
+              {:==, :"$1", server_id},
+              {:==, :"$2", :dvr},
+              {:==, :"$6", :active}
+            ])
+          ],
+          [:"$$"]
+        }
+      ])
+    end)
+    |> get_transaction_result_value()
+    |> make_domain_model_table_result()
+  end
+
+  @doc """
   Iterate through all subnets and choose all those matches given IP address.
   """
   @spec get_subnets_for_ip(binary) :: map() | []
   def get_subnets_for_ip(ip_address) do
     Amnesia.transaction(fn ->
-      Amnesia.Table.foldl(@subnet_table_name, [], fn {_, _, _, _, parsed_cidr, _} = subnet, acc ->
-        if(CIDR.match!(parsed_cidr, ip_address), do: acc ++ [subnet], else: acc)
+      Amnesia.Table.foldl(DomainModel.Subnet, [], fn {_, _, _, _, parsed_cidr, _} = subnet, acc ->
+        concat_subnet_if_it_matches(parsed_cidr, ip_address, acc, subnet)
       end)
     end)
     |> Enum.sort_by(fn {_, _, _, _, parsed_cidr, _} -> -1 * parsed_cidr.mask end)
     |> Enum.map(fn attrs -> DomainModel.make_table_record(attrs) end)
   end
 
+  defp concat_subnet_if_it_matches(parsed_cidr, ip_address, acc, subnet) do
+    if(CIDR.match!(parsed_cidr, ip_address), do: acc ++ [subnet], else: acc)
+  end
+
   @doc """
   Get subnet region
   """
-  @spec get_subnet_region(map()) :: map()
+  @spec get_subnet_region(map()) :: map() | nil
   def get_subnet_region(%{region_id: region_id}) do
     Amnesia.transaction(fn ->
-      :mnesia.select(@region_table_name, [
+      :mnesia.select(DomainModel.Region, [
         {
           {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5"},
           [{:==, :"$1", region_id}],
@@ -80,7 +149,7 @@ defmodule KalturaServer.DomainModelContext do
   @spec get_appropriate_server_group_ids(map() | nil, integer) :: list(integer) | []
   def get_appropriate_server_group_ids(%{server_group_ids: server_group_ids}, tv_stream_id) do
     Amnesia.transaction(fn ->
-      :mnesia.select(@server_group_table_name, [
+      :mnesia.select(DomainModel.ServerGroup, [
         {
           {:_, :"$1", :_, :_, :"$4", :_, :"$6"},
           [make_in_mnesia_clause(server_group_ids, :"$1")],
@@ -102,7 +171,7 @@ defmodule KalturaServer.DomainModelContext do
   @spec get_region_server_ids(map() | nil) :: list(integer) | []
   def get_region_server_ids(%{server_group_ids: server_group_ids}) do
     Amnesia.transaction(fn ->
-      :mnesia.select(@server_group_table_name, [
+      :mnesia.select(DomainModel.ServerGroup, [
         {
           {:_, :"$1", :_, :_, :"$4", :_, :"$6"},
           [make_in_mnesia_clause(server_group_ids, :"$1")],
@@ -125,7 +194,7 @@ defmodule KalturaServer.DomainModelContext do
   @spec get_appropriate_servers(list(integer)) :: list(map())
   def get_appropriate_servers(server_ids) do
     Amnesia.transaction(fn ->
-      :mnesia.select(@server_table_name, [
+      :mnesia.select(DomainModel.Server, [
         {
           {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$11",
            :"$12"},
@@ -192,9 +261,14 @@ defmodule KalturaServer.DomainModelContext do
   """
   def make_domain_model_table_result(nil), do: nil
 
-  def make_domain_model_table_result(attrs) do
+  def make_domain_model_table_result(attrs) when is_list(attrs) do
     attrs
     |> List.to_tuple()
+    |> make_domain_model_table_result()
+  end
+
+  def make_domain_model_table_result(attrs) when is_tuple(attrs) do
+    attrs
     |> DomainModel.make_table_record()
   end
 end

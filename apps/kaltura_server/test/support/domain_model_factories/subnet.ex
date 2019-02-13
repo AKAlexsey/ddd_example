@@ -3,7 +3,7 @@ defmodule KalturaServer.DomainModelFactories.Subnet do
 
   use KalturaServer.DomainModelFactories.AbstractFactory, table: DomainModel.Subnet
 
-  def default_region_attrs do
+  def default_attrs do
     %{
       id: next_table_id(),
       name: Faker.Lorem.word(),
@@ -21,7 +21,7 @@ defmodule KalturaServer.DomainModelFactories.Subnet do
   end
 
   defp prepare_attrs(attrs) do
-    default_region_attrs()
+    default_attrs()
     |> Map.merge(attrs)
     |> (fn %{cidr: cidr} = write_attrs -> Map.put(write_attrs, :parsed_cidr, CIDR.parse(cidr)) end).()
     |> (fn
