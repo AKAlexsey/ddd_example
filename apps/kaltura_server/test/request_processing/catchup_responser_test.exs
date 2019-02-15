@@ -1,13 +1,13 @@
 defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
-  use KalturaServer.PlugTestCase, async: false
+  use KalturaServer.PlugTestCase
 
   alias KalturaServer.RequestProcessing.CatchupResponser
 
   describe "#make_response" do
     setup do
-      subnet_id = 17476
-      region_id = 17476
-      server_group_id = 17476
+      subnet_id = 777
+      region_id = 777
+      server_group_id = 777
       Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
 
       Factory.insert(:region, %{
@@ -148,7 +148,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
         assigns: %{
           protocol: :hls,
           resource_id: "p_epg_1234",
-          ip_address: "124.123.123.123"
+          ip_address: "123.123.123.123"
         },
         remote_ip: {124, 123, 123, 123},
         request_path: "/btv/catchup/hls/resource_1234"

@@ -11,13 +11,13 @@ function sendVodRequest() {
 }
 
 function sendLiveRequest() {
-    const requestUrl = `http://${host}:${port}/btv/live/${randomCodec()}/${randomEpg()}`;
+    const requestUrl = `http://${host}:${port}/btv/live/${randomCodec()}/${randomEpg(249)}`;
     const response = http.get(requestUrl);
     return response;
 }
 
 function sendCatchupRequest() {
-    const requestUrl = `http://${host}:${port}/btv/catchup/${randomCodec()}/${randomProgramEpg()}`;
+    const requestUrl = `http://${host}:${port}/btv/catchup/${randomCodec()}/${randomProgramEpg(20)}`;
     const response = http.get(requestUrl);
     return response;
 }

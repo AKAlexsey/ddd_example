@@ -38,12 +38,12 @@ export function randomLoremWord() {
     return randomArrayElement(LOREM_WORDS)
 }
 
-export function randomEpg() {
-    return `epg_${getRandomNumber(249)}`;
+export function randomEpg(maxNumber) {
+    return `epg_${getRandomNumber(maxNumber)}`;
 }
 
-export function randomProgramEpg() {
-    return `p_epg_${getRandomNumber(20)}`;
+export function randomProgramEpg(maxNumber) {
+    return `p_epg_${getRandomNumber(maxNumber)}`;
 }
 
 export function randomVodPath() {

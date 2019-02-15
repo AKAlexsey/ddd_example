@@ -8,9 +8,9 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
 
   describe "#make_response #1 live" do
     setup do
-      subnet_id = 1966
-      region_id = 1966
-      server_group_id = 1966
+      subnet_id = 777
+      region_id = 777
+      server_group_id = 777
       Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
 
       Factory.insert(:region, %{
@@ -105,11 +105,11 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
 
   describe "#make_response #1 catchup" do
     setup do
-      subnet_id = 20660
-      region_id = 20660
-      server_group_id = 20660
-      edge_server1_id = 20660
-      edge_server2_id = 20660
+      subnet_id = 777
+      region_id = 777
+      server_group_id = 777
+      edge_server1_id = 777
+      edge_server2_id = 777
       Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
 
       Factory.insert(:region, %{
@@ -140,7 +140,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
           weight: 30
         })
 
-      %{id: dvr_server1_id, prefix: dvr_prefix1, domain_name: domain_name3} =
+      %{id: dvr_server1_id, prefix: dvr_prefix1} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
           status: :active,
@@ -148,7 +148,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
           healthcheck_enabled: true
         })
 
-      %{id: dvr_server2_id, prefix: dvr_prefix2, domain_name: domain_name4} =
+      %{id: dvr_server2_id, prefix: dvr_prefix2} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
           status: :active,
@@ -164,7 +164,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
         server_ids: [edge_server1_id, edge_server2_id, dvr_server1_id, dvr_server2_id]
       })
 
-      %{id: program_record1_id, path: hls_path} =
+      %{path: hls_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server1_id,
           program_id: program_id,
@@ -172,7 +172,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
           status: :completed
         })
 
-      %{id: program_record2_id, path: mpd_path} =
+      %{path: mpd_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server2_id,
           program_id: program_id,
@@ -217,12 +217,9 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       }
     end
 
-    # TODO причина падения не яссная тесты плавают как моряк. Возможно починится само после разделения на на окружения.
     test "Redirect to right path if program record with given protocol exist #1", %{
       hls_conn: conn,
-      hls_paths: redirect_paths,
-      record_ids: record_ids,
-      server_ids: server_ids
+      hls_paths: redirect_paths
     } do
       assert %{
                status: 302,
@@ -237,9 +234,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
 
     test "Redirect to right path if program record with given protocol exist #2", %{
       mpd_conn: conn,
-      mpd_paths: redirect_paths,
-      record_ids: record_ids,
-      server_ids: server_ids
+      mpd_paths: redirect_paths
     } do
       assert %{
                status: 302,
@@ -255,10 +250,10 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
 
   describe "#make_response #1 vod" do
     setup do
-      subnet_id = 2166
-      region_id = 2166
-      server_group_id = 2166
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "143.143.143.143/29", region_id: region_id})
+      subnet_id = 777
+      region_id = 777
+      server_group_id = 777
+      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
 
       Factory.insert(:region, %{
         id: region_id,
@@ -296,10 +291,10 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
 
       conn =
         conn(:get, "/vod/#{vod_path}")
-        |> Map.put(:remote_ip, {143, 143, 143, 143})
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
         |> Map.put(:assigns, %{
           vod_path: vod_path,
-          ip_address: "143.143.143.143"
+          ip_address: "123.123.123.123"
         })
 
       redirect_path_without_port = "http://#{domain_name1}/vod/#{vod_path}"

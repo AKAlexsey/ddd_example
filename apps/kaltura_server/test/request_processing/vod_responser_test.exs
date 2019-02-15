@@ -1,16 +1,16 @@
 defmodule KalturaServer.RequestProcessing.VodResponserTest do
   Faker.start()
 
-  use KalturaServer.PlugTestCase, async: false
+  use KalturaServer.PlugTestCase
   alias KalturaServer.RequestProcessing.VodResponser
 
   describe "#make_response" do
     setup do
-      subnet_id = 1756
-      region_id = 1756
-      server_group_id = 1756
-      server1_id = 1755
-      server2_id = 1756
+      subnet_id = 777
+      region_id = 777
+      server_group_id = 777
+      server1_id = 778
+      server2_id = 777
       Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
 
       Factory.insert(:region, %{

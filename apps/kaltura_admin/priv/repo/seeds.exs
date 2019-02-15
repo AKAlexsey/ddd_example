@@ -10,7 +10,7 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will halt execution if something goes wrong.
 
-alias KalturaAdmin.{Repo, User, Factory, Servers}
+alias KalturaAdmin.{Repo, User, Factory}
 
 Faker.start()
 
@@ -47,15 +47,14 @@ region_ids =
     "#{File.cwd!()}/apps/kaltura_admin/priv/repo/seed_data/subnet_cidrs.yml"
   )
 
-subnet_ids =
-  subnet_cidrs
-  |> Map.get("subnet_cidrs")
-  |> Enum.with_index()
-  |> Enum.map(fn {cidr, index} ->
-    region_id = Enum.at(region_ids, div(index, 20))
-    Factory.insert(:subnet, %{cidr: cidr, region_id: region_id})
-  end)
-  |> get_ids.()
+subnet_cidrs
+|> Map.get("subnet_cidrs")
+|> Enum.with_index()
+|> Enum.map(fn {cidr, index} ->
+  region_id = Enum.at(region_ids, div(index, 20))
+  Factory.insert(:subnet, %{cidr: cidr, region_id: region_id})
+end)
+|> get_ids.()
 
 max_port = 1024
 
@@ -124,8 +123,6 @@ program_ids =
     Factory.insert(:program, %{name: program_name, epg_id: "p_epg_#{index}"})
   end)
   |> get_ids.()
-
-region_stream = Stream.cycle(region_ids)
 
 random_stream_function = fn collection, batch_size ->
   cycle =

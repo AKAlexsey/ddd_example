@@ -31,7 +31,7 @@ mix amnesia.create -d DomainModel --disk
 
 ```elixir
 mix amnesia.drop -d DomainModel
-mix amnesia.create -d DomainModel --disk
+mix amnesia.create -d DomainModel --memory
 ```
 
 

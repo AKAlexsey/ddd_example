@@ -5,7 +5,7 @@ const host = getEnvironmentHost();
 const port = getEnvironmentPort();
 
 function sendRequest() {
-    const requestUrl = `http://${host}:${port}/btv/live/${randomCodec()}/${randomEpg()}`;
+    const requestUrl = `http://${host}:${port}/btv/live/${randomCodec()}/${randomEpg(249)}`;
     const response = http.get(requestUrl);
     return response;
 }

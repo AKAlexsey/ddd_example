@@ -5,7 +5,7 @@ const host = getEnvironmentHost();
 const port = getEnvironmentPort();
 
 function sendRequest() {
-    const requestUrl = `http://${host}:${port}/btv/catchup/${randomCodec()}/${randomProgramEpg()}`;
+    const requestUrl = `http://${host}:${port}/btv/catchup/${randomCodec()}/${randomProgramEpg(20)}`;
     const response = http.get(requestUrl);
     return response;
 }

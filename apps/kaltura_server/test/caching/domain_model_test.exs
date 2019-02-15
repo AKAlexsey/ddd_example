@@ -1,5 +1,5 @@
 defmodule KalturaServer.DomainModelTest do
-  use KalturaServer.TestCase, async: false
+  use KalturaServer.TestCase
 
   describe "#make_table_record" do
     setup do
