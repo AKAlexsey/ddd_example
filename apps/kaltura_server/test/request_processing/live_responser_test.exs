@@ -1,15 +1,15 @@
 defmodule KalturaServer.RequestProcessing.LiveResponserTest do
-  use KalturaServer.PlugTestCase, async: false
+  use KalturaServer.PlugTestCase
 
   alias KalturaServer.RequestProcessing.LiveResponser
 
   describe "#make_response" do
     setup do
-      subnet_id = 1756
-      region_id = 1756
-      server_group_id = 1756
-      best_server1_id = 1755
-      best_server2_id = 1756
+      subnet_id = 777
+      region_id = 777
+      server_group_id = 777
+      best_server1_id = 778
+      best_server2_id = 777
       Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
 
       Factory.insert(:region, %{
@@ -104,7 +104,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
         assigns: %{
           protocol: :hls,
           resource_id: "resource_1234",
-          ip_address: "124.123.123.123"
+          ip_address: "123.123.123.123"
         },
         remote_ip: {124, 123, 123, 123},
         request_path: "/btv/live/hls/resource_1234"

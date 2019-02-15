@@ -1,5 +1,5 @@
 defmodule KalturaServer.DomainModelContextTest do
-  use KalturaServer.TestCase, async: false
+  use KalturaServer.TestCase
 
   alias KalturaServer.DomainModelContext
   alias DomainModel.TvStream
@@ -288,7 +288,7 @@ defmodule KalturaServer.DomainModelContextTest do
     end
 
     test "Return [] if Region does not have Servers", %{tv_stream_id: tv_stream_id} do
-      server_group_id = 1532
+      server_group_id = 777
 
       region =
         Factory.insert(:region, %{
@@ -302,7 +302,7 @@ defmodule KalturaServer.DomainModelContextTest do
     end
 
     test "Return [] if Region does not have valid Servers", %{tv_stream_id: tv_stream_id} do
-      server_group_id = 1532
+      server_group_id = 777
 
       region =
         Factory.insert(:region, %{

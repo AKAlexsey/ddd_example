@@ -1,5 +1,5 @@
 defmodule KalturaServer.RequestProcessing.DataReaderTest do
-  use KalturaServer.PlugTestCase, async: false
+  use KalturaServer.PlugTestCase
 
   alias KalturaServer.RequestProcessing.DataReader
 
