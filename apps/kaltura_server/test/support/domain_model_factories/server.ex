@@ -15,7 +15,6 @@ defmodule KalturaServer.DomainModelFactories.Server do
       type: :edge,
       weight: 5,
       server_group_ids: [],
-      streaming_server_group_ids: [],
       program_record_ids: []
     }
   end

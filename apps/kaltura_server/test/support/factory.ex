@@ -8,6 +8,7 @@ defmodule KalturaServer.Factory do
     Server,
     ServerGroup,
     Subnet,
+    LinearChannel,
     TvStream,
     Program,
     ProgramRecord
@@ -31,6 +32,10 @@ defmodule KalturaServer.Factory do
 
   def insert(:subnet, attrs) do
     Subnet.insert(attrs)
+  end
+
+  def insert(:linear_channel, attrs) do
+    LinearChannel.insert(attrs)
   end
 
   def insert(:tv_stream, attrs) do

@@ -13,12 +13,6 @@ defmodule KalturaAdmin.ServerView do
     Servers.server_groups_ids_for_server(server_id)
   end
 
-  def selected_streaming_server_groups(nil), do: []
-
-  def selected_streaming_server_groups(server_id) do
-    Servers.streaming_server_groups_ids_for_server(server_id)
-  end
-
   def decorate_server_groups(server_groups) do
     server_groups
     |> Enum.map(fn %{name: name} -> name end)

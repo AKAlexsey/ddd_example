@@ -15,7 +15,6 @@
       <th>Healthcheck enabled</th>
       <th>Healthcheck path</th>
       <th>ServerGroups</th>
-      <th>Streaming ServerGroups</th>
 
       <th></th>
     </tr>
@@ -35,7 +34,6 @@
       <td><%= server.healthcheck_enabled %></td>
       <td><%= server.healthcheck_path %></td>
       <td><%= decorate_server_groups(server.server_groups) %></td>
-      <td><%= decorate_server_groups(server.streaming_groups) %></td>
 
       <td>
         <span><%= link "Show", to: server_path(@conn, :show, server), class: "btn btn-default btn-xs" %></span>

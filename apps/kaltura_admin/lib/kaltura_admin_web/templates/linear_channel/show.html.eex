@@ -1,0 +1,37 @@
+<h1>Show Linear channel</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @linear_channel.name %>
+  </li>
+
+  <li>
+    <strong>Code name:</strong>
+    <%= @linear_channel.code_name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @linear_channel.description %>
+  </li>
+
+  <li>
+    <strong>Dvr enabled:</strong>
+    <%= @linear_channel.dvr_enabled %>
+  </li>
+
+  <li>
+    <strong>Epg:</strong>
+    <%= @linear_channel.epg_id %>
+  </li>
+
+  <li>
+    <strong>ServerGroups:</strong>
+    <%= server_group_name(@linear_channel) %>
+  </li>
+</ul>
+
+<span><%= link "Edit", to: linear_channel_path(@conn, :edit, @linear_channel) %></span>
+<span><%= link "Back", to: linear_channel_path(@conn, :index) %></span>

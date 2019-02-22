@@ -24,7 +24,7 @@
 
   <li>
     <strong>TvStreams:</strong>
-    <%= decorate_collection(@server_group.tv_streams) %>
+    <%= decorate_collection(@server_group.linear_channels) %>
   </li>
 
   <li>

@@ -4,11 +4,11 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
   alias KalturaServer.ClosestEdgeServerService
 
   setup do
-    %{id: tv_stream_id} = Factory.insert(:tv_stream)
-    {:ok, tv_stream_id: tv_stream_id}
+    %{id: linear_channel_id} = Factory.insert(:linear_channel)
+    {:ok, linear_channel_id: linear_channel_id}
   end
 
-  describe "#perform if TvStream is not given fails scenarios" do
+  describe "#perform if LinearChannel is not given fails scenarios" do
     test "Return nil if no Subnets for given IP" do
       assert is_nil(ClosestEdgeServerService.perform("123.123.123.123"))
     end
@@ -37,7 +37,7 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
     end
   end
 
-  describe "#perform if TvStream is not given success scenarios" do
+  describe "#perform if LinearChannel is not given success scenarios" do
     setup do
       subnet_id = 777
       region_id = 777
@@ -101,7 +101,7 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
 
     test "Return Server if they exist", %{
       server_group_id: server_group_id,
-      tv_stream_id: tv_stream_id,
+      linear_channel_id: linear_channel_id,
       server_ids: server_ids,
       region_id: region_id
     } do
@@ -109,40 +109,51 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
         id: server_group_id,
         region_ids: [region_id],
         server_ids: server_ids,
-        tv_stream_ids: [tv_stream_id]
+        linear_channel_ids: [linear_channel_id]
       })
 
       assert ClosestEdgeServerService.perform("123.123.123.123").id in server_ids
     end
   end
 
-  describe "#perform if TvStream given fails scenarios" do
-    test "Return nil if no Subnets for given IP", %{tv_stream_id: tv_stream_id} do
+  describe "#perform if LinearChannel given fails scenarios" do
+    test "Return nil if no Subnets for given IP", %{linear_channel_id: linear_channel_id} do
       assert is_nil(
-               ClosestEdgeServerService.perform("123.123.123.123", tv_stream_id: tv_stream_id)
+               ClosestEdgeServerService.perform(
+                 "123.123.123.123",
+                 linear_channel_id: linear_channel_id
+               )
              )
     end
 
-    test "Return nil if Subnet does not have Region", %{tv_stream_id: tv_stream_id} do
+    test "Return nil if Subnet does not have Region", %{linear_channel_id: linear_channel_id} do
       Factory.insert(:subnet, %{cidr: "123.123.123.123/29"})
 
       assert is_nil(
-               ClosestEdgeServerService.perform("123.123.123.123", tv_stream_id: tv_stream_id)
+               ClosestEdgeServerService.perform(
+                 "123.123.123.123",
+                 linear_channel_id: linear_channel_id
+               )
              )
     end
 
-    test "Return nil if Region does not have ServerGroups", %{tv_stream_id: tv_stream_id} do
+    test "Return nil if Region does not have ServerGroups", %{
+      linear_channel_id: linear_channel_id
+    } do
       subnet_id = 777
       region_id = 777
       Factory.insert(:region, %{id: region_id, subnet_ids: [subnet_id]})
       Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
 
       assert is_nil(
-               ClosestEdgeServerService.perform("123.123.123.123", tv_stream_id: tv_stream_id)
+               ClosestEdgeServerService.perform(
+                 "123.123.123.123",
+                 linear_channel_id: linear_channel_id
+               )
              )
     end
 
-    test "Return nil if Region does not have Servers", %{tv_stream_id: tv_stream_id} do
+    test "Return nil if Region does not have Servers", %{linear_channel_id: linear_channel_id} do
       subnet_id = 777
       region_id = 777
       server_group_id = 777
@@ -157,11 +168,16 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
       Factory.insert(:server_group, %{id: server_group_id, region_ids: [region_id]})
 
       assert is_nil(
-               ClosestEdgeServerService.perform("123.123.123.123", tv_stream_id: tv_stream_id)
+               ClosestEdgeServerService.perform(
+                 "123.123.123.123",
+                 linear_channel_id: linear_channel_id
+               )
              )
     end
 
-    test "Return nil if Server does not belong to TvStream", %{tv_stream_id: tv_stream_id} do
+    test "Return nil if Server does not belong to LinearChannel", %{
+      linear_channel_id: linear_channel_id
+    } do
       subnet_id = 777
       region_id = 777
       server_group_id = 777
@@ -231,11 +247,14 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
       })
 
       assert is_nil(
-               ClosestEdgeServerService.perform("123.123.123.123", tv_stream_id: tv_stream_id)
+               ClosestEdgeServerService.perform(
+                 "123.123.123.123",
+                 linear_channel_id: linear_channel_id
+               )
              )
     end
 
-    test "Return most appropriate Server if they exist", %{tv_stream_id: tv_stream_id} do
+    test "Return most appropriate Server if they exist", %{linear_channel_id: linear_channel_id} do
       subnet_id = 777
       region_id = 777
       server_group_id = 777
@@ -305,12 +324,15 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
       })
 
       assert is_nil(
-               ClosestEdgeServerService.perform("123.123.123.123", tv_stream_id: tv_stream_id)
+               ClosestEdgeServerService.perform(
+                 "123.123.123.123",
+                 linear_channel_id: linear_channel_id
+               )
              )
     end
   end
 
-  describe "#perform if TvStream given success scenarios" do
+  describe "#perform if LinearChannel given success scenarios" do
     setup do
       subnet_id = 777
       region_id = 777
@@ -374,7 +396,7 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
 
     test "Return Server if they exist", %{
       server_group_id: server_group_id,
-      tv_stream_id: tv_stream_id,
+      linear_channel_id: linear_channel_id,
       server_ids: server_ids,
       region_id: region_id
     } do
@@ -382,10 +404,13 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
         id: server_group_id,
         region_ids: [region_id],
         server_ids: server_ids,
-        tv_stream_ids: [tv_stream_id]
+        linear_channel_ids: [linear_channel_id]
       })
 
-      assert ClosestEdgeServerService.perform("123.123.123.123", tv_stream_id: tv_stream_id).id in server_ids
+      assert ClosestEdgeServerService.perform(
+               "123.123.123.123",
+               linear_channel_id: linear_channel_id
+             ).id in server_ids
     end
   end
 

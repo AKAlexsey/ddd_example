@@ -6,7 +6,7 @@ defmodule KalturaAdmin.Servers.Server do
   alias KalturaAdmin.{ActiveStatus, Repo, Servers, ServerType}
   alias KalturaAdmin.Content.ProgramRecord
   alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
-  alias KalturaAdmin.Servers.{ServerGroup, ServerGroupServer, StreamingServerGroup}
+  alias KalturaAdmin.Servers.{ServerGroup, ServerGroupServer}
   use DomainModelNotifier, observers: [DomainModelObserver]
 
   @cast_fields [
@@ -46,15 +46,6 @@ defmodule KalturaAdmin.Servers.Server do
 
     many_to_many(:server_groups, ServerGroup, join_through: ServerGroupServer)
 
-    has_many(
-      :streaming_server_groups,
-      StreamingServerGroup,
-      foreign_key: :server_id,
-      on_replace: :delete
-    )
-
-    many_to_many(:streaming_groups, ServerGroup, join_through: StreamingServerGroup)
-
     has_many(:program_records, ProgramRecord, foreign_key: :server_id)
 
     timestamps()
@@ -64,9 +55,7 @@ defmodule KalturaAdmin.Servers.Server do
   def changeset(%{id: id} = server, attrs) do
     server
     |> Repo.preload(:server_group_servers)
-    |> Repo.preload(:streaming_server_groups)
     |> cast_server_groups(id, attrs)
-    |> cast_streaming_groups(id, attrs)
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
   end
@@ -88,24 +77,5 @@ defmodule KalturaAdmin.Servers.Server do
       []
     )
     |> cast_assoc(:server_group_servers, with: &ServerGroupServer.server_changeset/2)
-  end
-
-  defp cast_streaming_groups(changeset, id, %{streaming_group_ids: ids}) do
-    perform_casting_cast_streaming_groups(changeset, id, ids)
-  end
-
-  defp cast_streaming_groups(changeset, id, %{"streaming_group_ids" => ids}) do
-    perform_casting_cast_streaming_groups(changeset, id, ids)
-  end
-
-  defp cast_streaming_groups(changeset, _id, _attrs), do: changeset
-
-  defp perform_casting_cast_streaming_groups(changeset, id, ids) do
-    changeset
-    |> cast(
-      %{streaming_server_groups: Servers.make_request_streamin_server_group_params(id, ids)},
-      []
-    )
-    |> cast_assoc(:streaming_server_groups, with: &StreamingServerGroup.server_changeset/2)
   end
 end

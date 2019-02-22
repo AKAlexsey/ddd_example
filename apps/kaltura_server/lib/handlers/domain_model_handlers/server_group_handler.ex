@@ -8,6 +8,6 @@ defmodule KalturaServer.DomainModelHandlers.ServerGroupHandler do
     joined_attributes_and_models: [
       server_ids: "Server",
       region_ids: "Region",
-      tv_stream_ids: "TvStream"
+      linear_channel_ids: "LinearChannel"
     ]
 end

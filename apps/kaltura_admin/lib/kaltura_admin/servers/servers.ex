@@ -9,10 +9,10 @@ defmodule KalturaAdmin.Servers do
 
   alias KalturaAdmin.Servers.{
     Server,
-    ServerGroupServer,
-    ServerGroupsTvStream,
-    StreamingServerGroup
+    ServerGroupServer
   }
+
+  alias KalturaAdmin.Content.LinearChannel
 
   @doc """
   Returns the list of servers.
@@ -135,7 +135,7 @@ defmodule KalturaAdmin.Servers do
   ## Examples
 
       iex> get_server_group!(123)
-      %ServerGroup{}tv_stream
+      %ServerGroup{}
 
       iex> get_server_group!(456)
       ** (Ecto.NoResultsError)
@@ -208,16 +208,10 @@ defmodule KalturaAdmin.Servers do
     ServerGroup.changeset(server_group, %{})
   end
 
-  def server_group_ids_for_tv_stream(tv_stream_id) do
-    from(sgts in ServerGroupsTvStream, where: sgts.tv_stream_id == ^tv_stream_id)
+  def linear_channel_ids_for_server_group(server_group_id) do
+    from(lc in LinearChannel, where: lc.server_group_id == ^server_group_id)
     |> Repo.all()
-    |> Enum.map(fn %{server_group_id: server_group_id} -> server_group_id end)
-  end
-
-  def tv_stream_ids_for_server_group(server_group_id) do
-    from(sgts in ServerGroupsTvStream, where: sgts.server_group_id == ^server_group_id)
-    |> Repo.all()
-    |> Enum.map(fn %{tv_stream_id: tv_stream_id} -> tv_stream_id end)
+    |> Enum.map(& &1.id)
   end
 
   def server_ids_for_server_group(server_group_id) do
@@ -232,14 +226,8 @@ defmodule KalturaAdmin.Servers do
     |> Enum.map(fn %{server_group_id: server_group_id} -> server_group_id end)
   end
 
-  def streaming_server_groups_ids_for_server(server_id) do
-    from(sgs in StreamingServerGroup, where: sgs.server_id == ^server_id)
-    |> Repo.all()
-    |> Enum.map(fn %{server_group_id: server_group_id} -> server_group_id end)
-  end
-
-  # TODO there is a lot of duplication in make_request_region_params,  make_request_tv_stream_params
-  # make_request_server_group_params, Area.make_request_server_group_params. Remove duplication.
+  # TODO there is a lot of duplication in make_request_region_params,
+  # Area.make_request_server_group_params. Remove duplication.
   def make_request_region_params(nil, region_ids) do
     Enum.map(region_ids, fn reg_id -> %{region_id: reg_id} end)
   end
@@ -258,49 +246,6 @@ defmodule KalturaAdmin.Servers do
     new_rsg_ids = region_ids -- Enum.map(existing_rsg, fn %{region_id: reg_id} -> reg_id end)
 
     existing_rsg ++ make_request_region_params(nil, new_rsg_ids)
-  end
-
-  def make_request_tv_stream_params(nil, tv_stream_ids) do
-    Enum.map(tv_stream_ids, fn stream_id -> %{tv_stream_id: stream_id} end)
-  end
-
-  def make_request_tv_stream_params(server_group_id, tv_stream_ids) do
-    tv_stream_ids = ids_to_integer(tv_stream_ids)
-
-    existing_sgts =
-      from(
-        sgts in ServerGroupsTvStream,
-        where: sgts.server_group_id == ^server_group_id and sgts.tv_stream_id in ^tv_stream_ids
-      )
-      |> Repo.all()
-      |> Enum.map(&Map.from_struct(&1))
-
-    new_sgts_ids =
-      tv_stream_ids -- Enum.map(existing_sgts, fn %{tv_stream_id: stream_id} -> stream_id end)
-
-    existing_sgts ++ make_request_tv_stream_params(nil, new_sgts_ids)
-  end
-
-  def make_request_server_group_params(nil, server_group_ids) do
-    Enum.map(server_group_ids, fn server_group_id -> %{server_group_id: server_group_id} end)
-  end
-
-  def make_request_server_group_params(tv_stream_id, server_group_ids) do
-    server_group_ids = ids_to_integer(server_group_ids)
-
-    existing_sgts =
-      from(
-        sgts in ServerGroupsTvStream,
-        where: sgts.tv_stream_id == ^tv_stream_id and sgts.server_group_id in ^server_group_ids
-      )
-      |> Repo.all()
-      |> Enum.map(&Map.from_struct(&1))
-
-    new_sgts_ids =
-      server_group_ids --
-        Enum.map(existing_sgts, fn %{server_group_id: server_group_id} -> server_group_id end)
-
-    existing_sgts ++ make_request_server_group_params(nil, new_sgts_ids)
   end
 
   def make_request_server_params(nil, server_ids) do
@@ -344,28 +289,6 @@ defmodule KalturaAdmin.Servers do
         Enum.map(existing_sgs, fn %{server_group_id: server_group_id} -> server_group_id end)
 
     existing_sgs ++ make_request_server_group_for_server_params(nil, new_sgs_ids)
-  end
-
-  def make_request_streamin_server_group_params(nil, server_group_ids) do
-    Enum.map(server_group_ids, fn server_group_id -> %{server_group_id: server_group_id} end)
-  end
-
-  def make_request_streamin_server_group_params(server_id, server_group_ids) do
-    server_group_ids = ids_to_integer(server_group_ids)
-
-    existing_sgs =
-      from(
-        sgs in StreamingServerGroup,
-        where: sgs.server_id == ^server_id and sgs.server_group_id in ^server_group_ids
-      )
-      |> Repo.all()
-      |> Enum.map(&Map.from_struct(&1))
-
-    new_sgs_ids =
-      server_group_ids --
-        Enum.map(existing_sgs, fn %{server_group_id: server_group_id} -> server_group_id end)
-
-    existing_sgs ++ make_request_streamin_server_group_params(nil, new_sgs_ids)
   end
 
   defp ids_to_integer(ids) do

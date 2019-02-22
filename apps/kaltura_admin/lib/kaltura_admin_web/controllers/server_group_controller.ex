@@ -5,7 +5,7 @@ defmodule KalturaAdmin.ServerGroupController do
   alias KalturaAdmin.Servers.ServerGroup
 
   def index(conn, _params) do
-    server_groups = Servers.list_server_groups([:regions, :tv_streams, :servers])
+    server_groups = Servers.list_server_groups([:regions, :linear_channels, :servers])
     render(conn, "index.html", server_groups: server_groups, current_user: load_user(conn))
   end
 
@@ -43,7 +43,7 @@ defmodule KalturaAdmin.ServerGroupController do
     server_group =
       id
       |> Servers.get_server_group!()
-      |> Repo.preload([:regions, :tv_streams, :servers])
+      |> Repo.preload([:regions, :linear_channels, :servers])
 
     render(conn, "show.html", server_group: server_group, current_user: load_user(conn))
   end

@@ -6,6 +6,7 @@ defmodule KalturaAdmin.Factory do
 
   alias KalturaAdmin.{
     UserFactory,
+    LinearChannelFactory,
     TvStreamFactory,
     ProgramFactory,
     ProgramRecordFactory,
@@ -24,6 +25,10 @@ defmodule KalturaAdmin.Factory do
 
   defp build_implementation(:admin, attrs) do
     UserFactory.build_admin(attrs)
+  end
+
+  defp build_implementation(:linear_channel, attrs) do
+    LinearChannelFactory.build(attrs)
   end
 
   defp build_implementation(:tv_stream, attrs) do
@@ -63,6 +68,10 @@ defmodule KalturaAdmin.Factory do
 
   defp insert_implementation(:user, attrs) do
     UserFactory.insert(attrs)
+  end
+
+  defp insert_implementation(:linear_channel, attrs) do
+    LinearChannelFactory.insert(attrs)
   end
 
   defp insert_implementation(:tv_stream, attrs) do

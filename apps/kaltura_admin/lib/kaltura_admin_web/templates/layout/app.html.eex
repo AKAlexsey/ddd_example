@@ -35,7 +35,7 @@
               <%= link("Subnets", to: subnet_path(@conn, :index)) %>
             </li>
             <li>
-              <%= link("Tv Streams", to: tv_stream_path(@conn, :index)) %>
+              <%= link("Linear channels", to: linear_channel_path(@conn, :index)) %>
             </li>
             <li>
               <%= link("Programs", to: program_path(@conn, :index)) %>

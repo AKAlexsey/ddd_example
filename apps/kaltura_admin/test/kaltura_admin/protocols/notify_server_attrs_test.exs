@@ -7,7 +7,7 @@ defmodule KalturaAdmin.Protocols.NotifyServerAttrsTest do
     test "For Program schema" do
       {:ok, program} = Factory.insert(:program)
       result = NotifyServerAttrs.get(program)
-      assert map_has_keys?(result, [:id, :name, :tv_stream_id, :epg_id, :program_record_ids])
+      assert map_has_keys?(result, [:id, :name, :linear_channel_id, :epg_id, :program_record_ids])
     end
 
     test "For ProgramRecord schema" do
@@ -37,7 +37,6 @@ defmodule KalturaAdmin.Protocols.NotifyServerAttrsTest do
                :prefix,
                :healthcheck_enabled,
                :server_group_ids,
-               :streaming_server_group_ids,
                :program_record_ids
              ])
     end
@@ -46,7 +45,14 @@ defmodule KalturaAdmin.Protocols.NotifyServerAttrsTest do
       {:ok, server_group} = Factory.insert(:server_group)
       result = NotifyServerAttrs.get(server_group)
 
-      assert map_has_keys?(result, [:id, :name, :status, :server_ids, :region_ids, :tv_stream_ids])
+      assert map_has_keys?(result, [
+               :id,
+               :name,
+               :status,
+               :server_ids,
+               :region_ids,
+               :linear_channel_ids
+             ])
     end
 
     test "For Subnet schema" do
@@ -55,20 +61,18 @@ defmodule KalturaAdmin.Protocols.NotifyServerAttrsTest do
       assert map_has_keys?(result, [:id, :region_id, :cidr, :name])
     end
 
-    test "For TvStream schema" do
-      {:ok, tv_stream} = Factory.insert(:tv_stream)
-      result = NotifyServerAttrs.get(tv_stream)
+    test "For LinearChannel schema" do
+      {:ok, linear_channel} = Factory.insert(:linear_channel)
+      result = NotifyServerAttrs.get(linear_channel)
 
       assert map_has_keys?(result, [
                :id,
                :epg_id,
-               :stream_path,
-               :status,
-               :protocol,
                :name,
                :code_name,
-               :server_group_ids,
-               :program_ids
+               :server_group_id,
+               :program_ids,
+               :tv_stream_ids
              ])
     end
   end

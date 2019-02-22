@@ -11,7 +11,7 @@ defmodule KalturaAdmin.Area.Subnet do
   @cast_fields [:cidr, :region_id, :name]
   @required_fields [:cidr, :region_id]
 
-  schema "subnetss" do
+  schema "subnets" do
     field(:cidr, :string)
     field(:name, :string)
 

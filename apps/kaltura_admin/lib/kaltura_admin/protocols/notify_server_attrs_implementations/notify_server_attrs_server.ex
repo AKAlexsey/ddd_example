@@ -1,6 +1,6 @@
 alias KalturaAdmin.Servers.Server
 alias KalturaAdmin.Protocols.NotifyServerAttrs
-alias KalturaAdmin.Servers.{ServerGroupServer, StreamingServerGroup}
+alias KalturaAdmin.Servers.{ServerGroupServer}
 alias KalturaAdmin.Content.ProgramRecord
 alias KalturaAdmin.Repo
 
@@ -25,7 +25,6 @@ defimpl NotifyServerAttrs, for: Server do
     |> Map.split(@permitted_attrs)
     |> (fn {permitted, _filtered} -> permitted end).()
     |> preload_server_group_ids(record)
-    |> preload_streaming_server_group_ids(record)
     |> preload_program_record_ids(record)
   end
 
@@ -46,25 +45,6 @@ defimpl NotifyServerAttrs, for: Server do
 
     attrs
     |> Map.merge(%{server_group_ids: server_group_ids})
-  end
-
-  defp preload_streaming_server_group_ids(attrs, %{streaming_groups: streaming_groups})
-       when is_list(streaming_groups) do
-    attrs
-    |> Map.merge(%{streaming_server_group_ids: Enum.map(streaming_groups, & &1.id)})
-  end
-
-  defp preload_streaming_server_group_ids(attrs, %{id: server_id}) do
-    streaming_server_group_ids =
-      from(
-        sgs in StreamingServerGroup,
-        select: sgs.server_group_id,
-        where: sgs.server_id == ^server_id
-      )
-      |> Repo.all()
-
-    attrs
-    |> Map.merge(%{streaming_server_group_ids: streaming_server_group_ids})
   end
 
   defp preload_program_record_ids(attrs, %{program_records: program_records})

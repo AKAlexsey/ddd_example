@@ -21,12 +21,12 @@ defmodule KalturaAdmin.ProgramFactory do
     default_attrs()
     |> Map.merge(attrs)
     |> (fn
-          %{tv_stream_id: _id} = attrs_map ->
+          %{linear_channel_id: _id} = attrs_map ->
             attrs_map
 
           attrs_map ->
-            {:ok, %{id: tv_stream_id}} = Factory.insert(:tv_stream)
-            Map.put(attrs_map, :tv_stream_id, tv_stream_id)
+            {:ok, %{id: linear_channel_id}} = Factory.insert(:linear_channel)
+            Map.put(attrs_map, :linear_channel_id, linear_channel_id)
         end).()
   end
 

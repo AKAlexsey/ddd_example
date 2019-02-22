@@ -1,8 +1,8 @@
-defmodule KalturaAdmin.Repo.Migrations.CreateSubnetss do
+defmodule KalturaAdmin.Repo.Migrations.CreateSubnets do
   use Ecto.Migration
 
   def change do
-    create table(:subnetss) do
+    create table(:subnets) do
       add :cidr, :string
       add :name, :string, null: true
       add :region_id, references(:regions, on_delete: :nothing)
@@ -10,6 +10,6 @@ defmodule KalturaAdmin.Repo.Migrations.CreateSubnetss do
       timestamps()
     end
 
-    create index(:subnetss, [:region_id])
+    create index(:subnets, [:region_id])
   end
 end

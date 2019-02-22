@@ -5,7 +5,7 @@ defmodule KalturaAdmin.ProgramController do
   alias KalturaAdmin.Content.Program
 
   def index(conn, _params) do
-    programs = Content.list_programs()
+    programs = Content.list_programs([:linear_channel])
     render(conn, "index.html", programs: programs, current_user: load_user(conn))
   end
 
@@ -27,7 +27,7 @@ defmodule KalturaAdmin.ProgramController do
   end
 
   def show(conn, %{"id" => id}) do
-    program = Content.get_program!(id)
+    program = Content.get_program!(id, [:linear_channel])
     render(conn, "show.html", program: program, current_user: load_user(conn))
   end
 

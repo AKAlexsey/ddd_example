@@ -78,12 +78,6 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :streaming_groups, class: "control-label" %>
-    <%= multiple_select f, :streaming_group_ids, server_groups(), selected: selected_streaming_server_groups(@server_id), class: "form-control" %>
-    <%= error_tag f, :streaming_group_ids %>
-  </div>
-
-  <div class="form-group">
     <%= submit "save", class: "btn btn-primary" %>
   </div>
 <% end %>

@@ -61,11 +61,6 @@
     <strong>ServerGroups</strong>
     <%= decorate_server_groups(@server.server_groups) %>
   </li>
-
-  <li>
-    <strong>Streaming ServerGroups</strong>
-    <%= decorate_server_groups(@server.streaming_groups) %>
-  </li>
 </ul>
 
 <span><%= link "Edit", to: server_path(@conn, :edit, @server) %></span>

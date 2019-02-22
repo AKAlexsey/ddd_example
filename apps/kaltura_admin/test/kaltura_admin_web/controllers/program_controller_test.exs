@@ -37,8 +37,8 @@ defmodule KalturaAdminWeb.ProgramControllerTest do
 
   describe "create program" do
     test "redirects to show when data is valid", %{conn: conn} do
-      {:ok, tv_stream} = Factory.insert(:tv_stream)
-      create_attrs = Map.merge(@create_attrs, %{tv_stream_id: tv_stream.id})
+      {:ok, linear_channel} = Factory.insert(:linear_channel)
+      create_attrs = Map.merge(@create_attrs, %{linear_channel_id: linear_channel.id})
       create_response = post(conn, program_path(conn, :create), program: create_attrs)
       assert %{id: id} = redirected_params(create_response)
       assert redirected_to(create_response) == program_path(create_response, :show, id)
