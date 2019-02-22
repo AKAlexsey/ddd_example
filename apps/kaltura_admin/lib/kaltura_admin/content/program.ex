@@ -4,12 +4,12 @@ defmodule KalturaAdmin.Content.Program do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias KalturaAdmin.Content.{ProgramRecord, TvStream}
+  alias KalturaAdmin.Content.{LinearChannel, ProgramRecord}
   alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
   use DomainModelNotifier, observers: [DomainModelObserver]
 
-  @cast_fields [:name, :start_datetime, :end_datetime, :epg_id, :tv_stream_id]
-  @required_fields [:name, :start_datetime, :end_datetime, :epg_id, :tv_stream_id]
+  @cast_fields [:name, :start_datetime, :end_datetime, :epg_id, :linear_channel_id]
+  @required_fields [:name, :start_datetime, :end_datetime, :epg_id, :linear_channel_id]
 
   schema "programs" do
     field(:name, :string)
@@ -17,7 +17,7 @@ defmodule KalturaAdmin.Content.Program do
     field(:end_datetime, :naive_datetime)
     field(:epg_id, :string)
 
-    belongs_to(:tv_stream, TvStream)
+    belongs_to(:linear_channel, LinearChannel)
 
     has_many(:program_records, ProgramRecord, foreign_key: :program_id)
 

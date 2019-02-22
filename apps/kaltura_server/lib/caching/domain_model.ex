@@ -1,29 +1,47 @@
 use Amnesia
 
 defdatabase DomainModel do
-  deftable TvStream,
+  deftable LinearChannel,
            [
              :id,
              :epg_id,
+             :name,
+             :code_name,
+             :dvr_enabled,
+             :server_group_id,
+             :program_ids,
+             :tv_stream_ids
+           ],
+           type: :ordered_set do
+    @type t :: %LinearChannel{
+            id: integer,
+            epg_id: String.t(),
+            name: String.t(),
+            code_name: String.t(),
+            dvr_enabled: boolean,
+            server_group_id: integer,
+            program_ids: list(integer),
+            tv_stream_ids: list(integer)
+          }
+  end
+
+  deftable TvStream,
+           [
+             :id,
              :stream_path,
              :status,
              :protocol,
-             :name,
-             :code_name,
-             :server_group_ids,
-             :program_ids
+             :encryption,
+             :linear_channel_id
            ],
            type: :ordered_set do
     @type t :: %TvStream{
             id: integer,
-            epg_id: String.t(),
             stream_path: String.t(),
-            status: atom,
+            status: String.t(),
             protocol: atom,
-            name: String.t(),
-            code_name: String.t(),
-            server_group_ids: list(integer),
-            program_ids: list(integer)
+            encryption: atom,
+            linear_channel_id: integer
           }
   end
 
@@ -39,7 +57,6 @@ defdatabase DomainModel do
              :prefix,
              :healthcheck_enabled,
              :server_group_ids,
-             :streaming_server_group_ids,
              :program_record_ids
            ],
            type: :ordered_set do
@@ -54,7 +71,6 @@ defdatabase DomainModel do
             prefix: String.t(),
             healthcheck_enabled: true,
             server_group_ids: list(integer),
-            streaming_server_group_ids: list(integer),
             program_record_ids: list(integer)
           }
   end
@@ -79,7 +95,7 @@ defdatabase DomainModel do
           }
   end
 
-  deftable ServerGroup, [:id, :name, :status, :server_ids, :region_ids, :tv_stream_ids],
+  deftable ServerGroup, [:id, :name, :status, :server_ids, :region_ids, :linear_channel_ids],
     type: :ordered_set do
     @type t :: %ServerGroup{
             id: integer,
@@ -87,15 +103,16 @@ defdatabase DomainModel do
             status: atom,
             server_ids: list(integer),
             region_ids: list(integer),
-            tv_stream_ids: list(integer)
+            linear_channel_ids: list(integer)
           }
   end
 
-  deftable Program, [:id, :name, :tv_stream_id, :epg_id, :program_record_ids], type: :ordered_set do
+  deftable Program, [:id, :name, :linear_channel_id, :epg_id, :program_record_ids],
+    type: :ordered_set do
     @type t :: %Program{
             id: integer,
             name: String.t(),
-            tv_stream_id: integer,
+            linear_channel_id: integer,
             epg_id: String.t(),
             program_record_ids: list(integer)
           }

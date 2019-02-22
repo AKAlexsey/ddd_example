@@ -93,37 +93,6 @@ edge_server_ids =
   end)
   |> get_ids.()
 
-{:ok, tv_stream_data} =
-  YamlElixir.read_from_file(
-    "#{File.cwd!()}/apps/kaltura_admin/priv/repo/seed_data/tv_stream_data.yml"
-  )
-
-tv_stream_ids =
-  tv_stream_data
-  |> Map.get("tv_stream_data")
-  |> Enum.map(fn tv_stream_data ->
-    data =
-      symbolize_keys.(tv_stream_data)
-      |> Map.update(:protocol, :"", &String.to_atom/1)
-
-    Factory.insert(:tv_stream, data)
-  end)
-  |> get_ids.()
-
-{:ok, program_names} =
-  YamlElixir.read_from_file(
-    "#{File.cwd!()}/apps/kaltura_admin/priv/repo/seed_data/program_names.yml"
-  )
-
-program_ids =
-  program_names
-  |> Map.get("program_names")
-  |> Enum.with_index()
-  |> Enum.map(fn {program_name, index} ->
-    Factory.insert(:program, %{name: program_name, epg_id: "p_epg_#{index}"})
-  end)
-  |> get_ids.()
-
 random_stream_function = fn collection, batch_size ->
   cycle =
     collection
@@ -142,33 +111,67 @@ random_region_ids = random_stream_function.(region_ids, 24)
 random_dvr_server_ids = random_stream_function.(dvr_server_ids, 2)
 random_edge_server_ids = random_stream_function.(edge_server_ids, 20)
 
-random_tv_stream_ids = fn order_number ->
-  shuffled_ids = Enum.shuffle(tv_stream_ids)
+server_group_ids =
+  Enum.map(0..24, fn order_number ->
+    Factory.insert(:server_group, %{
+      region_ids: random_region_ids.(),
+      server_ids: random_edge_server_ids.() ++ random_dvr_server_ids.()
+    })
+  end)
+  |> get_ids.()
 
-  cond do
-    order_number in 0..9 ->
-      shuffled_ids
+random_server_group_id = fn -> random_stream_function.(server_group_ids, 1).() |> hd() end
 
-    order_number in 10..19 ->
-      Enum.slice(shuffled_ids, :rand.uniform(501) - 1, 500)
+protocols =
+  KalturaAdmin.StreamProtocol.__enum_map__()
+  |> Keyword.keys()
+{:ok, tv_stream_data} =
+  YamlElixir.read_from_file(
+    "#{File.cwd!()}/apps/kaltura_admin/priv/repo/seed_data/tv_stream_data.yml"
+  )
 
-    true ->
-      Enum.slice(shuffled_ids, :rand.uniform(751) - 1, 250)
-  end
-end
+linear_channel_ids =
+  tv_stream_data
+  |> Map.get("tv_stream_data")
+  |> Enum.map(fn tv_stream_data ->
+    data =
+      symbolize_keys.(tv_stream_data)
+      |> Map.update!(:tv_streams, fn tv_streams ->
+        Enum.map(tv_streams, fn tv_stream ->
+          tv_stream_prams = symbolize_keys.(tv_stream)
+          Factory.build(:tv_stream, tv_stream_prams).changes
+        end)
+      end)
+      |> (fn %{epg_id: epg_id} = data -> %{}
+            Map.merge(data, %{
+              name: "#{epg_id}_name",
+              code_name: "#{epg_id}_code_name",
+              dvr_enabled: true,
+              server_group_id: random_server_group_id.()
+            })
+          end).()
 
-0..24
-|> Enum.into([])
-|> Enum.each(fn order_number ->
-  Factory.insert(:server_group, %{
-    region_ids: random_region_ids.(),
-    tv_stream_ids: random_tv_stream_ids.(order_number),
-    server_ids: random_edge_server_ids.() ++ random_dvr_server_ids.()
-  })
-end)
+    Factory.insert(:linear_channel, data)
+  end)
+  |> get_ids.()
 
-protocols = KalturaAdmin.StreamProtocol.__enum_map__()
-            |> Keyword.keys()
+{:ok, program_names} =
+  YamlElixir.read_from_file(
+    "#{File.cwd!()}/apps/kaltura_admin/priv/repo/seed_data/program_names.yml"
+  )
+
+program_ids =
+  program_names
+  |> Map.get("program_names")
+  |> Enum.with_index()
+  |> Enum.map(fn {program_name, index} ->
+    Factory.insert(:program, %{
+      name: program_name,
+      epg_id: "p_epg_#{index}",
+      linear_channel_id: Enum.at(linear_channel_ids, index)
+    })
+  end)
+  |> get_ids.()
 
 program_ids
 |> Enum.each(fn program_id ->

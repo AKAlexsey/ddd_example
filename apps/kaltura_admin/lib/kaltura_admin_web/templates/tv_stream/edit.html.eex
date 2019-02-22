@@ -1,5 +1,0 @@
-<h1>Edit Tv stream</h1>
-
-<%= render "form.html", Map.put(assigns, :action, tv_stream_path(@conn, :update, @tv_stream)) %>
-
-<span><%= link "Back", to: tv_stream_path(@conn, :index) %></span>

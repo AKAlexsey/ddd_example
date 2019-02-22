@@ -1,4 +1,4 @@
-<h1>Listing Tv streams</h1>
+<h1>Tv streams</h1>
 
 <table class="table">
   <thead>
@@ -6,12 +6,7 @@
       <th>Stream path</th>
       <th>Status</th>
       <th>Protocol</th>
-      <th>Name</th>
-      <th>Code name</th>
-      <th>Description</th>
-      <th>Dvr enabled</th>
-      <th>Epg</th>
-      <th>Server groups</th>
+      <th>Encryption</th>
 
       <th></th>
     </tr>
@@ -19,24 +14,15 @@
   <tbody>
 <%= for tv_stream <- @tv_streams do %>
     <tr>
-      <td><%= tv_stream.name %></td>
       <td><%= tv_stream.stream_path %></td>
       <td><%= tv_stream.status %></td>
       <td><%= tv_stream.protocol %></td>
-      <td><%= tv_stream.code_name %></td>
-      <td><%= tv_stream.description %></td>
-      <td><%= tv_stream.dvr_enabled %></td>
-      <td><%= tv_stream.epg_id %></td>
-      <td><%= decorate_server_groups(tv_stream.server_groups) %></td>
+      <td><%= tv_stream.encryption %></td>
 
       <td>
-        <span><%= link "Show", to: tv_stream_path(@conn, :show, tv_stream), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: tv_stream_path(@conn, :edit, tv_stream), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: tv_stream_path(@conn, :delete, tv_stream), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+        <%= link "Delete", to: tv_stream_path(@conn, :delete, tv_stream), method: :delete, data: [confirm: "Are you sure?"] %>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
-
-<span><%= link "New Tv stream", to: tv_stream_path(@conn, :new) %></span>

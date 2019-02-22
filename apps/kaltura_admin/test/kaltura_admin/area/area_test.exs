@@ -84,7 +84,7 @@ defmodule KalturaAdmin.AreaTest do
     end
   end
 
-  describe "subnetss" do
+  describe "subnets" do
     alias KalturaAdmin.Area.Subnet
 
     @valid_attrs %{cidr: "some cidr", name: "some name"}
@@ -97,9 +97,9 @@ defmodule KalturaAdmin.AreaTest do
       subnet
     end
 
-    test "list_subnetss/0 returns all subnetss" do
+    test "list_subnets/0 returns all subnets" do
       subnet = subnet_fixture()
-      assert Area.list_subnetss() == [subnet]
+      assert Area.list_subnets() == [subnet]
     end
 
     test "get_subnet!/1 returns the subnet with given id" do

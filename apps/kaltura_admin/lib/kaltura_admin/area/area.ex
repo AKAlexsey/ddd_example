@@ -160,15 +160,15 @@ defmodule KalturaAdmin.Area do
   alias KalturaAdmin.Area.Subnet
 
   @doc """
-  Returns the list of subnetss.
+  Returns the list of subnets.
 
   ## Examples
 
-      iex> list_subnetss()
+      iex> list_subnets()
       [%Subnet{}, ...]
 
   """
-  def list_subnetss(preload \\ []) do
+  def list_subnets(preload \\ []) do
     Subnet
     |> Repo.all()
     |> Repo.preload(preload)

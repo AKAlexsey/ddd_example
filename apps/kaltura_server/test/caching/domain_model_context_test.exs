@@ -2,45 +2,129 @@ defmodule KalturaServer.DomainModelContextTest do
   use KalturaServer.TestCase
 
   alias KalturaServer.DomainModelContext
-  alias DomainModel.TvStream
+  alias DomainModel.LinearChannel
   alias KalturaServer.DomainModelFactories.Region
 
-  describe "#find_tv_stream" do
+  describe "#find_linear_channel" do
     setup do
-      wrong_protocol = :MPD
+      %{id: id, epg_id: epg_id} = linear_channel = Factory.insert(:linear_channel)
 
-      %{id: id, epg_id: epg_id, protocol: protocol} = tv_stream = Factory.insert(:tv_stream)
+      {:ok, id: id, epg_id: epg_id, linear_channel: linear_channel}
+    end
+
+    test "Return LinearChannel if it exist", %{
+      epg_id: epg_id,
+      linear_channel: linear_channel
+    } do
+      assert linear_channel == DomainModelContext.find_linear_channel(epg_id)
+    end
+
+    test "Return nil if LinearChannel with given epg_id not exist", %{
+      id: id,
+      epg_id: epg_id
+    } do
+      Amnesia.transaction(fn -> DomainModel.LinearChannel.delete(id) end)
+      assert is_nil(DomainModelContext.find_linear_channel(epg_id))
+    end
+  end
+
+  describe "#find_tv_streams" do
+    setup do
+      protocol = "MPD"
+      wrong_protocol = "HLS"
+
+      %{id: linear_channel_id} = Factory.insert(:linear_channel)
+
+      %{id: id1} =
+        Factory.insert(:tv_stream, %{
+          protocol: protocol,
+          status: "ACTIVE",
+          encryption: "NONE",
+          linear_channel_id: linear_channel_id
+        })
+
+      %{id: inactive_id} =
+        Factory.insert(:tv_stream, %{
+          protocol: protocol,
+          status: "INACTIVE",
+          encryption: "NONE",
+          linear_channel_id: linear_channel_id
+        })
+
+      %{id: id2} =
+        Factory.insert(:tv_stream, %{
+          protocol: protocol,
+          status: "ACTIVE",
+          encryption: "WIDEVINE",
+          linear_channel_id: linear_channel_id
+        })
 
       {:ok,
-       epg_id: epg_id,
-       id: id,
+       tv_stream_ids: [id1, id2],
+       inactive_id: inactive_id,
        protocol: protocol,
-       wrong_protocol: wrong_protocol,
-       tv_stream: tv_stream}
+       wrong_protocol: wrong_protocol}
     end
 
-    test "Return TvStream if it exist", %{
-      epg_id: epg_id,
-      protocol: protocol,
-      tv_stream: tv_stream
-    } do
-      assert tv_stream == DomainModelContext.find_tv_stream(epg_id, protocol)
-    end
-
-    test "Return nil if TvStream with given epg and protocol does not exist", %{
-      epg_id: epg_id,
-      wrong_protocol: protocol
-    } do
-      assert is_nil(DomainModelContext.find_tv_stream(epg_id, protocol))
-    end
-
-    test "Return nil if TvStream with given epg_id not exist", %{
-      id: id,
-      epg_id: epg_id,
+    test "Return all active TvStreams with given protocol #1", %{
+      tv_stream_ids: ids,
       protocol: protocol
     } do
-      Amnesia.transaction(fn -> DomainModel.TvStream.delete(id) end)
-      assert is_nil(DomainModelContext.find_tv_stream(epg_id, protocol))
+      assert Enum.sort(ids) ==
+               Enum.sort(get_ids(DomainModelContext.find_tv_streams(ids, protocol)))
+    end
+
+    test "Return all active TvStreams with given protocol #2", %{
+      tv_stream_ids: [id1, id2],
+      protocol: protocol
+    } do
+      Amnesia.transaction(fn -> DomainModel.TvStream.delete(id1) end)
+      assert [id2] == get_ids(DomainModelContext.find_tv_streams([id1, id2], protocol))
+    end
+
+    test "Return empty list if TvStream with given id and protocol does not exist", %{
+      tv_stream_ids: ids,
+      wrong_protocol: protocol
+    } do
+      assert [] == DomainModelContext.find_tv_streams(ids, protocol)
+    end
+
+    test "Return empty list if TvStream with given id and protocol inactive", %{
+      inactive_id: inactive_id,
+      protocol: protocol
+    } do
+      assert [] == DomainModelContext.find_tv_streams([inactive_id], protocol)
+    end
+
+    test "Return empty list if TvStream with given ids does not exist", %{
+      tv_stream_ids: ids,
+      protocol: protocol
+    } do
+      Amnesia.transaction(fn ->
+        Enum.each(ids, fn id -> DomainModel.TvStream.delete(id) end)
+      end)
+
+      assert [] == DomainModelContext.find_tv_streams(ids, protocol)
+    end
+  end
+
+  describe "#normalize_enum" do
+    test "Return UPCASEBINARY if given is :atom" do
+      assert "ACTIVE" == DomainModelContext.normalize_enum(:active)
+    end
+
+    test "Return UPCASEBINARY if given is \"binary\"" do
+      assert "ACTIVE" == DomainModelContext.normalize_enum("active")
+    end
+
+    test "Return UPCASEBINARY if given is \"bInaRy\"" do
+      assert "ACTIVE" == DomainModelContext.normalize_enum("aCtiVe")
+    end
+
+    test "Raise error if given argument is number" do
+      assert_raise(FunctionClauseError, fn ->
+        DomainModelContext.normalize_enum(4)
+      end)
     end
   end
 
@@ -121,9 +205,9 @@ defmodule KalturaServer.DomainModelContextTest do
       assert [^id3] = DomainModelContext.get_subnets_for_ip("147.147.147.180") |> get_ids()
 
       Amnesia.transaction(fn ->
-        TvStream.delete(id1)
-        TvStream.delete(id2)
-        TvStream.delete(id3)
+        LinearChannel.delete(id1)
+        LinearChannel.delete(id2)
+        LinearChannel.delete(id3)
       end)
     end
 
@@ -135,9 +219,9 @@ defmodule KalturaServer.DomainModelContextTest do
       assert [] = DomainModelContext.get_subnets_for_ip("147.147.124.70") |> get_ids()
 
       Amnesia.transaction(fn ->
-        TvStream.delete(id1)
-        TvStream.delete(id2)
-        TvStream.delete(id3)
+        LinearChannel.delete(id1)
+        LinearChannel.delete(id2)
+        LinearChannel.delete(id3)
       end)
     end
   end
@@ -205,20 +289,20 @@ defmodule KalturaServer.DomainModelContextTest do
           server_group_ids: [server_group1_id, server_group2_id]
         })
 
-      %{id: tv_stream_id} = Factory.insert(:tv_stream)
+      %{id: linear_channel_id} = Factory.insert(:linear_channel)
 
       Factory.insert(:server_group, %{
         id: server_group1_id,
         server_ids: [server1_id, server2_id, server3_id, server4_id, server5_id],
         region_ids: [region1_id],
-        tv_stream_ids: [tv_stream_id]
+        linear_channel_ids: [linear_channel_id]
       })
 
       Factory.insert(:server_group, %{
         id: server_group2_id,
         server_ids: [server4_id, server5_id],
         region_ids: [region2_id, region3_id],
-        tv_stream_ids: [tv_stream_id]
+        linear_channel_ids: [linear_channel_id]
       })
 
       Factory.insert(:server_group, %{
@@ -232,7 +316,7 @@ defmodule KalturaServer.DomainModelContextTest do
       region3 = Factory.insert(:region, %{id: region3_id, server_group_ids: [server_group3_id]})
 
       {:ok,
-       tv_stream_id: tv_stream_id,
+       linear_channel_id: linear_channel_id,
        region1_server_ids: [server1_id, server2_id, server3_id, server4_id, server5_id],
        region2_server_ids: [server4_id, server5_id],
        region1: region1,
@@ -241,53 +325,54 @@ defmodule KalturaServer.DomainModelContextTest do
     end
 
     test "Return appropriate server_ids #1", %{
-      tv_stream_id: tv_stream_id,
+      linear_channel_id: linear_channel_id,
       region1_server_ids: server_ids,
       region1: region
     } do
       assert server_ids ==
-               DomainModelContext.get_appropriate_server_group_ids(region, tv_stream_id)
+               DomainModelContext.get_appropriate_server_group_ids(region, linear_channel_id)
     end
 
-    test "Return appropriate server_ids #2 return only server_groups those references to TvStreams",
+    test "Return appropriate server_ids #2 return only server_groups those references to LinearChannels",
          %{
-           tv_stream_id: tv_stream_id,
+           linear_channel_id: linear_channel_id,
            region2_server_ids: server_ids,
            region2: region
          } do
       assert server_ids ==
-               DomainModelContext.get_appropriate_server_group_ids(region, tv_stream_id)
+               DomainModelContext.get_appropriate_server_group_ids(region, linear_channel_id)
     end
 
-    test "Return appropriate server_ids #3 return [] if no linked to TvStream ServerGroups", %{
-      tv_stream_id: tv_stream_id,
-      region3: region
-    } do
-      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, tv_stream_id)
+    test "Return appropriate server_ids #3 return [] if no linked to LinearChannel ServerGroups",
+         %{
+           linear_channel_id: linear_channel_id,
+           region3: region
+         } do
+      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, linear_channel_id)
     end
 
     test "Return empty list if region does not have valid servers", %{
-      tv_stream_id: tv_stream_id,
+      linear_channel_id: linear_channel_id,
       region3: region
     } do
-      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, tv_stream_id)
+      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, linear_channel_id)
     end
   end
 
   describe "#get_appropriate_server_group_ids #2 return empty list if appropriate data is missing" do
     setup do
-      %{id: tv_stream_id} = Factory.insert(:tv_stream)
+      %{id: linear_channel_id} = Factory.insert(:linear_channel)
 
-      {:ok, tv_stream_id: tv_stream_id}
+      {:ok, linear_channel_id: linear_channel_id}
     end
 
-    test "Return [] if Region does not have ServerGroups", %{tv_stream_id: tv_stream_id} do
+    test "Return [] if Region does not have ServerGroups", %{linear_channel_id: linear_channel_id} do
       region = Factory.insert(:region)
 
-      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, tv_stream_id)
+      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, linear_channel_id)
     end
 
-    test "Return [] if Region does not have Servers", %{tv_stream_id: tv_stream_id} do
+    test "Return [] if Region does not have Servers", %{linear_channel_id: linear_channel_id} do
       server_group_id = 777
 
       region =
@@ -298,10 +383,12 @@ defmodule KalturaServer.DomainModelContextTest do
 
       Factory.insert(:server_group, %{id: server_group_id, region_ids: [region.id]})
 
-      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, tv_stream_id)
+      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, linear_channel_id)
     end
 
-    test "Return [] if Region does not have valid Servers", %{tv_stream_id: tv_stream_id} do
+    test "Return [] if Region does not have valid Servers", %{
+      linear_channel_id: linear_channel_id
+    } do
       server_group_id = 777
 
       region =
@@ -340,7 +427,7 @@ defmodule KalturaServer.DomainModelContextTest do
         server_ids: [s1_id, s2_id, s3_id]
       })
 
-      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, tv_stream_id)
+      assert [] == DomainModelContext.get_appropriate_server_group_ids(region, linear_channel_id)
     end
   end
 

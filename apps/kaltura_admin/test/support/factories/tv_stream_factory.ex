@@ -1,19 +1,16 @@
 defmodule KalturaAdmin.TvStreamFactory do
-  alias KalturaAdmin.Repo
+  alias KalturaAdmin.{Repo, Factory}
   alias KalturaAdmin.Content.TvStream
 
   Faker.start()
 
   def default_attrs,
     do: %{
-      code_name: Faker.Lorem.word(),
-      description: Faker.Lorem.sentence(),
-      dvr_enabled: false,
-      epg_id: Faker.Lorem.word(),
-      name: Faker.Lorem.word(),
-      status: :active,
-      protocol: :HLS,
-      stream_path: "/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
+      stream_path: "/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}",
+      status: "active",
+      protocol: "HLS",
+      encryption: "NONE",
+      linear_channel_id: nil
     }
 
   def build(attrs) do
@@ -29,6 +26,14 @@ defmodule KalturaAdmin.TvStreamFactory do
   def insert(attrs) do
     attrs
     |> build()
+    |> (fn
+          %{linear_channel_id: _id} = attrs_map ->
+            attrs_map
+
+          attrs_map ->
+            {:ok, %{id: linear_channel_id}} = Factory.insert(:linear_channel)
+            Map.put(attrs_map, :linear_channel_id, linear_channel_id)
+        end).()
     |> Repo.insert()
   end
 end

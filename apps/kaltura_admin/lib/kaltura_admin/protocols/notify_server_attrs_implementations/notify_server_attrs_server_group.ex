@@ -2,7 +2,8 @@ alias KalturaAdmin.Servers.ServerGroup
 alias KalturaAdmin.Protocols.NotifyServerAttrs
 
 alias KalturaAdmin.Repo
-alias KalturaAdmin.Servers.{ServerGroupServer, ServerGroupsTvStream}
+alias KalturaAdmin.Servers.ServerGroupServer
+alias KalturaAdmin.Content.LinearChannel
 alias KalturaAdmin.Area.RegionServerGroup
 
 import Ecto.Query
@@ -17,7 +18,7 @@ defimpl NotifyServerAttrs, for: ServerGroup do
     |> (fn {permitted, _filtered} -> permitted end).()
     |> preload_server_ids(record)
     |> preload_region_ids(record)
-    |> preload_tv_stream_ids(record)
+    |> preload_linear_channel_ids(record)
   end
 
   defp preload_server_ids(attrs, %{servers: servers}) when is_list(servers) do
@@ -56,21 +57,22 @@ defimpl NotifyServerAttrs, for: ServerGroup do
     |> Map.merge(%{region_ids: region_ids})
   end
 
-  defp preload_tv_stream_ids(attrs, %{tv_streams: tv_streams}) when is_list(tv_streams) do
+  defp preload_linear_channel_ids(attrs, %{linear_channels: linear_channels})
+       when is_list(linear_channels) do
     attrs
-    |> Map.merge(%{tv_stream_ids: Enum.map(tv_streams, & &1.id)})
+    |> Map.merge(%{linear_channel_ids: Enum.map(linear_channels, & &1.id)})
   end
 
-  defp preload_tv_stream_ids(attrs, %{id: server_group_id}) do
-    tv_stream_ids =
+  defp preload_linear_channel_ids(attrs, %{id: server_group_id}) do
+    linear_channel_ids =
       from(
-        sgts in ServerGroupsTvStream,
-        select: sgts.tv_stream_id,
-        where: sgts.server_group_id == ^server_group_id
+        lc in LinearChannel,
+        select: lc.id,
+        where: lc.server_group_id == ^server_group_id
       )
       |> Repo.all()
 
     attrs
-    |> Map.merge(%{tv_stream_ids: tv_stream_ids})
+    |> Map.merge(%{linear_channel_ids: linear_channel_ids})
   end
 end

@@ -22,6 +22,10 @@
     <%= @program.epg_id %>
   </li>
 
+  <li>
+    <strong>LinearChannel:</strong>
+    <%= linear_channel_name(@program) %>
+  </li>
 </ul>
 
 <span><%= link "Edit", to: program_path(@conn, :edit, @program) %></span>

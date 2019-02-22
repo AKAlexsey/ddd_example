@@ -8,12 +8,12 @@ defmodule KalturaServer.ClosestEdgeServerService do
   @spec perform(binary) :: map() | nil
   def perform(ip_address, opts \\ [])
 
-  def perform(ip_address, tv_stream_id: tv_stream_id) do
+  def perform(ip_address, linear_channel_id: linear_channel_id) do
     Context.get_subnets_for_ip(ip_address)
     |> Enum.reduce_while(nil, fn subnet, acc ->
       subnet
       |> Context.get_subnet_region()
-      |> Context.get_appropriate_server_group_ids(tv_stream_id)
+      |> Context.get_appropriate_server_group_ids(linear_channel_id)
       |> Context.get_appropriate_servers()
       |> choose_random_server(acc)
     end)

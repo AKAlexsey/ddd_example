@@ -6,7 +6,7 @@ defmodule KalturaServer.DomainModelHandlers.ProgramHandler do
   use KalturaServer.DomainModelHandlers.AbstractHandler,
     table: Program,
     joined_attributes_and_models: [
-      tv_stream_id: "TvStream",
+      linear_channel_id: "LinearChannel",
       program_record_ids: "ProgramRecord"
     ]
 end

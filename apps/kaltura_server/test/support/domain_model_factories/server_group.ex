@@ -10,7 +10,7 @@ defmodule KalturaServer.DomainModelFactories.ServerGroup do
       status: :active,
       server_ids: [],
       region_ids: [],
-      tv_stream_ids: []
+      linear_channel_ids: []
     }
   end
 

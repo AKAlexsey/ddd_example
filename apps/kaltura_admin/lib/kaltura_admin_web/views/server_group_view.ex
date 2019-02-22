@@ -14,15 +14,15 @@ defmodule KalturaAdmin.ServerGroupView do
     Area.region_ids_for_server_group(server_group_id)
   end
 
-  def tv_streams do
-    Content.list_tv_streams()
+  def linear_channels do
+    Content.list_linear_channels()
     |> Enum.map(fn %{id: id, name: name} -> {name, id} end)
   end
 
-  def selected_tv_streams(nil), do: []
+  def selected_linear_channels(nil), do: []
 
-  def selected_tv_streams(server_group_id) do
-    Servers.tv_stream_ids_for_server_group(server_group_id)
+  def selected_linear_channels(server_group_id) do
+    Servers.linear_channel_ids_for_server_group(server_group_id)
   end
 
   def servers do

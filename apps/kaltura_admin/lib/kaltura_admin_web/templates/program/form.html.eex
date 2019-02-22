@@ -30,9 +30,9 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :tv_stream, class: "control-label" %>
-    <%= select f, :tv_stream_id, tv_streams(), class: "form-control" %>
-    <%= error_tag f, :tv_stream_id %>
+    <%= label f, :linear_channel, class: "control-label" %>
+    <%= select f, :linear_channel_id, linear_channels(), class: "form-control" %>
+    <%= error_tag f, :linear_channel_id %>
   </div>
 
   <div class="form-group">

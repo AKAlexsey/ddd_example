@@ -1,0 +1,5 @@
+<h1>Edit Linear channel</h1>
+
+<%= render "form.html", Map.put(assigns, :action, linear_channel_path(@conn, :update, @linear_channel)) %>
+
+<span><%= link "Back", to: linear_channel_path(@conn, :index) %></span>

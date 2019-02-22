@@ -12,7 +12,7 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
        vod_path: "onlime/cowex/ru"}
     end
 
-    test "set assigns right. request: live, protocol: hls", %{
+    test "set assigns right. request: live, stream_meta: hls", %{
       ip_address: ip_address,
       str_ip_address: str_ip_address,
       resource_id: res_id
@@ -20,13 +20,14 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "hls",
+                 encryption: "",
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
              } = DataReader.call(build_conn(ip_address, "/btv/live/hls/#{res_id}"), %{})
     end
 
-    test "set assigns right. request: live, protocol: mpd", %{
+    test "set assigns right. request: live, stream_meta: mpd", %{
       ip_address: ip_address,
       str_ip_address: str_ip_address,
       resource_id: res_id
@@ -34,41 +35,44 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "mpd",
+                 encryption: "",
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
              } = DataReader.call(build_conn(ip_address, "/btv/live/mpd/#{res_id}"), %{})
     end
 
-    test "set assigns right. request: live, protocol: mpd_wv", %{
+    test "set assigns right. request: live, stream_meta: mpd_wv", %{
       ip_address: ip_address,
       str_ip_address: str_ip_address,
       resource_id: res_id
     } do
       assert %Plug.Conn{
                assigns: %{
-                 protocol: "mpd_wv",
+                 protocol: "mpd",
+                 encryption: "wv",
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
              } = DataReader.call(build_conn(ip_address, "/btv/live/mpd_wv/#{res_id}"), %{})
     end
 
-    test "set assigns right. request: live, protocol: mpd_pr", %{
+    test "set assigns right. request: live, stream_meta: mpd_pr", %{
       ip_address: ip_address,
       str_ip_address: str_ip_address,
       resource_id: res_id
     } do
       assert %Plug.Conn{
                assigns: %{
-                 protocol: "mpd_pr",
+                 protocol: "mpd",
+                 encryption: "pr",
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
              } = DataReader.call(build_conn(ip_address, "/btv/live/mpd_pr/#{res_id}"), %{})
     end
 
-    test "set assigns right. request: catchup, protocol: hls", %{
+    test "set assigns right. request: catchup, stream_meta: hls", %{
       ip_address: ip_address,
       str_ip_address: str_ip_address,
       resource_id: res_id
@@ -76,13 +80,14 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "hls",
+                 encryption: "",
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
              } = DataReader.call(build_conn(ip_address, "/btv/catchup/hls/#{res_id}"), %{})
     end
 
-    test "set assigns right. request: catchup, protocol: mpd", %{
+    test "set assigns right. request: catchup, stream_meta: mpd", %{
       ip_address: ip_address,
       str_ip_address: str_ip_address,
       resource_id: res_id
@@ -90,34 +95,37 @@ defmodule KalturaServer.RequestProcessing.DataReaderTest do
       assert %Plug.Conn{
                assigns: %{
                  protocol: "mpd",
+                 encryption: "",
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
              } = DataReader.call(build_conn(ip_address, "/btv/catchup/mpd/#{res_id}"), %{})
     end
 
-    test "set assigns right. request: catchup, protocol: mpd_wv", %{
+    test "set assigns right. request: catchup, stream_meta: mpd_wv", %{
       ip_address: ip_address,
       str_ip_address: str_ip_address,
       resource_id: res_id
     } do
       assert %Plug.Conn{
                assigns: %{
-                 protocol: "mpd_wv",
+                 protocol: "mpd",
+                 encryption: "wv",
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }
              } = DataReader.call(build_conn(ip_address, "/btv/catchup/mpd_wv/#{res_id}"), %{})
     end
 
-    test "set assigns right. request: catchup, protocol: mpd_pr", %{
+    test "set assigns right. request: catchup, stream_meta: mpd_pr", %{
       ip_address: ip_address,
       str_ip_address: str_ip_address,
       resource_id: res_id
     } do
       assert %Plug.Conn{
                assigns: %{
-                 protocol: "mpd_pr",
+                 protocol: "mpd",
+                 encryption: "pr",
                  resource_id: ^res_id,
                  ip_address: ^str_ip_address
                }

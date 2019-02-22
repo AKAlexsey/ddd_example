@@ -5,7 +5,7 @@ defmodule KalturaAdmin.ServerController do
   alias KalturaAdmin.Servers.Server
 
   def index(conn, _params) do
-    servers = Servers.list_servers([:server_groups, :streaming_groups])
+    servers = Servers.list_servers([:server_groups])
     render(conn, "index.html", servers: servers, current_user: load_user(conn))
   end
 
@@ -36,7 +36,7 @@ defmodule KalturaAdmin.ServerController do
     server =
       id
       |> Servers.get_server!()
-      |> Repo.preload([:server_groups, :streaming_groups])
+      |> Repo.preload([:server_groups])
 
     render(conn, "show.html", server: server, current_user: load_user(conn))
   end
@@ -45,7 +45,7 @@ defmodule KalturaAdmin.ServerController do
     server =
       id
       |> Servers.get_server!()
-      |> Repo.preload([:server_groups, :streaming_groups])
+      |> Repo.preload([:server_groups])
 
     changeset = Servers.change_server(server)
 

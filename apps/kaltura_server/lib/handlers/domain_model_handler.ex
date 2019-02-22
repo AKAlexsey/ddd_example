@@ -5,6 +5,7 @@ defmodule KalturaServer.Handlers.DomainModelHandler do
   alias KalturaServer.Handlers.AbstractHandler
 
   alias KalturaServer.DomainModelHandlers.{
+    LinearChannelHandler,
     ProgramHandler,
     ProgramRecordHandler,
     RegionHandler,
@@ -43,6 +44,11 @@ defmodule KalturaServer.Handlers.DomainModelHandler do
 
   def handle(action, %{model_name: "Subnet", attrs: attrs}) do
     SubnetHandler.handle(action, attrs)
+    :ok
+  end
+
+  def handle(action, %{model_name: "LinearChannel", attrs: attrs}) do
+    LinearChannelHandler.handle(action, attrs)
     :ok
   end
 

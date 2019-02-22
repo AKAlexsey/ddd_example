@@ -11,6 +11,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       subnet_id = 777
       region_id = 777
       server_group_id = 777
+      linear_channel_id = 777
       Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
 
       Factory.insert(:region, %{
@@ -39,20 +40,25 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
           weight: 30
         })
 
-      %{id: tv_stream_id, stream_path: stream_path, epg_id: epg_id} = Factory.insert(:tv_stream)
+      %{id: tv_stream_id, stream_path: stream_path} =
+        Factory.insert(:tv_stream, %{linear_channel_id: linear_channel_id})
+
+      %{epg_id: epg_id} =
+        Factory.insert(:linear_channel, %{id: linear_channel_id, tv_stream_ids: [tv_stream_id]})
 
       Factory.insert(:server_group, %{
         id: server_group_id,
         region_ids: [region_id],
         server_ids: [edge_server1_id, edge_server2_id],
-        tv_stream_ids: [tv_stream_id]
+        linear_channel_ids: [linear_channel_id]
       })
 
       conn =
         conn(:get, "/btv/live/hls/#{epg_id}")
         |> Map.put(:remote_ip, {123, 123, 123, 123})
         |> Map.put(:assigns, %{
-          protocol: :hls,
+          protocol: "hls",
+          encryption: "",
           type: :live,
           resource_id: epg_id,
           ip_address: "123.123.123.123"

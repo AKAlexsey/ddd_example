@@ -122,6 +122,8 @@ defmodule KalturaServer.DomainModelHandlers.AbstractHandler do
         end)
       end
 
+      defp notify(_model_name, nil), do: :ok
+
       defp notify(model_name, id),
         do: @kaltura_server_public_api.cache_model_record(model_name, id)
 

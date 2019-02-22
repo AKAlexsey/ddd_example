@@ -4,7 +4,7 @@ defmodule KalturaAdmin.Repo.Migrations.CreateProgramRecords do
   def change do
     create table(:program_records) do
       add :status, :integer
-      add :codec, :integer
+      add :protocol, :integer
       add :path, :string
       add :program_id, references(:programs, on_delete: :nothing)
       add :server_id, references(:servers, on_delete: :nothing)

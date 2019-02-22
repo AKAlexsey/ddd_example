@@ -7,20 +7,15 @@ defmodule KalturaServer.DomainModelContext do
   require Amnesia.Helper
 
   @doc """
-  Looking for tv_stream by epg_id. If there is no such stream return nil.
+  Looking for linear_channel by epg_id. If there is no such stream return nil.
   """
-  @spec find_tv_stream(binary, atom | binary) :: map() | nil
-  def find_tv_stream(epg_id, protocol \\ nil) do
+  @spec find_linear_channel(binary) :: map() | nil
+  def find_linear_channel(epg_id) do
     Amnesia.transaction(fn ->
-      :mnesia.select(DomainModel.TvStream, [
+      :mnesia.select(DomainModel.LinearChannel, [
         {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9"},
-          [
-            make_and_mnesia_clause([
-              {:==, :"$2", epg_id},
-              {:==, :"$5", normalize_protocol(protocol)}
-            ])
-          ],
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8"},
+          [{:==, :"$2", epg_id}],
           [:"$$"]
         }
       ])
@@ -29,16 +24,55 @@ defmodule KalturaServer.DomainModelContext do
     |> make_domain_model_table_result()
   end
 
-  defp normalize_protocol(protocol) when is_atom(protocol) do
-    protocol
-    |> to_string()
-    |> normalize_protocol()
+  @doc """
+  Looking for TvStream by id and protocol.
+  """
+  @spec find_tv_streams(binary, atom | binary) :: map() | nil
+  def find_tv_streams(tv_stream_ids, protocol \\ nil) do
+    Amnesia.transaction(fn ->
+      :mnesia.select(DomainModel.TvStream, [
+        {
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6"},
+          [
+            make_and_mnesia_clause([
+              make_in_mnesia_clause(tv_stream_ids, :"$1"),
+              {:==, :"$3", "ACTIVE"},
+              {:==, :"$4", normalize_enum(protocol)}
+            ])
+          ],
+          [:"$$"]
+        }
+      ])
+    end)
+    |> Enum.map(&make_domain_model_table_result/1)
   end
 
-  defp normalize_protocol(protocol) do
+  # TODO выпилить после полного перехода на новый тип хранения Protocol -> Encryption
+  defp normalize_protocol_old(protocol) when is_atom(protocol) do
+    protocol
+    |> to_string()
+    |> normalize_protocol_old()
+  end
+
+  defp normalize_protocol_old(protocol) do
     protocol
     |> String.upcase()
     |> String.to_atom()
+  end
+
+  @doc """
+  Gets "binary" ot :atom and return "UPCASEBINARY"
+  """
+  @spec normalize_enum(atom | binary) :: binary
+  def normalize_enum(protocol) when is_atom(protocol) do
+    protocol
+    |> to_string()
+    |> normalize_enum()
+  end
+
+  def normalize_enum(protocol) do
+    protocol
+    |> String.upcase()
   end
 
   @doc """
@@ -71,7 +105,7 @@ defmodule KalturaServer.DomainModelContext do
           [
             make_and_mnesia_clause([
               {:==, :"$2", program_id},
-              {:==, :"$5", normalize_protocol(protocol)}
+              {:==, :"$5", normalize_protocol_old(protocol)}
             ])
           ],
           [:"$$"]
@@ -90,8 +124,7 @@ defmodule KalturaServer.DomainModelContext do
     Amnesia.transaction(fn ->
       :mnesia.select(DomainModel.Server, [
         {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$11",
-           :"$12"},
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$12"},
           [
             make_and_mnesia_clause([
               {:==, :"$1", server_id},
@@ -147,7 +180,7 @@ defmodule KalturaServer.DomainModelContext do
   Get all region servers through server groups
   """
   @spec get_appropriate_server_group_ids(map() | nil, integer) :: list(integer) | []
-  def get_appropriate_server_group_ids(%{server_group_ids: server_group_ids}, tv_stream_id) do
+  def get_appropriate_server_group_ids(%{server_group_ids: server_group_ids}, linear_channel_id) do
     Amnesia.transaction(fn ->
       :mnesia.select(DomainModel.ServerGroup, [
         {
@@ -156,14 +189,16 @@ defmodule KalturaServer.DomainModelContext do
           [{{:"$4", :"$6"}}]
         }
       ])
-      |> Enum.filter(fn {_server_ids, tv_stream_ids} -> tv_stream_id in tv_stream_ids end)
-      |> Enum.map(fn {server_ids, _tv_stream_ids} -> server_ids end)
+      |> Enum.filter(fn {_server_ids, linear_channel_ids} ->
+        linear_channel_id in linear_channel_ids
+      end)
+      |> Enum.map(fn {server_ids, _linear_channel_ids} -> server_ids end)
       |> List.flatten()
       |> Enum.uniq()
     end)
   end
 
-  def get_appropriate_server_group_ids(nil, _tv_stream_id), do: []
+  def get_appropriate_server_group_ids(nil, _linear_channel_id), do: []
 
   @doc """
   Get region server groups
@@ -196,8 +231,7 @@ defmodule KalturaServer.DomainModelContext do
     Amnesia.transaction(fn ->
       :mnesia.select(DomainModel.Server, [
         {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$11",
-           :"$12"},
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$12"},
           [
             make_and_mnesia_clause([
               {:==, :"$2", :edge},

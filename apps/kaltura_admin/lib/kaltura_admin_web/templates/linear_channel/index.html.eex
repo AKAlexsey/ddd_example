@@ -1,0 +1,36 @@
+<h1>Listing Linear channels</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Code name</th>
+      <th>Description</th>
+      <th>Dvr enabled</th>
+      <th>Epg</th>
+      <th>Server group</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for linear_channel <- @linear_channels do %>
+    <tr>
+      <td><%= linear_channel.name %></td>
+      <td><%= linear_channel.code_name %></td>
+      <td><%= linear_channel.description %></td>
+      <td><%= linear_channel.dvr_enabled %></td>
+      <td><%= linear_channel.epg_id %></td>
+      <td><%= server_group_name(linear_channel) %></td>
+
+      <td>
+        <span><%= link "Show", to: linear_channel_path(@conn, :show, linear_channel), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: linear_channel_path(@conn, :edit, linear_channel), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: linear_channel_path(@conn, :delete, linear_channel), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Linear channel", to: linear_channel_path(@conn, :new) %></span>

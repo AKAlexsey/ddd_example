@@ -20,7 +20,7 @@
       <td><%= server_group.description %></td>
       <td><%= server_group.status %></td>
       <td><%= decorate_collection(server_group.regions) %></td>
-      <td><%= decorate_collection(server_group.tv_streams) %></td>
+      <td><%= decorate_collection(server_group.linear_channels) %></td>
       <td><%= decorate_collection(server_group.servers, :domain_name) %></td>
 
       <td>

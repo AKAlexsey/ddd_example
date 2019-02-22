@@ -12,9 +12,9 @@ defmodule KalturaAdminWeb.SubnetControllerTest do
   end
 
   describe "index" do
-    test "lists all subnetss", %{conn: conn} do
+    test "lists all subnets", %{conn: conn} do
       conn = get(conn, subnet_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Subnetss"
+      assert html_response(conn, 200) =~ "Listing Subnets"
     end
   end
 

@@ -5,8 +5,8 @@ defmodule KalturaAdmin.SubnetController do
   alias KalturaAdmin.Area.Subnet
 
   def index(conn, _params) do
-    subnetss = Area.list_subnetss(:region)
-    render(conn, "index.html", subnetss: subnetss, current_user: load_user(conn))
+    subnets = Area.list_subnets(:region)
+    render(conn, "index.html", subnets: subnets, current_user: load_user(conn))
   end
 
   def new(conn, _params) do

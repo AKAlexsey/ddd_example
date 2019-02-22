@@ -10,7 +10,7 @@ defmodule KalturaServer.DomainModelHandlers.AbstractHandlerTest do
     ServerGroupHandler,
     ServerHandler,
     SubnetHandler,
-    TvStreamHandler
+    LinearChannelHandler
   }
 
   alias KalturaServer.Handlers.DomainModelHandler
@@ -62,10 +62,10 @@ defmodule KalturaServer.DomainModelHandlers.AbstractHandlerTest do
       end
     end
 
-    test "If model name is TvStream", %{test_attrs: test_attrs} do
-      with_mock(TvStreamHandler, handle: fn :action, %{} -> :ok end) do
-        DomainModelHandler.handle(:action, %{model_name: "TvStream", attrs: test_attrs})
-        assert_called(TvStreamHandler.handle(:action, test_attrs))
+    test "If model name is LinearChannel", %{test_attrs: test_attrs} do
+      with_mock(LinearChannelHandler, handle: fn :action, %{} -> :ok end) do
+        DomainModelHandler.handle(:action, %{model_name: "LinearChannel", attrs: test_attrs})
+        assert_called(LinearChannelHandler.handle(:action, test_attrs))
       end
     end
 

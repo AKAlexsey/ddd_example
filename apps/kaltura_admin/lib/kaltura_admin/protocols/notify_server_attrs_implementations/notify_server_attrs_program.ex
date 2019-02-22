@@ -5,7 +5,7 @@ alias KalturaAdmin.Repo
 import Ecto.Query
 
 defimpl NotifyServerAttrs, for: Program do
-  @permitted_attrs [:id, :name, :tv_stream_id, :epg_id]
+  @permitted_attrs [:id, :name, :linear_channel_id, :epg_id]
 
   def get(%Program{} = record) do
     record

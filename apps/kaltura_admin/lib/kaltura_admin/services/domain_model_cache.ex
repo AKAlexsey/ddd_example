@@ -11,11 +11,12 @@ defmodule KalturaAdmin.Services.DomainModelCache do
   @caching_models [
     {KalturaAdmin.Area.Region, [:subnets, :server_groups]},
     {KalturaAdmin.Area.Subnet, [:region]},
-    {KalturaAdmin.Content.Program, [:program_records, :tv_stream]},
+    {KalturaAdmin.Content.Program, [:program_records, :linear_channel]},
     {KalturaAdmin.Content.ProgramRecord, [:program, :server]},
-    {KalturaAdmin.Content.TvStream, [:server_groups, :programs]},
-    {KalturaAdmin.Servers.Server, [:server_groups, :streaming_groups, :program_records]},
-    {KalturaAdmin.Servers.ServerGroup, [:servers, :tv_streams, :regions]}
+    {KalturaAdmin.Content.LinearChannel, [:server_group, :programs, :tv_streams]},
+    {KalturaAdmin.Content.TvStream, [:linear_channel]},
+    {KalturaAdmin.Servers.Server, [:server_groups, :program_records]},
+    {KalturaAdmin.Servers.ServerGroup, [:servers, :linear_channels, :regions]}
   ]
 
   @handler Application.get_env(:kaltura_server, :domain_model_handler)
