@@ -23,7 +23,17 @@ defmodule KalturaServer.Application do
       Cowboy.child_spec(
         scheme: :http,
         plug: MainRouter,
-        options: [port: main_router_port()]
+        options: [port: http_main_router_port()]
+      ),
+      Cowboy.child_spec(
+        scheme: :https,
+        plug: MainRouter,
+        options: [
+          port: https_main_router_port(),
+          keyfile: https_keyfile(),
+          certfile: https_certfile(),
+          otp_app: :kaltura_server
+        ]
       )
     ]
 
@@ -31,8 +41,23 @@ defmodule KalturaServer.Application do
     Supervisor.start_link(children, opts)
   end
 
-  defp main_router_port do
-    Application.get_env(:kaltura_server, MainRouter)[:port]
+  defp router_config, do: Application.get_env(:kaltura_server, MainRouter)
+
+  defp http_main_router_port do
+    router_config()[:http_port]
     |> Keyword.get(Mix.env(), 4001)
+  end
+
+  defp https_main_router_port do
+    router_config()[:https_port]
+    |> Keyword.get(Mix.env(), 4040)
+  end
+
+  defp https_keyfile do
+    router_config()[:https_keyfile]
+  end
+
+  defp https_certfile do
+    router_config()[:https_certfile]
   end
 end
