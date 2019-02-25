@@ -64,7 +64,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponser do
   end
 
   defp catchup_response({conn, _data}) do
-    {conn, 500, "Server not found"}
+    {conn, 404, "Server not found"}
   end
 
   defp make_catchup_redirect_path(%{
@@ -73,9 +73,11 @@ defmodule KalturaServer.RequestProcessing.CatchupResponser do
          dvr_server_prefix: prefix,
          record_path: record_path
        }) do
-    "http://#{domain_name}#{server_port(port)}/dvr/#{prefix}/#{record_path}"
+    {application_layer_protocol, server_port} = get_server_port(port)
+    "#{application_layer_protocol}://#{domain_name}#{server_port}/dvr/#{prefix}/#{record_path}"
   end
 
-  defp server_port(80), do: ""
-  defp server_port(port), do: ":#{port}"
+  defp get_server_port(80), do: {"http", ""}
+  defp get_server_port(443), do: {"https", ""}
+  defp get_server_port(port), do: {"http", ":#{port}"}
 end
