@@ -43,7 +43,7 @@ defmodule KalturaServer.RequestProcessing.VodResponser do
   end
 
   defp vod_response({conn, _data}) do
-    {conn, 500, "Server not found"}
+    {conn, 404, "Server not found"}
   end
 
   defp make_live_redirect_path(%{
@@ -51,9 +51,11 @@ defmodule KalturaServer.RequestProcessing.VodResponser do
          port: port,
          vod_path: vod_path
        }) do
-    "http://#{domain_name}#{server_port(port)}/vod/#{vod_path}"
+    {application_layer_protocol, server_port} = get_server_port(port)
+    "#{application_layer_protocol}://#{domain_name}#{server_port}/vod/#{vod_path}"
   end
 
-  defp server_port(80), do: ""
-  defp server_port(port), do: ":#{port}"
+  defp get_server_port(80), do: {"http", ""}
+  defp get_server_port(443), do: {"https", ""}
+  defp get_server_port(port), do: {"http", ":#{port}"}
 end

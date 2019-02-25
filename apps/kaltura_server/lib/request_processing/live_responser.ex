@@ -31,8 +31,6 @@ defmodule KalturaServer.RequestProcessing.LiveResponser do
         data
         |> Map.merge(%{
           stream_path: stream_path,
-          protocol: protocol,
-          encryption: encryption,
           linear_channel_id: id
         })
 
@@ -84,9 +82,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponser do
 
   defp put_server_domain_data({conn, data}), do: {conn, data}
 
-  defp live_response(
-         {conn, %{domain_name: _, port: _, protocol: _, encryption: _, stream_path: _} = data}
-       ) do
+  defp live_response({conn, %{domain_name: _, port: _, stream_path: _} = data}) do
     {
       put_resp_header(conn, "location", make_live_redirect_path(data)),
       302,
@@ -95,22 +91,19 @@ defmodule KalturaServer.RequestProcessing.LiveResponser do
   end
 
   defp live_response({conn, _data}) do
-    {conn, 500, "Server not found"}
+    {conn, 404, "Server not found"}
   end
 
   defp make_live_redirect_path(%{
          domain_name: domain_name,
          port: port,
-         protocol: protocol,
-         encryption: encryption,
          stream_path: stream_path
        }) do
-    "http://#{domain_name}#{server_port(port)}/#{codec_path(protocol, encryption)}/#{stream_path}"
+    {application_layer_protocol, server_port} = get_server_port(port)
+    "#{application_layer_protocol}://#{domain_name}#{server_port}/#{stream_path}"
   end
 
-  defp server_port(80), do: ""
-  defp server_port(port), do: ":#{port}"
-
-  defp codec_path(protocol, ""), do: protocol
-  defp codec_path(protocol, encryption), do: "#{protocol}_#{encryption}"
+  defp get_server_port(80), do: {"http", ""}
+  defp get_server_port(443), do: {"https", ""}
+  defp get_server_port(port), do: {"http", ":#{port}"}
 end
