@@ -17,7 +17,7 @@ defmodule KalturaServer.RequestProcessing.DataReader do
   def call(%Plug.Conn{remote_ip: remote_ip} = conn, _opts) do
     conn
     |> assign_request_data()
-    |> assign(:ip_address, string_ip_address(remote_ip))
+    |> assign(:ip_address, remote_ip)
   end
 
   defp assign_request_data(%Plug.Conn{request_path: "/btv/" <> rest_path} = conn) do
@@ -40,12 +40,5 @@ defmodule KalturaServer.RequestProcessing.DataReader do
 
   defp assign_request_data(%Plug.Conn{request_path: _} = conn) do
     conn
-  end
-
-  defp string_ip_address(ip_address) do
-    ip_address
-    |> Tuple.to_list()
-    |> Enum.map(&to_string/1)
-    |> Enum.join(".")
   end
 end

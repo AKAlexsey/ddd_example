@@ -8,8 +8,8 @@ defmodule KalturaServer.DomainModelFactories.ProgramRecord do
       id: next_table_id(),
       program_id: nil,
       server_id: nil,
-      status: :planned,
-      protocol: :HLS,
+      status: "PLANNED",
+      protocol: "HLS",
       path: "#{Faker.Lorem.word()}"
     }
   end
@@ -25,25 +25,43 @@ defmodule KalturaServer.DomainModelFactories.ProgramRecord do
   defp prepare_attrs(attrs) do
     default_attrs()
     |> Map.merge(attrs)
-    |> (fn
-          %{program_id: nil} = write_attrs ->
-            %{id: program_id} = Factory.insert(:program)
+    |> put_server_data()
+    |> put_program_data()
+  end
 
-            write_attrs
-            |> Map.put(:program_id, program_id)
+  defp put_server_data(%{server_id: nil} = write_attrs) do
+    %{id: server_id, prefix: prefix} = Factory.insert(:server)
 
-          write_attrs ->
-            write_attrs
-        end).()
-    |> (fn
-          %{server_id: nil} = write_attrs ->
-            %{id: server_id} = Factory.insert(:server)
+    write_attrs
+    |> Map.merge(%{
+      server_id: server_id,
+      prefix: prefix
+    })
+  end
 
-            write_attrs
-            |> Map.put(:server_id, server_id)
+  defp put_server_data(%{server_id: server_id} = write_attrs) do
+    %{prefix: prefix} = Amnesia.transaction(fn -> DomainModel.Server.read(server_id) end)
 
-          write_attrs ->
-            write_attrs
-        end).()
+    write_attrs
+    |> Map.put(:prefix, prefix)
+  end
+
+  defp put_program_data(%{program_id: nil, status: status, protocol: protocol} = write_attrs) do
+    %{id: program_id, epg_id: epg_id} = Factory.insert(:program)
+
+    write_attrs
+    |> Map.merge(%{
+      program_id: program_id,
+      complex_search_index: {epg_id, status, protocol}
+    })
+  end
+
+  defp put_program_data(
+         %{program_id: program_id, status: status, protocol: protocol} = write_attrs
+       ) do
+    %{epg_id: epg_id} = Amnesia.transaction(fn -> DomainModel.Program.read(program_id) end)
+
+    write_attrs
+    |> Map.put(:complex_search_index, {epg_id, status, protocol})
   end
 end

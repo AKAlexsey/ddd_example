@@ -6,25 +6,10 @@ defmodule KalturaServer.ClosestEdgeServerService do
   alias KalturaServer.DomainModelContext, as: Context
 
   @spec perform(binary) :: map() | nil
-  def perform(ip_address, opts \\ [])
-
-  def perform(ip_address, linear_channel_id: linear_channel_id) do
+  def perform(ip_address) do
     Context.get_subnets_for_ip(ip_address)
-    |> Enum.reduce_while(nil, fn subnet, acc ->
-      subnet
-      |> Context.get_subnet_region()
-      |> Context.get_appropriate_server_group_ids(linear_channel_id)
-      |> Context.get_appropriate_servers()
-      |> choose_random_server(acc)
-    end)
-  end
-
-  def perform(ip_address, _opts) do
-    Context.get_subnets_for_ip(ip_address)
-    |> Enum.reduce_while(nil, fn subnet, acc ->
-      subnet
-      |> Context.get_subnet_region()
-      |> Context.get_region_server_ids()
+    |> Enum.reduce_while(nil, fn %{server_ids: server_ids}, acc ->
+      server_ids
       |> Context.get_appropriate_servers()
       |> choose_random_server(acc)
     end)

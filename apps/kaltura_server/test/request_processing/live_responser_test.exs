@@ -11,7 +11,18 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
       linear_channel_id = 777
       best_server1_id = 778
       best_server2_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      mpd_wv_tv_stream_id = 777
+      mpd_pr_tv_stream_id = 778
+      mpd_none_tv_stream_id = 779
+      mpd_common_tv_stream_id = 780
+      hls_tv_stream_id = 781
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [best_server1_id, best_server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -24,8 +35,8 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           id: best_server1_id,
           server_group_ids: [server_group_id],
           port: 80,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
@@ -35,45 +46,10 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           id: best_server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
-        })
-
-      %{id: mpd_pr_tv_stream_id, stream_path: mpd_pr_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "MPD",
-          encryption: "PLAYREADY"
-        })
-
-      %{id: mpd_common_tv_stream_id, stream_path: mpd_common_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "MPD",
-          encryption: "COMMON"
-        })
-
-      %{id: mpd_wv_tv_stream_id, stream_path: mpd_wv_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "MPD",
-          encryption: "WIDEVINE"
-        })
-
-      %{id: mpd_none_tv_stream_id, stream_path: mpd_none_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "MPD",
-          encryption: "NONE"
-        })
-
-      %{id: hls_tv_stream_id, stream_path: hls_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "HLS",
-          encryption: "NONE"
         })
 
       %{epg_id: epg_id} =
@@ -86,6 +62,46 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
             mpd_common_tv_stream_id,
             hls_tv_stream_id
           ]
+        })
+
+      %{stream_path: mpd_pr_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: mpd_pr_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "MPD",
+          encryption: "PLAYREADY"
+        })
+
+      %{stream_path: mpd_common_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: mpd_common_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "MPD",
+          encryption: "COMMON"
+        })
+
+      %{stream_path: mpd_wv_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: mpd_wv_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "MPD",
+          encryption: "WIDEVINE"
+        })
+
+      %{stream_path: mpd_none_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: mpd_none_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "MPD",
+          encryption: "NONE"
+        })
+
+      %{stream_path: hls_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: hls_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "HLS",
+          encryption: "NONE"
         })
 
       Factory.insert(:server_group, %{
@@ -101,7 +117,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           protocol: "mpd",
           encryption: "pr",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -111,7 +127,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           protocol: "mpd",
           encryption: "wv",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -121,7 +137,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           protocol: "mpd",
           encryption: "",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -131,7 +147,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           protocol: "hls",
           encryption: "",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -292,7 +308,18 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
       linear_channel_id = 777
       best_server1_id = 778
       best_server2_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      mpd_wv_tv_stream_id = 777
+      mpd_pr_tv_stream_id = 778
+      mpd_none_tv_stream_id = 779
+      mpd_common_tv_stream_id = 780
+      hls_tv_stream_id = 781
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [best_server1_id, best_server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -305,8 +332,8 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           id: best_server1_id,
           server_group_ids: [server_group_id],
           port: 443,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
@@ -316,45 +343,10 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           id: best_server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
-        })
-
-      %{id: mpd_pr_tv_stream_id, stream_path: mpd_pr_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "MPD",
-          encryption: "PLAYREADY"
-        })
-
-      %{id: mpd_common_tv_stream_id, stream_path: mpd_common_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "MPD",
-          encryption: "COMMON"
-        })
-
-      %{id: mpd_wv_tv_stream_id, stream_path: mpd_wv_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "MPD",
-          encryption: "WIDEVINE"
-        })
-
-      %{id: mpd_none_tv_stream_id, stream_path: mpd_none_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "MPD",
-          encryption: "NONE"
-        })
-
-      %{id: hls_tv_stream_id, stream_path: hls_stream_path} =
-        Factory.insert(:tv_stream, %{
-          linear_channel_id: linear_channel_id,
-          protocol: "HLS",
-          encryption: "NONE"
         })
 
       %{epg_id: epg_id} =
@@ -367,6 +359,46 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
             mpd_common_tv_stream_id,
             hls_tv_stream_id
           ]
+        })
+
+      %{stream_path: mpd_pr_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: mpd_pr_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "MPD",
+          encryption: "PLAYREADY"
+        })
+
+      %{stream_path: mpd_common_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: mpd_common_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "MPD",
+          encryption: "COMMON"
+        })
+
+      %{stream_path: mpd_wv_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: mpd_wv_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "MPD",
+          encryption: "WIDEVINE"
+        })
+
+      %{stream_path: mpd_none_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: mpd_none_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "MPD",
+          encryption: "NONE"
+        })
+
+      %{stream_path: hls_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: hls_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "HLS",
+          encryption: "NONE"
         })
 
       Factory.insert(:server_group, %{
@@ -382,7 +414,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           protocol: "mpd",
           encryption: "pr",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -392,7 +424,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           protocol: "mpd",
           encryption: "wv",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -402,7 +434,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           protocol: "mpd",
           encryption: "",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -412,7 +444,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           protocol: "hls",
           encryption: "",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -572,7 +604,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           protocol: "hls",
           encryption: "",
           resource_id: "resource_1234",
-          ip_address: "123.123.123.123"
+          ip_address: {124, 123, 123, 123}
         },
         remote_ip: {124, 123, 123, 123},
         request_path: "/btv/live/hls/resource_1234"

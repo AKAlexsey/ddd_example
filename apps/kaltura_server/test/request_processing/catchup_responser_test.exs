@@ -8,7 +8,15 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       subnet_id = 777
       region_id = 777
       server_group_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      server1_id = 777
+      server2_id = 778
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [server1_id, server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -16,22 +24,24 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
         server_group_ids: [server_group_id]
       })
 
-      %{id: server1_id, domain_name: domain_name1} =
+      %{domain_name: domain_name1} =
         Factory.insert(:server, %{
+          id: server1_id,
           server_group_ids: [server_group_id],
           port: 80,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
 
-      %{id: server2_id, port: port, domain_name: domain_name2} =
+      %{port: port, domain_name: domain_name2} =
         Factory.insert(:server, %{
+          id: server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })
@@ -39,16 +49,16 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       %{id: dvr_server1_id, prefix: dvr_prefix1} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true
         })
 
       %{id: dvr_server2_id, prefix: dvr_prefix2} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true
         })
 
@@ -64,33 +74,33 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
         Factory.insert(:program_record, %{
           server_id: dvr_server1_id,
           program_id: program_id,
-          protocol: :HLS,
-          status: :completed
+          protocol: "HLS",
+          status: "COMPLETED"
         })
 
       %{path: mpd_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server2_id,
           program_id: program_id,
-          protocol: :MPD,
-          status: :completed
+          protocol: "MPD",
+          status: "COMPLETED"
         })
 
       hls_conn =
         conn(:get, "/btv/catchup/hls/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: :HLS,
+          protocol: "HLS",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
       mpd_conn =
         conn(:get, "/btv/catchup/mpd/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: :MPD,
+          protocol: "MPD",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -147,7 +157,15 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       subnet_id = 777
       region_id = 777
       server_group_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      server1_id = 777
+      server2_id = 778
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [server1_id, server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -155,22 +173,24 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
         server_group_ids: [server_group_id]
       })
 
-      %{id: server1_id, domain_name: domain_name1} =
+      %{domain_name: domain_name1} =
         Factory.insert(:server, %{
+          id: server1_id,
           server_group_ids: [server_group_id],
           port: 443,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
 
-      %{id: server2_id, port: port, domain_name: domain_name2} =
+      %{port: port, domain_name: domain_name2} =
         Factory.insert(:server, %{
+          id: server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })
@@ -178,16 +198,16 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       %{id: dvr_server1_id, prefix: dvr_prefix1} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true
         })
 
       %{id: dvr_server2_id, prefix: dvr_prefix2} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true
         })
 
@@ -203,33 +223,33 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
         Factory.insert(:program_record, %{
           server_id: dvr_server1_id,
           program_id: program_id,
-          protocol: :HLS,
-          status: :completed
+          protocol: "HLS",
+          status: "COMPLETED"
         })
 
       %{path: mpd_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server2_id,
           program_id: program_id,
-          protocol: :MPD,
-          status: :completed
+          protocol: "MPD",
+          status: "COMPLETED"
         })
 
       hls_conn =
         conn(:get, "/btv/catchup/hls/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: :HLS,
+          protocol: "HLS",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
       mpd_conn =
         conn(:get, "/btv/catchup/mpd/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: :MPD,
+          protocol: "MPD",
           resource_id: epg_id,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -287,7 +307,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
         assigns: %{
           protocol: :hls,
           resource_id: "p_epg_1234",
-          ip_address: "123.123.123.123"
+          ip_address: {124, 123, 123, 123}
         },
         remote_ip: {124, 123, 123, 123},
         request_path: "/btv/catchup/hls/resource_1234"

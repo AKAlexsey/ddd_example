@@ -7,223 +7,63 @@ defmodule KalturaServer.DomainModelContext do
   require Amnesia.Helper
 
   @doc """
-  Looking for linear_channel by epg_id. If there is no such stream return nil.
+  Looking for TvStream by id and protocol using complex search index.
   """
-  @spec find_linear_channel(binary) :: map() | nil
-  def find_linear_channel(epg_id) do
-    Amnesia.transaction(fn ->
-      :mnesia.select(DomainModel.LinearChannel, [
-        {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8"},
-          [{:==, :"$2", epg_id}],
-          [:"$$"]
-        }
-      ])
-    end)
-    |> get_transaction_result_value()
-    |> make_domain_model_table_result()
+  @spec find_tv_streams(binary, binary) :: map() | nil
+  def find_tv_streams(epg_id, protocol) do
+    :mnesia.dirty_index_match_object(
+      DomainModel.TvStream,
+      {DomainModel.TvStream, :"$1", :"$2", :"$3", :"$4", :"$5", :"$6",
+       {epg_id, "ACTIVE", normalize_enum(protocol)}},
+      8
+    )
+    |> Enum.map(&make_domain_model_table_record/1)
   end
 
   @doc """
-  Looking for TvStream by id and protocol.
+  Find ProgramRecord by epg_id, protocol, encryption.
   """
-  @spec find_tv_streams(binary, atom | binary) :: map() | nil
-  def find_tv_streams(tv_stream_ids, protocol \\ nil) do
-    Amnesia.transaction(fn ->
-      :mnesia.select(DomainModel.TvStream, [
-        {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6"},
-          [
-            make_and_mnesia_clause([
-              make_in_mnesia_clause(tv_stream_ids, :"$1"),
-              {:==, :"$3", "ACTIVE"},
-              {:==, :"$4", normalize_enum(protocol)}
-            ])
-          ],
-          [:"$$"]
-        }
-      ])
-    end)
-    |> Enum.map(&make_domain_model_table_result/1)
-  end
-
-  # TODO выпилить после полного перехода на новый тип хранения Protocol -> Encryption
-  defp normalize_protocol_old(protocol) when is_atom(protocol) do
-    protocol
-    |> to_string()
-    |> normalize_protocol_old()
-  end
-
-  defp normalize_protocol_old(protocol) do
-    protocol
-    |> String.upcase()
-    |> String.to_atom()
-  end
-
-  @doc """
-  Gets "binary" ot :atom and return "UPCASEBINARY"
-  """
-  @spec normalize_enum(atom | binary) :: binary
-  def normalize_enum(protocol) when is_atom(protocol) do
-    protocol
-    |> to_string()
-    |> normalize_enum()
-  end
-
-  def normalize_enum(protocol) do
-    protocol
-    |> String.upcase()
-  end
-
-  @doc """
-  Find Program by epg_id or return nil.
-  """
-  @spec find_program(binary) :: map() | nil
-  def find_program(epg_id) do
-    Amnesia.transaction(fn ->
-      :mnesia.select(DomainModel.Program, [
-        {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5"},
-          [{:==, :"$4", epg_id}],
-          [:"$$"]
-        }
-      ])
-    end)
-    |> get_transaction_result_value()
-    |> make_domain_model_table_result()
-  end
-
-  @doc """
-  Find ProgramRecord by program_id and protocol or return nil.
-  """
-  @spec find_program_record(integer, atom) :: map() | nil
-  def find_program_record(program_id, protocol) do
-    Amnesia.transaction(fn ->
-      :mnesia.select(DomainModel.ProgramRecord, [
-        {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6"},
-          [
-            make_and_mnesia_clause([
-              {:==, :"$2", program_id},
-              {:==, :"$5", normalize_protocol_old(protocol)}
-            ])
-          ],
-          [:"$$"]
-        }
-      ])
-    end)
-    |> get_transaction_result_value()
-    |> make_domain_model_table_result()
-  end
-
-  @doc """
-  Find DVR Server by ID or return nil.
-  """
-  @spec find_dvr_server(integer) :: map() | nil
-  def find_dvr_server(server_id) do
-    Amnesia.transaction(fn ->
-      :mnesia.select(DomainModel.Server, [
-        {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$12"},
-          [
-            make_and_mnesia_clause([
-              {:==, :"$1", server_id},
-              {:==, :"$2", :dvr},
-              {:==, :"$6", :active}
-            ])
-          ],
-          [:"$$"]
-        }
-      ])
-    end)
-    |> get_transaction_result_value()
-    |> make_domain_model_table_result()
+  @spec find_program_record(binary, atom) :: map() | nil
+  def find_program_record(epg_id, protocol) do
+    :mnesia.dirty_index_match_object(
+      DomainModel.ProgramRecord,
+      {DomainModel.ProgramRecord, :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7",
+       {epg_id, "COMPLETED", normalize_enum(protocol)}},
+      9
+    )
+    |> get_transaction_first_value()
+    |> make_domain_model_table_record()
   end
 
   @doc """
   Iterate through all subnets and choose all those matches given IP address.
   """
-  @spec get_subnets_for_ip(binary) :: map() | []
+  @spec get_subnets_for_ip(tuple) :: map() | []
   def get_subnets_for_ip(ip_address) do
-    Amnesia.transaction(fn ->
-      Amnesia.Table.foldl(DomainModel.Subnet, [], fn {_, _, _, _, parsed_cidr, _} = subnet, acc ->
-        concat_subnet_if_it_matches(parsed_cidr, ip_address, acc, subnet)
-      end)
-    end)
-    |> Enum.sort_by(fn {_, _, _, _, parsed_cidr, _} -> -1 * parsed_cidr.mask end)
-    |> Enum.map(fn attrs -> DomainModel.make_table_record(attrs) end)
-  end
+    number_ip = CIDR.tuple2number(ip_address, 0)
 
-  defp concat_subnet_if_it_matches(parsed_cidr, ip_address, acc, subnet) do
-    if(CIDR.match!(parsed_cidr, ip_address), do: acc ++ [subnet], else: acc)
-  end
-
-  @doc """
-  Get subnet region
-  """
-  @spec get_subnet_region(map()) :: map() | nil
-  def get_subnet_region(%{region_id: region_id}) do
     Amnesia.transaction(fn ->
-      :mnesia.select(DomainModel.Region, [
+      :mnesia.select(DomainModel.Subnet, [
         {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5"},
-          [{:==, :"$1", region_id}],
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8"},
+          [
+            make_and_mnesia_clause([
+              {:"=<", :"$5", number_ip},
+              {:>=, :"$6", number_ip}
+            ])
+          ],
           [:"$$"]
         }
       ])
     end)
-    |> get_transaction_result_value()
-    |> make_domain_model_table_result()
+    |> Enum.sort_by(fn [_, _, _, _, parsed_cidr, _, _, _, _] -> -1 * parsed_cidr.mask end)
+    |> Enum.map(fn attrs -> DomainModel.make_table_record(attrs) end)
   end
-
-  @doc """
-  Get all region servers through server groups
-  """
-  @spec get_appropriate_server_group_ids(map() | nil, integer) :: list(integer) | []
-  def get_appropriate_server_group_ids(%{server_group_ids: server_group_ids}, linear_channel_id) do
-    Amnesia.transaction(fn ->
-      :mnesia.select(DomainModel.ServerGroup, [
-        {
-          {:_, :"$1", :_, :_, :"$4", :_, :"$6"},
-          [make_in_mnesia_clause(server_group_ids, :"$1")],
-          [{{:"$4", :"$6"}}]
-        }
-      ])
-      |> Enum.filter(fn {_server_ids, linear_channel_ids} ->
-        linear_channel_id in linear_channel_ids
-      end)
-      |> Enum.map(fn {server_ids, _linear_channel_ids} -> server_ids end)
-      |> List.flatten()
-      |> Enum.uniq()
-    end)
-  end
-
-  def get_appropriate_server_group_ids(nil, _linear_channel_id), do: []
-
-  @doc """
-  Get region server groups
-  """
-  @spec get_region_server_ids(map() | nil) :: list(integer) | []
-  def get_region_server_ids(%{server_group_ids: server_group_ids}) do
-    Amnesia.transaction(fn ->
-      :mnesia.select(DomainModel.ServerGroup, [
-        {
-          {:_, :"$1", :_, :_, :"$4", :_, :"$6"},
-          [make_in_mnesia_clause(server_group_ids, :"$1")],
-          [:"$4"]
-        }
-      ])
-      |> List.flatten()
-      |> Enum.uniq()
-    end)
-  end
-
-  def get_region_server_ids(nil), do: []
 
   @doc """
   Request from the mensia servers with given IDs and:
-  * type == :edge;
-  * status == :active;
+  * type == "EDGE";
+  * status == "ACTIVE";
   * healthcheck_enabled == true.
   """
   @spec get_appropriate_servers(list(integer)) :: list(map())
@@ -231,11 +71,12 @@ defmodule KalturaServer.DomainModelContext do
     Amnesia.transaction(fn ->
       :mnesia.select(DomainModel.Server, [
         {
-          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$12"},
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$12",
+           :"$13"},
           [
             make_and_mnesia_clause([
-              {:==, :"$2", :edge},
-              {:==, :"$6", :active},
+              {:==, :"$2", "EDGE"},
+              {:==, :"$6", "ACTIVE"},
               {:==, :"$9", true},
               make_in_mnesia_clause(server_ids, :"$1")
             ])
@@ -244,11 +85,11 @@ defmodule KalturaServer.DomainModelContext do
         }
       ])
     end)
-    |> Enum.map(&make_domain_model_table_result(&1))
+    |> Enum.map(&make_domain_model_table_record(&1))
   end
 
-  defp get_transaction_result_value([head | _tail]), do: head
-  defp get_transaction_result_value([]), do: nil
+  defp get_transaction_first_value([head | _tail]), do: head
+  defp get_transaction_first_value([]), do: nil
 
   @doc """
   Gets ids list and variable name. And return IN clause for mnesia query.
@@ -268,6 +109,21 @@ defmodule KalturaServer.DomainModelContext do
       value, clause ->
         {:orelse, {:==, variable_name, value}, clause}
     end)
+  end
+
+  @doc """
+  Gets "binary" ot :atom and return "UPCASEBINARY"
+  """
+  @spec normalize_enum(atom | binary) :: binary
+  def normalize_enum(protocol) when is_atom(protocol) do
+    protocol
+    |> to_string()
+    |> normalize_enum()
+  end
+
+  def normalize_enum(protocol) do
+    protocol
+    |> String.upcase()
   end
 
   @doc """
@@ -293,15 +149,15 @@ defmodule KalturaServer.DomainModelContext do
   @doc """
   Gets tuple and create new mnesia table record.
   """
-  def make_domain_model_table_result(nil), do: nil
+  def make_domain_model_table_record(nil), do: nil
 
-  def make_domain_model_table_result(attrs) when is_list(attrs) do
+  def make_domain_model_table_record(attrs) when is_list(attrs) do
     attrs
     |> List.to_tuple()
-    |> make_domain_model_table_result()
+    |> make_domain_model_table_record()
   end
 
-  def make_domain_model_table_result(attrs) when is_tuple(attrs) do
+  def make_domain_model_table_record(attrs) when is_tuple(attrs) do
     attrs
     |> DomainModel.make_table_record()
   end

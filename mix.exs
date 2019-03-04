@@ -18,6 +18,8 @@ defmodule CtiKaltura.MixProject do
   defp deps do
     [
       {:plug_cowboy, "~> 1.0"},
+      # Quality assurance
+      {:benchee, "~> 0.11", only: :dev},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:faker, "~> 0.11", only: [:dev, :test]},
       # Tools

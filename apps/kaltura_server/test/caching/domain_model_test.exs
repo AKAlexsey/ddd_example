@@ -1,6 +1,19 @@
 defmodule KalturaServer.DomainModelTest do
   use KalturaServer.TestCase
 
+  describe "#cidr_fields_for_search" do
+    test "Add three fields" do
+      cidr = "123.23.23.14/28"
+      parsed_cidr = CIDR.parse(cidr)
+
+      assert %{
+               parsed_cidr: parsed_cidr,
+               first_number_ip: 2_065_110_784,
+               last_number_ip: 2_065_110_799
+             } == DomainModel.cidr_fields_for_search(cidr)
+    end
+  end
+
   describe "#make_table_record" do
     setup do
       region_id = 777
@@ -10,7 +23,7 @@ defmodule KalturaServer.DomainModelTest do
 
     test "Create new table record with given params", %{id: region_id, table_name: table_name} do
       name = Faker.Lorem.word()
-      status = :active
+      status = "ACTIVE"
       subnet_ids = []
       server_group_ids = []
 

@@ -7,10 +7,11 @@ defmodule KalturaServer.DomainModelFactories.ServerGroup do
     %{
       id: next_table_id(),
       name: Faker.Lorem.word(),
-      status: :active,
+      status: "ACTIVE",
       server_ids: [],
       region_ids: [],
-      linear_channel_ids: []
+      linear_channel_ids: [],
+      subnet_ids: []
     }
   end
 

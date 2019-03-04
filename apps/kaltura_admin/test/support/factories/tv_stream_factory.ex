@@ -27,7 +27,7 @@ defmodule KalturaAdmin.TvStreamFactory do
     attrs
     |> build()
     |> (fn
-          %{linear_channel_id: _id} = attrs_map ->
+          %{linear_channel_id: id} = attrs_map when not is_nil(id) ->
             attrs_map
 
           attrs_map ->

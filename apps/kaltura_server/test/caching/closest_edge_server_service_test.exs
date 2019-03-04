@@ -10,13 +10,7 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
 
   describe "#perform if LinearChannel is not given fails scenarios" do
     test "Return nil if no Subnets for given IP" do
-      assert is_nil(ClosestEdgeServerService.perform("123.123.123.123"))
-    end
-
-    test "Return nil if Region does not have ServerGroups" do
-      Factory.insert(:subnet, %{cidr: "123.123.123.123/29"})
-
-      assert is_nil(ClosestEdgeServerService.perform("123.123.123.123"))
+      assert is_nil(ClosestEdgeServerService.perform({123, 123, 123, 123}))
     end
 
     test "Return nil if Region does not have Servers" do
@@ -33,7 +27,7 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
 
       Factory.insert(:server_group, %{id: server_group_id, region_ids: [region_id]})
 
-      assert is_nil(ClosestEdgeServerService.perform("123.123.123.123"))
+      assert is_nil(ClosestEdgeServerService.perform({123, 123, 123, 123}))
     end
   end
 
@@ -42,8 +36,18 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
       subnet_id = 777
       region_id = 777
       server_group_id = 777
+      s_id1 = 777
+      s_id2 = 778
+      s_id3 = 779
+      s_id4 = 780
+      s_id5 = 781
 
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [s_id1, s_id2, s_id3, s_id4, s_id5]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -51,47 +55,47 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
         server_group_ids: [server_group_id]
       })
 
-      %{id: s_id1} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :inactive,
-          type: :edge,
-          healthcheck_enabled: true
-        })
+      Factory.insert(:server, %{
+        id: s_id1,
+        server_group_ids: [server_group_id],
+        status: "INACTIVE",
+        type: "EDGE",
+        healthcheck_enabled: true
+      })
 
-      %{id: s_id2} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
-          healthcheck_enabled: true
-        })
+      Factory.insert(:server, %{
+        id: s_id2,
+        server_group_ids: [server_group_id],
+        status: "ACTIVE",
+        type: "EDGE",
+        healthcheck_enabled: true
+      })
 
-      %{id: s_id3} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: false
-        })
+      Factory.insert(:server, %{
+        id: s_id3,
+        server_group_ids: [server_group_id],
+        status: "ACTIVE",
+        type: "EDGE",
+        healthcheck_enabled: false
+      })
 
-      %{id: s_id4} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 10
-        })
+      Factory.insert(:server, %{
+        id: s_id4,
+        server_group_ids: [server_group_id],
+        status: "ACTIVE",
+        type: "EDGE",
+        healthcheck_enabled: true,
+        weight: 10
+      })
 
-      %{id: s_id5} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 20
-        })
+      Factory.insert(:server, %{
+        id: s_id5,
+        server_group_ids: [server_group_id],
+        status: "ACTIVE",
+        type: "EDGE",
+        healthcheck_enabled: true,
+        weight: 20
+      })
 
       {:ok,
        server_group_id: server_group_id,
@@ -112,305 +116,7 @@ defmodule KalturaServer.ClosestEdgeServerServiceTest do
         linear_channel_ids: [linear_channel_id]
       })
 
-      assert ClosestEdgeServerService.perform("123.123.123.123").id in server_ids
-    end
-  end
-
-  describe "#perform if LinearChannel given fails scenarios" do
-    test "Return nil if no Subnets for given IP", %{linear_channel_id: linear_channel_id} do
-      assert is_nil(
-               ClosestEdgeServerService.perform(
-                 "123.123.123.123",
-                 linear_channel_id: linear_channel_id
-               )
-             )
-    end
-
-    test "Return nil if Subnet does not have Region", %{linear_channel_id: linear_channel_id} do
-      Factory.insert(:subnet, %{cidr: "123.123.123.123/29"})
-
-      assert is_nil(
-               ClosestEdgeServerService.perform(
-                 "123.123.123.123",
-                 linear_channel_id: linear_channel_id
-               )
-             )
-    end
-
-    test "Return nil if Region does not have ServerGroups", %{
-      linear_channel_id: linear_channel_id
-    } do
-      subnet_id = 777
-      region_id = 777
-      Factory.insert(:region, %{id: region_id, subnet_ids: [subnet_id]})
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
-
-      assert is_nil(
-               ClosestEdgeServerService.perform(
-                 "123.123.123.123",
-                 linear_channel_id: linear_channel_id
-               )
-             )
-    end
-
-    test "Return nil if Region does not have Servers", %{linear_channel_id: linear_channel_id} do
-      subnet_id = 777
-      region_id = 777
-      server_group_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
-
-      Factory.insert(:region, %{
-        id: region_id,
-        subnet_ids: [subnet_id],
-        server_group_id: [server_group_id]
-      })
-
-      Factory.insert(:server_group, %{id: server_group_id, region_ids: [region_id]})
-
-      assert is_nil(
-               ClosestEdgeServerService.perform(
-                 "123.123.123.123",
-                 linear_channel_id: linear_channel_id
-               )
-             )
-    end
-
-    test "Return nil if Server does not belong to LinearChannel", %{
-      linear_channel_id: linear_channel_id
-    } do
-      subnet_id = 777
-      region_id = 777
-      server_group_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
-
-      Factory.insert(:region, %{
-        id: region_id,
-        subnet_ids: [subnet_id],
-        server_group_ids: [server_group_id]
-      })
-
-      %{id: s_id1} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :inactive,
-          type: :edge,
-          healthcheck_enabled: true
-        })
-
-      %{id: s_id2} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
-          healthcheck_enabled: true
-        })
-
-      %{id: s_id3} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: false
-        })
-
-      %{id: s_id4} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 10
-        })
-
-      %{id: s_id5} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 20
-        })
-
-      %{id: best_server_id} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
-
-      Factory.insert(:server_group, %{
-        id: server_group_id,
-        region_ids: [region_id],
-        server_ids: [s_id1, s_id2, s_id3, s_id4, s_id5, best_server_id]
-      })
-
-      assert is_nil(
-               ClosestEdgeServerService.perform(
-                 "123.123.123.123",
-                 linear_channel_id: linear_channel_id
-               )
-             )
-    end
-
-    test "Return most appropriate Server if they exist", %{linear_channel_id: linear_channel_id} do
-      subnet_id = 777
-      region_id = 777
-      server_group_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
-
-      Factory.insert(:region, %{
-        id: region_id,
-        subnet_ids: [subnet_id],
-        server_group_ids: [server_group_id]
-      })
-
-      %{id: s_id1} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :inactive,
-          type: :edge,
-          healthcheck_enabled: true
-        })
-
-      %{id: s_id2} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
-          healthcheck_enabled: true
-        })
-
-      %{id: s_id3} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: false
-        })
-
-      %{id: s_id4} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 10
-        })
-
-      %{id: s_id5} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 20
-        })
-
-      %{id: best_server_id} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 30
-        })
-
-      Factory.insert(:server_group, %{
-        id: server_group_id,
-        region_ids: [region_id],
-        server_ids: [s_id1, s_id2, s_id3, s_id4, s_id5, best_server_id]
-      })
-
-      assert is_nil(
-               ClosestEdgeServerService.perform(
-                 "123.123.123.123",
-                 linear_channel_id: linear_channel_id
-               )
-             )
-    end
-  end
-
-  describe "#perform if LinearChannel given success scenarios" do
-    setup do
-      subnet_id = 777
-      region_id = 777
-      server_group_id = 777
-
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
-
-      Factory.insert(:region, %{
-        id: region_id,
-        subnet_ids: [subnet_id],
-        server_group_ids: [server_group_id]
-      })
-
-      %{id: s_id1} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :inactive,
-          type: :edge,
-          healthcheck_enabled: true
-        })
-
-      %{id: s_id2} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
-          healthcheck_enabled: true
-        })
-
-      %{id: s_id3} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: false
-        })
-
-      %{id: s_id4} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 10
-        })
-
-      %{id: s_id5} =
-        Factory.insert(:server, %{
-          server_group_ids: [server_group_id],
-          status: :active,
-          type: :edge,
-          healthcheck_enabled: true,
-          weight: 20
-        })
-
-      {:ok,
-       server_group_id: server_group_id,
-       server_ids: [s_id1, s_id2, s_id3, s_id4, s_id5],
-       region_id: region_id}
-    end
-
-    test "Return Server if they exist", %{
-      server_group_id: server_group_id,
-      linear_channel_id: linear_channel_id,
-      server_ids: server_ids,
-      region_id: region_id
-    } do
-      Factory.insert(:server_group, %{
-        id: server_group_id,
-        region_ids: [region_id],
-        server_ids: server_ids,
-        linear_channel_ids: [linear_channel_id]
-      })
-
-      assert ClosestEdgeServerService.perform(
-               "123.123.123.123",
-               linear_channel_id: linear_channel_id
-             ).id in server_ids
+      assert ClosestEdgeServerService.perform({123, 123, 123, 123}).id in server_ids
     end
   end
 

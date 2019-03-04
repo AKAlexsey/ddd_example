@@ -12,7 +12,16 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       region_id = 777
       server_group_id = 777
       linear_channel_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      tv_stream_id = 777
+      edge_server1_id = 777
+      edge_server2_id = 778
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [edge_server1_id, edge_server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -20,31 +29,33 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
         server_group_ids: [server_group_id]
       })
 
-      %{id: edge_server1_id, domain_name: domain_name1} =
+      %{domain_name: domain_name1} =
         Factory.insert(:server, %{
+          id: edge_server1_id,
           server_group_ids: [server_group_id],
           port: 80,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
 
-      %{id: edge_server2_id, port: port, domain_name: domain_name2} =
+      %{port: port, domain_name: domain_name2} =
         Factory.insert(:server, %{
+          id: edge_server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })
 
-      %{id: tv_stream_id, stream_path: stream_path} =
-        Factory.insert(:tv_stream, %{linear_channel_id: linear_channel_id})
-
       %{epg_id: epg_id} =
         Factory.insert(:linear_channel, %{id: linear_channel_id, tv_stream_ids: [tv_stream_id]})
+
+      %{stream_path: stream_path} =
+        Factory.insert(:tv_stream, %{id: tv_stream_id, linear_channel_id: linear_channel_id})
 
       Factory.insert(:server_group, %{
         id: server_group_id,
@@ -115,7 +126,16 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       region_id = 777
       server_group_id = 777
       linear_channel_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      tv_stream_id = 777
+      edge_server1_id = 777
+      edge_server2_id = 778
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [edge_server1_id, edge_server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -123,31 +143,33 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
         server_group_ids: [server_group_id]
       })
 
-      %{id: edge_server1_id, domain_name: domain_name1} =
+      %{domain_name: domain_name1} =
         Factory.insert(:server, %{
+          id: edge_server1_id,
           server_group_ids: [server_group_id],
           port: 443,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
 
-      %{id: edge_server2_id, port: port, domain_name: domain_name2} =
+      %{port: port, domain_name: domain_name2} =
         Factory.insert(:server, %{
+          id: edge_server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })
 
-      %{id: tv_stream_id, stream_path: stream_path} =
-        Factory.insert(:tv_stream, %{linear_channel_id: linear_channel_id})
-
       %{epg_id: epg_id} =
         Factory.insert(:linear_channel, %{id: linear_channel_id, tv_stream_ids: [tv_stream_id]})
+
+      %{stream_path: stream_path} =
+        Factory.insert(:tv_stream, %{id: tv_stream_id, linear_channel_id: linear_channel_id})
 
       Factory.insert(:server_group, %{
         id: server_group_id,
@@ -219,7 +241,13 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       server_group_id = 777
       edge_server1_id = 777
       edge_server2_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [edge_server1_id, edge_server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -232,8 +260,8 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
           id: edge_server1_id,
           server_group_ids: [server_group_id],
           port: 80,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
@@ -243,8 +271,8 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
           id: edge_server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })
@@ -252,16 +280,16 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       %{id: dvr_server1_id, prefix: dvr_prefix1} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true
         })
 
       %{id: dvr_server2_id, prefix: dvr_prefix2} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true
         })
 
@@ -277,22 +305,22 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
         Factory.insert(:program_record, %{
           server_id: dvr_server1_id,
           program_id: program_id,
-          protocol: :HLS,
-          status: :completed
+          protocol: "HLS",
+          status: "COMPLETED"
         })
 
       %{path: mpd_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server2_id,
           program_id: program_id,
-          protocol: :MPD,
-          status: :completed
+          protocol: "MPD",
+          status: "COMPLETED"
         })
 
       hls_conn =
         conn(:get, "/btv/catchup/hls/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: :HLS,
+          protocol: "HLS",
           resource_id: epg_id,
           ip_address: "123.123.123.123"
         })
@@ -301,7 +329,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       mpd_conn =
         conn(:get, "/btv/catchup/mpd/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: :MPD,
+          protocol: "MPD",
           resource_id: epg_id,
           ip_address: "123.123.123.123"
         })
@@ -363,8 +391,14 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       region_id = 777
       server_group_id = 777
       edge_server1_id = 777
-      edge_server2_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      edge_server2_id = 778
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [edge_server1_id, edge_server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -377,8 +411,8 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
           id: edge_server1_id,
           server_group_ids: [server_group_id],
           port: 443,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
@@ -388,8 +422,8 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
           id: edge_server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })
@@ -397,16 +431,16 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       %{id: dvr_server1_id, prefix: dvr_prefix1} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true
         })
 
       %{id: dvr_server2_id, prefix: dvr_prefix2} =
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
-          status: :active,
-          type: :dvr,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true
         })
 
@@ -422,22 +456,22 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
         Factory.insert(:program_record, %{
           server_id: dvr_server1_id,
           program_id: program_id,
-          protocol: :HLS,
-          status: :completed
+          protocol: "HLS",
+          status: "COMPLETED"
         })
 
       %{path: mpd_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server2_id,
           program_id: program_id,
-          protocol: :MPD,
-          status: :completed
+          protocol: "MPD",
+          status: "COMPLETED"
         })
 
       hls_conn =
         conn(:get, "/btv/catchup/hls/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: :HLS,
+          protocol: "HLS",
           resource_id: epg_id,
           ip_address: "123.123.123.123"
         })
@@ -446,7 +480,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       mpd_conn =
         conn(:get, "/btv/catchup/mpd/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: :MPD,
+          protocol: "MPD",
           resource_id: epg_id,
           ip_address: "123.123.123.123"
         })
@@ -507,7 +541,15 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       subnet_id = 777
       region_id = 777
       server_group_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      edge_server1_id = 777
+      edge_server2_id = 778
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [edge_server1_id, edge_server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -515,22 +557,24 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
         server_group_ids: [server_group_id]
       })
 
-      %{id: edge_server1_id, domain_name: domain_name1} =
+      %{domain_name: domain_name1} =
         Factory.insert(:server, %{
+          id: edge_server1_id,
           server_group_ids: [server_group_id],
           port: 80,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
 
-      %{id: edge_server2_id, port: port, domain_name: domain_name2} =
+      %{port: port, domain_name: domain_name2} =
         Factory.insert(:server, %{
+          id: edge_server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })
@@ -601,7 +645,15 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       subnet_id = 777
       region_id = 777
       server_group_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+      edge_server1_id = 777
+      edge_server2_id = 778
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [edge_server1_id, edge_server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -609,22 +661,24 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
         server_group_ids: [server_group_id]
       })
 
-      %{id: edge_server1_id, domain_name: domain_name1} =
+      %{domain_name: domain_name1} =
         Factory.insert(:server, %{
+          id: edge_server1_id,
           server_group_ids: [server_group_id],
           port: 443,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
 
-      %{id: edge_server2_id, port: port, domain_name: domain_name2} =
+      %{port: port, domain_name: domain_name2} =
         Factory.insert(:server, %{
+          id: edge_server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })

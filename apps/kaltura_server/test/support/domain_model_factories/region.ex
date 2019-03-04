@@ -7,7 +7,7 @@ defmodule KalturaServer.DomainModelFactories.Region do
     %{
       id: next_table_id(),
       name: Faker.Lorem.word(),
-      status: :active,
+      status: "ACTIVE",
       subnet_ids: [],
       server_group_ids: []
     }

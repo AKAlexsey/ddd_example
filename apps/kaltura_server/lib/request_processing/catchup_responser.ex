@@ -19,13 +19,10 @@ defmodule KalturaServer.RequestProcessing.CatchupResponser do
     {conn, 400, "Request invalid"}
   end
 
-  defp put_resource_params(
-         {%Plug.Conn{assigns: %{resource_id: epg_id, protocol: protocol}} = conn, data}
-       ) do
-    with %{id: program_id} <- Context.find_program(epg_id),
-         %{server_id: server_id, status: :completed, path: path} <-
-           Context.find_program_record(program_id, protocol),
-         %{prefix: prefix} <- Context.find_dvr_server(server_id) do
+  def put_resource_params(
+        {%Plug.Conn{assigns: %{resource_id: epg_id, protocol: protocol}} = conn, data}
+      ) do
+    with %{prefix: prefix, path: path} <- Context.find_program_record(epg_id, protocol) do
       enriched_data =
         data
         |> Map.merge(%{
@@ -40,10 +37,10 @@ defmodule KalturaServer.RequestProcessing.CatchupResponser do
     end
   end
 
-  defp put_server_domain_data({
-         %Plug.Conn{assigns: %{ip_address: ip_address}} = conn,
-         data
-       }) do
+  def put_server_domain_data({
+        %Plug.Conn{assigns: %{ip_address: ip_address}} = conn,
+        data
+      }) do
     case ClosestEdgeServerService.perform(ip_address) do
       %{domain_name: domain_name, port: port} ->
         {conn, Map.merge(data, %{domain_name: domain_name, port: port})}

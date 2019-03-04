@@ -11,7 +11,13 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
       server_group_id = 777
       server1_id = 778
       server2_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [server1_id, server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -24,8 +30,8 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
           id: server1_id,
           server_group_ids: [server_group_id],
           port: 80,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
@@ -35,8 +41,8 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
           id: server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })
@@ -53,7 +59,7 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
         conn(:get, "/vod/#{vod_path}")
         |> Map.put(:assigns, %{
           vod_path: vod_path,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -104,7 +110,13 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
       server_group_id = 777
       server1_id = 778
       server2_id = 777
-      Factory.insert(:subnet, %{id: subnet_id, cidr: "123.123.123.123/29", region_id: region_id})
+
+      Factory.insert(:subnet, %{
+        id: subnet_id,
+        cidr: "123.123.123.123/29",
+        region_id: region_id,
+        server_ids: [server1_id, server2_id]
+      })
 
       Factory.insert(:region, %{
         id: region_id,
@@ -117,8 +129,8 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
           id: server1_id,
           server_group_ids: [server_group_id],
           port: 443,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
         })
@@ -128,8 +140,8 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
           id: server2_id,
           server_group_ids: [server_group_id],
           port: 96,
-          status: :active,
-          type: :edge,
+          status: "ACTIVE",
+          type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
         })
@@ -146,7 +158,7 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
         conn(:get, "/vod/#{vod_path}")
         |> Map.put(:assigns, %{
           vod_path: vod_path,
-          ip_address: "123.123.123.123"
+          ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
@@ -197,7 +209,7 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
       conn = %Plug.Conn{
         assigns: %{
           vod_path: vod_path,
-          ip_address: "124.123.123.123"
+          ip_address: {124, 123, 123, 123}
         },
         remote_ip: {124, 123, 123, 123},
         request_path: "/btv/live/hls/resource_1234"

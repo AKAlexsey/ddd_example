@@ -461,8 +461,13 @@ defmodule KalturaAdmin.ContentTest do
     }
     @invalid_attrs %{encryption: nil, protocol: nil, status: nil, stream_path: nil}
 
+    def valid_attrs do
+      {:ok, %{id: linear_channel_id}} = Factory.insert(:linear_channel)
+      Map.put(@valid_attrs, :linear_channel_id, linear_channel_id)
+    end
+
     def tv_stream_fixture(attrs \\ %{}) do
-      {:ok, tv_stream} = Factory.insert(:tv_stream, Enum.into(attrs, @valid_attrs))
+      {:ok, tv_stream} = Factory.insert(:tv_stream, Enum.into(attrs, valid_attrs()))
 
       tv_stream
     end
@@ -479,7 +484,7 @@ defmodule KalturaAdmin.ContentTest do
 
     test "create_tv_stream/1 with valid data creates a tv_stream" do
       with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
-        assert {:ok, %TvStream{} = tv_stream} = Content.create_tv_stream(@valid_attrs)
+        assert {:ok, %TvStream{} = tv_stream} = Content.create_tv_stream(valid_attrs())
         assert tv_stream.encryption == "some encryption"
         assert tv_stream.protocol == "some protocol"
         assert tv_stream.status == "some status"
@@ -490,10 +495,10 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "create_tv_stream/1 validate stream_path uniques" do
-      {:ok, %TvStream{}} = Content.create_tv_stream(@valid_attrs)
+      {:ok, %TvStream{}} = Content.create_tv_stream(valid_attrs())
 
       assert_raise(Ecto.ConstraintError, fn ->
-        Content.create_tv_stream(@valid_attrs)
+        Content.create_tv_stream(valid_attrs())
       end)
     end
 
@@ -515,13 +520,13 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "udpate_tv_stream/1 validate stream_path uniques" do
-      {:ok, %TvStream{}} = Content.create_tv_stream(@valid_attrs)
+      {:ok, %TvStream{}} = Content.create_tv_stream(valid_attrs())
 
-      valid_attrs_2 = Map.merge(@valid_attrs, %{stream_path: "#{Faker.Lorem.word()}"})
+      valid_attrs_2 = Map.merge(valid_attrs(), %{stream_path: "#{Faker.Lorem.word()}"})
       {:ok, %TvStream{} = tv_stream} = Content.create_tv_stream(valid_attrs_2)
 
       assert_raise(Ecto.ConstraintError, fn ->
-        Content.update_tv_stream(tv_stream, %{stream_path: @valid_attrs.stream_path})
+        Content.update_tv_stream(tv_stream, %{stream_path: valid_attrs().stream_path})
       end)
     end
 

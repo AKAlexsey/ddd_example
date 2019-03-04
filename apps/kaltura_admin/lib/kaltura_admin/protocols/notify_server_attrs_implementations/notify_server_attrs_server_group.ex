@@ -19,11 +19,11 @@ defimpl NotifyServerAttrs, for: ServerGroup do
     |> preload_server_ids(record)
     |> preload_region_ids(record)
     |> preload_linear_channel_ids(record)
+    |> preload_subnet_ids(record)
   end
 
   defp preload_server_ids(attrs, %{servers: servers}) when is_list(servers) do
-    attrs
-    |> Map.merge(%{server_ids: Enum.map(servers, & &1.id)})
+    put_server_ids(attrs, get_ids(servers))
   end
 
   defp preload_server_ids(attrs, %{id: server_group_id}) do
@@ -35,13 +35,16 @@ defimpl NotifyServerAttrs, for: ServerGroup do
       )
       |> Repo.all()
 
+    put_server_ids(attrs, server_ids)
+  end
+
+  defp put_server_ids(attrs, server_ids) do
     attrs
     |> Map.merge(%{server_ids: server_ids})
   end
 
   defp preload_region_ids(attrs, %{regions: regions}) when is_list(regions) do
-    attrs
-    |> Map.merge(%{server_ids: Enum.map(regions, & &1.id)})
+    put_region_ids(attrs, get_ids(regions))
   end
 
   defp preload_region_ids(attrs, %{id: server_group_id}) do
@@ -53,14 +56,17 @@ defimpl NotifyServerAttrs, for: ServerGroup do
       )
       |> Repo.all()
 
+    put_region_ids(attrs, region_ids)
+  end
+
+  defp put_region_ids(attrs, region_ids) do
     attrs
     |> Map.merge(%{region_ids: region_ids})
   end
 
   defp preload_linear_channel_ids(attrs, %{linear_channels: linear_channels})
        when is_list(linear_channels) do
-    attrs
-    |> Map.merge(%{linear_channel_ids: Enum.map(linear_channels, & &1.id)})
+    put_linear_channel_ids(attrs, get_ids(linear_channels))
   end
 
   defp preload_linear_channel_ids(attrs, %{id: server_group_id}) do
@@ -72,7 +78,34 @@ defimpl NotifyServerAttrs, for: ServerGroup do
       )
       |> Repo.all()
 
+    put_linear_channel_ids(attrs, linear_channel_ids)
+  end
+
+  defp put_linear_channel_ids(attrs, linear_channel_ids) do
     attrs
     |> Map.merge(%{linear_channel_ids: linear_channel_ids})
+  end
+
+  defp preload_subnet_ids(attrs, %{regions: regions} = record)
+       when is_list(regions) and length(regions) > 0 do
+    put_subnet_ids(attrs, record)
+  end
+
+  defp preload_subnet_ids(attrs, record) do
+    record_with_preload = Repo.preload(record, regions: :subnets)
+    put_subnet_ids(attrs, record_with_preload)
+  end
+
+  defp put_subnet_ids(attrs, %{regions: regions}) do
+    subnet_ids =
+      regions
+      |> Enum.reduce([], fn %{subnets: subnets}, acc -> acc ++ get_ids(subnets) end)
+      |> Enum.uniq()
+
+    Map.put(attrs, :subnet_ids, subnet_ids)
+  end
+
+  defp get_ids(collection) do
+    Enum.map(collection, & &1.id)
   end
 end
