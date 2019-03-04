@@ -13,7 +13,8 @@ defmodule KalturaServer.DomainModelFactories.TvStream do
       status: "ACTIVE",
       protocol: "HLS",
       encryption: "NONE",
-      linear_channel_id: nil
+      linear_channel_id: nil,
+      complex_search_index: {}
     }
   end
 
@@ -28,18 +29,30 @@ defmodule KalturaServer.DomainModelFactories.TvStream do
   defp prepare_attrs(attrs) do
     default_attrs()
     |> Map.merge(attrs)
-    |> put_linear_channel()
     |> normalize_enums()
+    |> put_complex_search_index()
   end
 
-  defp put_linear_channel(%{linear_channel_id: nil} = write_attrs) do
-    %{id: linear_channel_id} = Factory.insert(:linear_channel)
+  defp put_complex_search_index(
+         %{linear_channel_id: nil, status: status, protocol: protocol} = write_attrs
+       ) do
+    %{id: linear_channel_id, epg_id: epg_id} = Factory.insert(:linear_channel)
 
     write_attrs
-    |> Map.put(:linear_channel_id, linear_channel_id)
+    |> Map.merge(%{
+      linear_channel_id: linear_channel_id,
+      complex_search_index: {epg_id, status, protocol}
+    })
   end
 
-  defp put_linear_channel(write_attrs), do: write_attrs
+  defp put_complex_search_index(
+         %{linear_channel_id: id, status: status, protocol: protocol} = write_attrs
+       ) do
+    %{epg_id: epg_id} = Amnesia.transaction(fn -> DomainModel.LinearChannel.read(id) end)
+
+    write_attrs
+    |> Map.put(:complex_search_index, {epg_id, status, protocol})
+  end
 
   defp normalize_enums(write_attrs) do
     @enum_fields

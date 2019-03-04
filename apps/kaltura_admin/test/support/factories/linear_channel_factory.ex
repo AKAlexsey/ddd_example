@@ -6,11 +6,11 @@ defmodule KalturaAdmin.LinearChannelFactory do
 
   def default_attrs,
     do: %{
-      name: Faker.Lorem.word(),
-      code_name: Faker.Lorem.word(),
+      name: "#{Faker.Lorem.word()}_#{:rand.uniform(1000)}",
+      code_name: "#{Faker.Lorem.word()}_#{:rand.uniform(1000)}",
       description: Faker.Lorem.sentence(),
       dvr_enabled: false,
-      epg_id: Faker.Lorem.word(),
+      epg_id: "#{Faker.Lorem.word()}_#{:rand.uniform(1000)}",
       server_group_id: nil
     }
 

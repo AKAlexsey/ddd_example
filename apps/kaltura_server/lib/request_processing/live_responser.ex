@@ -23,15 +23,13 @@ defmodule KalturaServer.RequestProcessing.LiveResponser do
          {%Plug.Conn{assigns: %{resource_id: epg_id, protocol: protocol, encryption: encryption}} =
             conn, data}
        ) do
-    with %{id: id, tv_stream_ids: tv_stream_ids} <- Context.find_linear_channel(epg_id),
-         [_ | _] = tv_streams <- Context.find_tv_streams(tv_stream_ids, protocol),
+    with [_ | _] = tv_streams <- Context.find_tv_streams(epg_id, protocol),
          %{stream_path: stream_path} <-
            find_most_appropriate_tv_stream(tv_streams, protocol, encryption) do
       enriched_data =
         data
         |> Map.merge(%{
-          stream_path: stream_path,
-          linear_channel_id: id
+          stream_path: stream_path
         })
 
       {conn, enriched_data}
@@ -67,11 +65,8 @@ defmodule KalturaServer.RequestProcessing.LiveResponser do
     Enum.find(tv_streams, fn %{encryption: enc} -> enc == Context.normalize_enum(encryption) end)
   end
 
-  defp put_server_domain_data(
-         {%Plug.Conn{assigns: %{ip_address: ip_address}} = conn,
-          %{linear_channel_id: linear_channel_id} = data}
-       ) do
-    case ClosestEdgeServerService.perform(ip_address, linear_channel_id: linear_channel_id) do
+  defp put_server_domain_data({%Plug.Conn{assigns: %{ip_address: ip_address}} = conn, data}) do
+    case ClosestEdgeServerService.perform(ip_address) do
       %{domain_name: domain_name, port: port} ->
         {conn, Map.merge(data, %{domain_name: domain_name, port: port})}
 

@@ -11,11 +11,12 @@ defmodule KalturaServer.DomainModelFactories.Server do
       ip: Faker.Internet.ip_v4_address(),
       port: 81,
       prefix: "edge#{:rand.uniform(10)}",
-      status: :active,
-      type: :edge,
+      status: "ACTIVE",
+      type: "EDGE",
       weight: 5,
       server_group_ids: [],
-      program_record_ids: []
+      program_record_ids: [],
+      subnet_ids: []
     }
   end
 
