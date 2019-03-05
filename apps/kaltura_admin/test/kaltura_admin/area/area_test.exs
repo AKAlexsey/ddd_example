@@ -87,8 +87,8 @@ defmodule KalturaAdmin.AreaTest do
   describe "subnets" do
     alias KalturaAdmin.Area.Subnet
 
-    @valid_attrs %{cidr: "some cidr", name: "some name"}
-    @update_attrs %{cidr: "some updated cidr", name: "some updated name"}
+    @valid_attrs %{cidr: "123.123.123.123/30", name: "some name"}
+    @update_attrs %{cidr: "123.123.123.124/30", name: "some updated name"}
     @invalid_attrs %{cidr: nil, name: nil}
 
     def subnet_fixture(attrs \\ %{}) do
@@ -112,7 +112,7 @@ defmodule KalturaAdmin.AreaTest do
         {:ok, region} = Factory.insert(:region)
         attrs = Map.put(@valid_attrs, :region_id, region.id)
         assert {:ok, %Subnet{} = subnet} = Area.create_subnet(attrs)
-        assert subnet.cidr == "some cidr"
+        assert subnet.cidr == "123.123.123.123/30"
         assert subnet.name == "some name"
         assert_called(@domain_model_handler_module.handle(:insert, %{model_name: "Subnet"}))
       end
@@ -126,7 +126,7 @@ defmodule KalturaAdmin.AreaTest do
       with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
         subnet = subnet_fixture()
         assert {:ok, %Subnet{} = subnet} = Area.update_subnet(subnet, @update_attrs)
-        assert subnet.cidr == "some updated cidr"
+        assert subnet.cidr == "123.123.123.124/30"
         assert subnet.name == "some updated name"
         assert_called(@domain_model_handler_module.handle(:update, %{model_name: "Subnet"}))
       end

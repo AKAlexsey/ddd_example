@@ -47,5 +47,17 @@ defmodule KalturaAdmin.Content.TvStream do
     tv_stream
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
+    |> validate_linear_channel_present()
+    |> validate_stream_path_uniq()
+  end
+
+  defp validate_linear_channel_present(changeset) do
+    changeset
+    |> assoc_constraint(:linear_channel)
+  end
+
+  defp validate_stream_path_uniq(changeset) do
+    changeset
+    |> unique_constraint(:stream_path)
   end
 end

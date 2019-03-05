@@ -2,26 +2,26 @@ defmodule KalturaAdmin.ServerControllerTest do
   use KalturaAdmin.ConnCase
 
   @create_attrs %{
-    domain_name: "some domain_name",
+    domain_name: "some-domain.name",
     healthcheck_enabled: true,
-    healthcheck_path: "some healthcheck_path",
+    healthcheck_path: "/some-healthcheck-path",
     ip: Faker.Internet.ip_v4_address(),
     manage_ip: Faker.Internet.ip_v4_address(),
     manage_port: 42,
-    port: 42,
-    prefix: "some prefix",
+    port: 80,
+    prefix: "some-prefix",
     status: :active,
     type: :edge,
     weight: 42
   }
   @update_attrs %{
-    domain_name: "some updated domain_name",
+    domain_name: "some-updated-domain.name",
     healthcheck_enabled: false,
-    healthcheck_path: "some updated healthcheck_path",
+    healthcheck_path: "/some-updated-healthcheck-path",
     ip: Faker.Internet.ip_v4_address(),
     manage_ip: Faker.Internet.ip_v4_address(),
     manage_port: 43,
-    port: 43,
+    port: 443,
     status: :active,
     type: :edge,
     weight: 43
@@ -94,7 +94,7 @@ defmodule KalturaAdmin.ServerControllerTest do
       assert redirected_to(update_response) == server_path(update_response, :show, server)
 
       show_response = get(conn, server_path(conn, :show, server))
-      assert html_response(show_response, 200) =~ "some updated domain_name"
+      assert html_response(show_response, 200) =~ "some-updated-domain.name"
     end
 
     test "renders errors when data is invalid", %{conn: conn, server: server} do

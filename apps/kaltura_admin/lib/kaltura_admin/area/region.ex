@@ -37,7 +37,13 @@ defmodule KalturaAdmin.Area.Region do
     |> Repo.preload(:region_server_groups)
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
+    |> validate_name()
     |> cast_server_groups(id, attrs)
+  end
+
+  defp validate_name(changeset) do
+    changeset
+    |> unique_constraint(:name)
   end
 
   defp cast_server_groups(changeset, id, %{server_group_ids: sg_ids}) do

@@ -42,17 +42,14 @@ region_ids =
   |> Enum.map(fn name -> Factory.insert(:region, %{name: name}) end)
   |> get_ids.()
 
-{:ok, subnet_cidrs} =
-  YamlElixir.read_from_file(
-    "#{File.cwd!()}/apps/kaltura_admin/priv/repo/seed_data/subnet_cidrs.yml"
-  )
+{:ok, subnet_cidrs} = YamlElixir.read_from_file( "#{File.cwd!()}/apps/kaltura_admin/priv/repo/seed_data/subnet_cidrs.yml")
 
 subnet_cidrs
 |> Map.get("subnet_cidrs")
 |> Enum.with_index()
 |> Enum.map(fn {cidr, index} ->
   region_id = Enum.at(region_ids, div(index, 20))
-  Factory.insert(:subnet, %{cidr: cidr, region_id: region_id})
+  Factory.insert(:subnet, %{cidr: cidr, region_id: region_id, name: "name#{index}"})
 end)
 |> get_ids.()
 
@@ -73,7 +70,7 @@ dvr_server_ids =
   |> Enum.map(fn domain_name ->
     Factory.insert(:server, %{
       domain_name: domain_name,
-      port: :rand.uniform(max_port),
+      port: 80,
       weight: 20 + :rand.uniform(31),
       type: :dvr
     })
@@ -86,7 +83,7 @@ edge_server_ids =
   |> Enum.map(fn domain_name ->
     Factory.insert(:server, %{
       domain_name: domain_name,
-      port: :rand.uniform(max_port),
+      port: 80,
       weight: 20 + :rand.uniform(31),
       type: :edge
     })
@@ -115,7 +112,8 @@ server_group_ids =
   Enum.map(0..24, fn order_number ->
     Factory.insert(:server_group, %{
       region_ids: random_region_ids.(),
-      server_ids: random_edge_server_ids.() ++ random_dvr_server_ids.()
+      server_ids: random_edge_server_ids.() ++ random_dvr_server_ids.(),
+      name: "name#{order_number}"
     })
   end)
   |> get_ids.()

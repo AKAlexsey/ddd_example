@@ -28,5 +28,17 @@ defmodule KalturaAdmin.Content.ProgramRecord do
     program_record
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
+    |> validate_server_present()
+    |> validate_program_present()
+  end
+
+  defp validate_server_present(changeset) do
+    changeset
+    |> assoc_constraint(:server)
+  end
+
+  defp validate_program_present(changeset) do
+    changeset
+    |> assoc_constraint(:program)
   end
 end

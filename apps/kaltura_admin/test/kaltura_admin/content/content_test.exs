@@ -497,9 +497,7 @@ defmodule KalturaAdmin.ContentTest do
     test "create_tv_stream/1 validate stream_path uniques" do
       {:ok, %TvStream{}} = Content.create_tv_stream(valid_attrs())
 
-      assert_raise(Ecto.ConstraintError, fn ->
-        Content.create_tv_stream(valid_attrs())
-      end)
+      assert {:error, %Ecto.Changeset{}} = Content.create_tv_stream(valid_attrs())
     end
 
     test "create_tv_stream/1 with invalid data returns error changeset" do
@@ -525,9 +523,8 @@ defmodule KalturaAdmin.ContentTest do
       valid_attrs_2 = Map.merge(valid_attrs(), %{stream_path: "#{Faker.Lorem.word()}"})
       {:ok, %TvStream{} = tv_stream} = Content.create_tv_stream(valid_attrs_2)
 
-      assert_raise(Ecto.ConstraintError, fn ->
-        Content.update_tv_stream(tv_stream, %{stream_path: valid_attrs().stream_path})
-      end)
+      assert {:error, %Ecto.Changeset{}} =
+               Content.update_tv_stream(tv_stream, %{stream_path: valid_attrs().stream_path})
     end
 
     test "update_tv_stream/2 with invalid data returns error changeset" do
