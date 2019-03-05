@@ -51,6 +51,12 @@ defmodule KalturaAdmin.Servers.ServerGroup do
     |> cast_servers(id, attrs)
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
+    |> validate_name()
+  end
+
+  defp validate_name(changeset) do
+    changeset
+    |> unique_constraint(:name)
   end
 
   defp cast_regions(changeset, id, %{region_ids: reg_ids}) do

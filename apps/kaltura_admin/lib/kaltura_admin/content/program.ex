@@ -29,5 +29,17 @@ defmodule KalturaAdmin.Content.Program do
     program
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
+    |> validate_epg_id()
+    |> validate_linear_channel_present()
+  end
+
+  defp validate_epg_id(changeset) do
+    changeset
+    |> unique_constraint(:epg_id)
+  end
+
+  defp validate_linear_channel_present(changeset) do
+    changeset
+    |> assoc_constraint(:linear_channel)
   end
 end

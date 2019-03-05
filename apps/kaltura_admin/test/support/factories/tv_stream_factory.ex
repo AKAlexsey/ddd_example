@@ -7,7 +7,7 @@ defmodule KalturaAdmin.TvStreamFactory do
   def default_attrs,
     do: %{
       stream_path: "/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}",
-      status: "active",
+      status: "ACTIVE",
       protocol: "HLS",
       encryption: "NONE",
       linear_channel_id: nil

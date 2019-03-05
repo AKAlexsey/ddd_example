@@ -9,27 +9,27 @@ defmodule KalturaAdmin.ServersTest do
     alias KalturaAdmin.Servers.Server
 
     @valid_attrs %{
-      domain_name: "some domain_name",
+      domain_name: "some-domain.name",
       healthcheck_enabled: true,
-      healthcheck_path: "some healthcheck_path",
+      healthcheck_path: "/some-healthcheck-path",
       ip: "123.123.123.123",
       manage_ip: "123.123.123.123",
       manage_port: 42,
-      port: 42,
-      prefix: "some prefix",
+      port: 80,
+      prefix: "some-prefix",
       status: :active,
       type: :edge,
       weight: 42
     }
     @update_attrs %{
-      domain_name: "some updated domain_name",
+      domain_name: "some-updated-domain.name",
       healthcheck_enabled: false,
-      healthcheck_path: "some updated healthcheck_path",
+      healthcheck_path: "/some-updated-healthcheck-path",
       ip: "124.124.124.124",
       manage_ip: "124.124.124.124",
       manage_port: 43,
-      port: 43,
-      prefix: "some updated prefix",
+      port: 443,
+      prefix: "some-updated-prefix",
       status: :inactive,
       type: :edge,
       weight: 43
@@ -67,14 +67,14 @@ defmodule KalturaAdmin.ServersTest do
     test "create_server/1 with valid data creates a server" do
       with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
         assert {:ok, %Server{} = server} = Servers.create_server(@valid_attrs)
-        assert server.domain_name == "some domain_name"
+        assert server.domain_name == "some-domain.name"
         assert server.healthcheck_enabled == true
-        assert server.healthcheck_path == "some healthcheck_path"
+        assert server.healthcheck_path == "/some-healthcheck-path"
         assert server.ip == "123.123.123.123"
         assert server.manage_ip == "123.123.123.123"
         assert server.manage_port == 42
-        assert server.port == 42
-        assert server.prefix == "some prefix"
+        assert server.port == 80
+        assert server.prefix == "some-prefix"
         assert server.status == :active
         assert server.type == :edge
         assert server.weight == 42
@@ -90,14 +90,14 @@ defmodule KalturaAdmin.ServersTest do
       with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
         server = server_fixture()
         assert {:ok, %Server{} = server} = Servers.update_server(server, @update_attrs)
-        assert server.domain_name == "some updated domain_name"
+        assert server.domain_name == "some-updated-domain.name"
         assert server.healthcheck_enabled == false
-        assert server.healthcheck_path == "some updated healthcheck_path"
+        assert server.healthcheck_path == "/some-updated-healthcheck-path"
         assert server.ip == "124.124.124.124"
         assert server.manage_ip == "124.124.124.124"
         assert server.manage_port == 43
-        assert server.port == 43
-        assert server.prefix == "some updated prefix"
+        assert server.port == 443
+        assert server.prefix == "some-updated-prefix"
         assert server.status == :inactive
         assert server.type == :edge
         assert server.weight == 43

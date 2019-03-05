@@ -5,8 +5,8 @@ defmodule KalturaAdmin.ProgramRecordView do
   alias KalturaAdmin.Servers
 
   def dvr_servers do
-    # TODO request only DVR servers
     Servers.list_servers()
+    |> Enum.filter(fn %{type: type} -> type == :dvr end)
     |> Enum.map(fn %{id: id, domain_name: name} -> {name, id} end)
   end
 
