@@ -49,7 +49,7 @@ defmodule KalturaAdmin.ServerControllerTest do
   describe "index" do
     test "lists all servers", %{conn: conn} do
       conn = get(conn, server_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Servers"
+      assert html_response(conn, 200) =~ "Servers"
     end
   end
 
@@ -68,7 +68,7 @@ defmodule KalturaAdmin.ServerControllerTest do
       assert redirected_to(create_response) == server_path(create_response, :show, id)
 
       show_response = get(conn, server_path(conn, :show, id))
-      assert html_response(show_response, 200) =~ "Show Server"
+      assert html_response(show_response, 200) =~ "Server"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

@@ -7,7 +7,7 @@ defmodule KalturaAdmin.SubnetFactory do
   def default_attrs,
     do: %{
       cidr: "#{Faker.Internet.ip_v4_address()}/30",
-      name: "#{Faker.Lorem.word()}#{:rand.uniform(10000)}"
+      name: "#{Faker.Lorem.word()}#{:rand.uniform(10000)}#{:rand.uniform(10000)}"
     }
 
   def build(attrs) do

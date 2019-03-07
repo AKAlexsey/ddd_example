@@ -3,7 +3,6 @@ defmodule KalturaAdmin.Observers.DomainModelObserver do
   use Observable, :observer
 
   alias KalturaAdmin.Protocols.NotifyServerAttrs
-
   @handler Application.get_env(:kaltura_server, :domain_model_handler)
 
   defp handler, do: @handler

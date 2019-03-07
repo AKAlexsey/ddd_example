@@ -1,8 +1,8 @@
 defmodule KalturaAdmin.LinearChannelView do
   use KalturaAdminWeb, :view
 
-  alias KalturaAdmin.{Servers, Repo}
   alias KalturaAdmin.Content.TvStream
+  alias KalturaAdmin.{Repo, Servers}
 
   import Ecto.Query
 

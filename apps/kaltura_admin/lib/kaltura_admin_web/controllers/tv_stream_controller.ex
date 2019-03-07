@@ -1,8 +1,7 @@
 defmodule KalturaAdmin.TvStreamController do
   use KalturaAdminWeb, :controller
 
-  # alias KalturaAdmin.{Area, Repo}
-  alias KalturaAdmin.Content
+  alias KalturaAdmin.{Content, Repo}
   alias KalturaAdmin.Content.TvStream
 
   def new(conn, %{"linear_channel_id" => linear_channel_id}) do

@@ -60,7 +60,7 @@ max_port = 1024
     "#{File.cwd!()}/apps/kaltura_admin/priv/repo/seed_data/server_domains.yml"
   )
 
-dvr_servers_count = 10
+dvr_servers_count = 4
 
 server_domain_names = Map.get(server_domains, "server_domains")
 
@@ -106,13 +106,13 @@ end
 
 random_region_ids = random_stream_function.(region_ids, 24)
 random_dvr_server_ids = random_stream_function.(dvr_server_ids, 2)
-random_edge_server_ids = random_stream_function.(edge_server_ids, 20)
+random_edge_server_ids = random_stream_function.(edge_server_ids, 5)
 
 server_group_ids =
   Enum.map(0..24, fn order_number ->
     Factory.insert(:server_group, %{
       region_ids: random_region_ids.(),
-      server_ids: random_edge_server_ids.() ++ random_dvr_server_ids.(),
+      server_ids: Enum.uniq(random_edge_server_ids.() ++ random_dvr_server_ids.()),
       name: "name#{order_number}"
     })
   end)

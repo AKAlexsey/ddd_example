@@ -32,14 +32,14 @@ defmodule KalturaAdminWeb.LinearChannelControllerTest do
   describe "index" do
     test "lists all linear_channels", %{conn: conn} do
       conn = get(conn, linear_channel_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Linear channels"
+      assert html_response(conn, 200) =~ "Tv channels"
     end
   end
 
   describe "new linear_channel" do
     test "renders form", %{conn: conn} do
       conn = get(conn, linear_channel_path(conn, :new))
-      assert html_response(conn, 200) =~ "New Linear channel"
+      assert html_response(conn, 200) =~ "New Tv channel"
     end
   end
 
@@ -52,12 +52,12 @@ defmodule KalturaAdminWeb.LinearChannelControllerTest do
       assert redirected_to(create_response) == linear_channel_path(create_response, :show, id)
 
       show_response = get(conn, linear_channel_path(conn, :show, id))
-      assert html_response(show_response, 200) =~ "Show Linear channel"
+      assert html_response(show_response, 200) =~ "Tv channel"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
       conn = post(conn, linear_channel_path(conn, :create), linear_channel: @invalid_attrs)
-      assert html_response(conn, 200) =~ "New Linear channel"
+      assert html_response(conn, 200) =~ "New Tv channel"
     end
   end
 
@@ -69,7 +69,7 @@ defmodule KalturaAdminWeb.LinearChannelControllerTest do
       linear_channel: linear_channel
     } do
       conn = get(conn, linear_channel_path(conn, :edit, linear_channel))
-      assert html_response(conn, 200) =~ "Edit Linear channel"
+      assert html_response(conn, 200) =~ "Edit Tv channel"
     end
   end
 
@@ -99,7 +99,7 @@ defmodule KalturaAdminWeb.LinearChannelControllerTest do
           linear_channel: @invalid_attrs
         )
 
-      assert html_response(conn, 200) =~ "Edit Linear channel"
+      assert html_response(conn, 200) =~ "Edit Tv channel"
     end
   end
 

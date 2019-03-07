@@ -1,7 +1,7 @@
 defmodule KalturaAdmin.RegionView do
   use KalturaAdminWeb, :view
 
-  alias KalturaAdmin.{Area, Servers, Repo}
+  alias KalturaAdmin.{Area, Repo, Servers}
   alias KalturaAdmin.Area.Subnet
 
   import Ecto.Query

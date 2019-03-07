@@ -24,18 +24,18 @@ defmodule KalturaAdminWeb.ProgramControllerTest do
   describe "index" do
     test "lists all programs", %{conn: conn} do
       conn = get(conn, program_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Programs"
+      assert html_response(conn, 200) =~ "Programs"
     end
   end
 
-  describe "new program" do
+  describe "new Program" do
     test "renders form", %{conn: conn} do
       conn = get(conn, program_path(conn, :new))
       assert html_response(conn, 200) =~ "New Program"
     end
   end
 
-  describe "create program" do
+  describe "create Program" do
     test "redirects to show when data is valid", %{conn: conn} do
       {:ok, linear_channel} = Factory.insert(:linear_channel)
       create_attrs = Map.merge(@create_attrs, %{linear_channel_id: linear_channel.id})
@@ -44,7 +44,7 @@ defmodule KalturaAdminWeb.ProgramControllerTest do
       assert redirected_to(create_response) == program_path(create_response, :show, id)
 
       show_response = get(conn, program_path(conn, :show, id))
-      assert html_response(show_response, 200) =~ "Show Program"
+      assert html_response(show_response, 200) =~ "Program"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -53,16 +53,16 @@ defmodule KalturaAdminWeb.ProgramControllerTest do
     end
   end
 
-  describe "edit program" do
+  describe "edit Program" do
     setup [:create_program]
 
-    test "renders form for editing chosen program", %{conn: conn, program: program} do
+    test "renders form for editing chosen Program", %{conn: conn, program: program} do
       conn = get(conn, program_path(conn, :edit, program))
       assert html_response(conn, 200) =~ "Edit Program"
     end
   end
 
-  describe "update program" do
+  describe "update Program" do
     setup [:create_program]
 
     test "redirects when data is valid", %{conn: conn, program: program} do
@@ -79,10 +79,10 @@ defmodule KalturaAdminWeb.ProgramControllerTest do
     end
   end
 
-  describe "delete program" do
+  describe "delete Program" do
     setup [:create_program]
 
-    test "deletes chosen program", %{conn: conn, program: program} do
+    test "deletes chosen Program", %{conn: conn, program: program} do
       delete_response = delete(conn, program_path(conn, :delete, program))
       assert redirected_to(delete_response) == program_path(delete_response, :index)
 

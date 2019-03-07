@@ -6,16 +6,16 @@ defmodule KalturaAdmin.ServerFactory do
 
   @maximum_port 65535
 
-  def default_attrs,
+  def default_attrs(),
     do: %{
-      domain_name: "#{Faker.Internet.domain_name()}#{:rand.uniform(10000)}",
+      domain_name: "#{Faker.Internet.domain_name()}#{:rand.uniform(10000)}#{:rand.uniform(10000)}",
       healthcheck_enabled: true,
-      healthcheck_path: "/#{Faker.Lorem.word()}#{:rand.uniform(10000)}",
+      healthcheck_path: "/#{Faker.Lorem.word()}#{:rand.uniform(10000)}#{:rand.uniform(10000)}",
       ip: Faker.Internet.ip_v4_address(),
       manage_ip: Faker.Internet.ip_v4_address(),
       manage_port: :rand.uniform(@maximum_port),
       port: 80,
-      prefix: "edge#{:rand.uniform(10000)}",
+      prefix: "edge#{:rand.uniform(10000)}#{:rand.uniform(10000)}",
       status: :active,
       type: :edge,
       weight: 5

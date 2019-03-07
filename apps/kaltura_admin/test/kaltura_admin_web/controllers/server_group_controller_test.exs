@@ -14,7 +14,7 @@ defmodule KalturaAdminWeb.ServerGroupControllerTest do
   describe "index" do
     test "lists all server_groups", %{conn: conn} do
       conn = get(conn, server_group_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Server groups"
+      assert html_response(conn, 200) =~ "Server groups"
     end
   end
 
@@ -33,7 +33,7 @@ defmodule KalturaAdminWeb.ServerGroupControllerTest do
       assert redirected_to(create_response) == server_group_path(create_response, :show, id)
 
       show_response = get(conn, server_group_path(conn, :show, id))
-      assert html_response(show_response, 200) =~ "Show Server group"
+      assert html_response(show_response, 200) =~ "Server group"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

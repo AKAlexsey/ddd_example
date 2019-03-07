@@ -2,9 +2,9 @@ defmodule KalturaAdmin.ProgramView do
   use KalturaAdminWeb, :view
 
   alias KalturaAdmin.Content
-  alias KalturaAdmin.Util
   alias KalturaAdmin.Content.TvStream
   alias KalturaAdmin.Servers
+  alias KalturaAdmin.Util
 
   def linear_channels do
     Content.list_linear_channels()

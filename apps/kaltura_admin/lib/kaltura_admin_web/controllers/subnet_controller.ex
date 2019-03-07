@@ -25,7 +25,7 @@ defmodule KalturaAdmin.SubnetController do
         |> redirect(to: subnet_path(conn, :show, subnet))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        region = Area.get_region!(subnet_params[:region_id])
+        region = Area.get_region!(subnet_params["region_id"])
 
         render(
           conn,

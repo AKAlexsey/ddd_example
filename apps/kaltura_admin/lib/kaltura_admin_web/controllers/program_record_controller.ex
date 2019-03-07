@@ -30,7 +30,15 @@ defmodule KalturaAdmin.ProgramRecordController do
         |> redirect(to: program_record_path(conn, :show, program_record))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset, current_user: load_user(conn))
+        program = Content.get_program!(program_record_params["program_id"])
+
+        render(
+          conn,
+          "new.html",
+          changeset: changeset,
+          current_user: load_user(conn),
+          program: program
+        )
     end
   end
 
@@ -71,13 +79,16 @@ defmodule KalturaAdmin.ProgramRecordController do
         |> put_flash(:info, "Program record updated successfully.")
         |> redirect(to: program_record_path(conn, :show, program_record))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
+      {:error, %Ecto.Changeset{data: %{program_id: program_id}} = changeset} ->
+        program = Content.get_program!(program_id)
+
         render(
           conn,
           "edit.html",
           program_record: program_record,
           changeset: changeset,
-          current_user: load_user(conn)
+          current_user: load_user(conn),
+          program: program
         )
     end
   end

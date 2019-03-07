@@ -243,7 +243,11 @@ defmodule KalturaAdmin.Content do
       ** (Ecto.NoResultsError)
 
   """
-  def get_program_record!(id), do: Repo.get!(ProgramRecord, id)
+  def get_program_record!(id, preload \\ []) do
+    ProgramRecord
+    |> Repo.get!(id)
+    |> Repo.preload(preload)
+  end
 
   @doc """
   Creates a program_record.

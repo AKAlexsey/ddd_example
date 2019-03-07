@@ -6,7 +6,7 @@
 
 <%= render KalturaAdmin.LayoutView, "form_view.html", 
       action:       program_record_path(@conn, :update, @program_record),
-      link_cancel:  program_path(@conn, :show, @program),
+      link_cancel:  program_path(@conn, :show, @program_record.program_id),
       link_delete:  program_record_path(@conn, :delete, @program_record),
       changeset:    @changeset,
       mode:         :edit,

@@ -13,10 +13,9 @@ PARAMETERS:
 <div class="entity-header">
   <h2>
     <%= case @mode do 
-      :create -> "New #{@entity_name}:" 
-      :edit   -> "Edit #{@entity_name}:" 
+      :create -> "New #{to_capitalize(@entity_name)}:"
+      :edit   -> "Edit #{to_capitalize(@entity_name)}:"
       :show   -> "#{to_capitalize(@entity_name)} ##{@item.id}" 
     end %> 
   </h2>   
 </div>
-  
