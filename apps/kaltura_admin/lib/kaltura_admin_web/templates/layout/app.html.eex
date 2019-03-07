@@ -7,63 +7,67 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello KalturaAdmin!</title>
+    <title>CTI CDN Administrative tool</title>
+
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
+
+    <div class="container-fluid admin-header">
+      <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-7 name">
+          CTI CDN Administrative tool
+        </div>
+        <div class="col-sm-4 sign-in" >
           <%= if @current_user do %>
-            <li>
-              <%= link("Home", to: "/") %>
-            </li>
-            <li>
-              <%= link("Users", to: user_path(@conn, :index)) %>
-            </li>
-            <li>
-              <%= link("Servers", to: server_path(@conn, :index)) %>
-            </li>
-            <li>
-              <%= link("Server groups", to: server_group_path(@conn, :index)) %>
-            </li>
-            <li>
-              <%= link("Regions", to: region_path(@conn, :index)) %>
-            </li>
-            <li>
-              <%= link("Subnets", to: subnet_path(@conn, :index)) %>
-            </li>
-            <li>
-              <%= link("Linear channels", to: linear_channel_path(@conn, :index)) %>
-            </li>
-            <li>
-              <%= link("Programs", to: program_path(@conn, :index)) %>
-            </li>
-            <li>
-              <%= link("Program records", to: program_record_path(@conn, :index)) %>
-            </li>
-            <li>
-              <%= link("Logout", to: session_path(@conn, :logout), method: :post) %>
-            </li>
-          <% else %>
-            <li>
-              <%= link "Sign in", to: session_path(@conn, :new) %>
-            </li>
+              <%= link(raw(~s'<span class="glyphicon glyphicon-log-out"></span> Logout'), to: session_path(@conn, :logout), method: :post) %>
+              <div class="user-name">
+                <span class="glyphicon glyphicon-user"></span>
+                <span class="user-name"><%= @current_user.first_name%> <%= @current_user.last_name%></span>
+              </div>
+            <% else %>
+              <%= link raw(~s'<span class="glyphicon glyphicon-log-in"></span> Sign in'), to: session_path(@conn, :new) %>
           <% end %>
-        </ul>
+
+        </div>
       </div>
+    </div>
 
-      <div>
-        <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-        <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+
+    <div class="container-fluid">
+      <div class="row">
+        
+        <%= if @current_user do %>
+          <div class="admin-menu">
+            <%= link("Home", to: "/") %>
+            <br>
+            <%= link("Users", to: user_path(@conn, :index)) %>
+            <%= link("Servers", to: server_path(@conn, :index)) %>
+            <%= link("Server groups", to: server_group_path(@conn, :index)) %>
+            <%= link("Regions", to: region_path(@conn, :index)) %>
+            <%= link("TV channels", to: linear_channel_path(@conn, :index)) %>
+            <%= link("Programs", to: program_path(@conn, :index)) %>
+          </div>
+          <div class="main">
+            <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+            <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+            <%= render @view_module, @view_template, assigns %>
+          </div>
+        <% else %>
+            <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+            <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+            <%= render @view_module, @view_template, assigns %>
+        <% end %>
+        
       </div>
+    </div>
 
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
+    <div class="container-fluid admin-footer">
+      2002 - 2019 CTI
+    </div>
 
-    </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

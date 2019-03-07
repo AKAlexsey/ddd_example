@@ -1,18 +1,14 @@
-<h1>Show Subnet</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html",
+      entity_name: :subnet,
+      mode:        :show,
+      item:        @subnet
+%>
 
-<ul>
-
-  <li>
-    <strong>Cidr:</strong>
-    <%= @subnet.cidr %>
-  </li>
-
-  <li>
-    <strong>Name:</strong>
-    <%= @subnet.name %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: subnet_path(@conn, :edit, @subnet) %></span>
-<span><%= link "Back", to: subnet_path(@conn, :index) %></span>
+<%= render KalturaAdmin.LayoutView, "table_form.html",
+      link_cancel:  region_path(@conn, :show, @region),
+      link_delete:  subnet_path(@conn, :delete, @subnet),
+      link_edit:    subnet_path(@conn, :edit,   @subnet),
+      mode:         :show,
+      item:         @subnet,
+      meta:         KalturaAdmin.RegionView.subnet_meta()
+ %>

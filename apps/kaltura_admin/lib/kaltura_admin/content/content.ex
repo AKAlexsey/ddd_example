@@ -225,6 +225,10 @@ defmodule KalturaAdmin.Content do
     Repo.all(ProgramRecord)
   end
 
+  def list_program_records(program_id) do
+    Repo.all(from(pr in ProgramRecord, where: pr.program_id == ^program_id))
+  end
+
   @doc """
   Gets a single program_record.
 

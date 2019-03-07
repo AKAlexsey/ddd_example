@@ -1,7 +1,10 @@
 defmodule KalturaAdmin.LinearChannelView do
   use KalturaAdminWeb, :view
 
-  alias KalturaAdmin.Servers
+  alias KalturaAdmin.{Servers, Repo}
+  alias KalturaAdmin.Content.TvStream
+
+  import Ecto.Query
 
   def server_groups do
     Servers.list_server_groups()
@@ -19,4 +22,88 @@ defmodule KalturaAdmin.LinearChannelView do
   end
 
   def server_group_name(_), do: ""
+
+  def tv_streams(linear_channel_id) do
+    Repo.all(from(stream in TvStream, where: stream.linear_channel_id == ^linear_channel_id))
+  end
+
+  def meta do
+    [
+      %{
+        :header => "Name",
+        :type => :string,
+        :field => :name,
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Code name",
+        :type => :string,
+        :field => :code_name,
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Description",
+        :type => :textarea,
+        :field => :description,
+        :mode => [:show, :edit, :create]
+      },
+      %{
+        :header => "Epg ID",
+        :type => :string,
+        :field => :epg_id,
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Recording",
+        :type => :boolean,
+        :field => :dvr_enabled,
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Recording server group",
+        :type => :select_entity,
+        :field => :server_group_id,
+        :mode => [:table, :show, :edit, :create],
+        :items => server_groups()
+      }
+    ]
+  end
+
+  def tv_stream_meta do
+    [
+      %{
+        :header => "Stream path",
+        :type => :string,
+        :field => :stream_path,
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Status",
+        :type => :select,
+        :field => :status,
+        :items => TvStream.statuses(),
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Protocol",
+        :type => :select,
+        :field => :protocol,
+        :items => TvStream.protocols(),
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Encryption",
+        :type => :select,
+        :field => :encryption,
+        :items => TvStream.encryption(),
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Hidden linear_channel_id",
+        :type => :hidden,
+        :field => :linear_channel_id,
+        :mode => [:create]
+      }
+    ]
+  end
 end

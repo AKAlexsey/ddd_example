@@ -1,28 +1,31 @@
-<h1>Show Region</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html",
+      entity_name: :region,
+      mode:        :show,
+      item:        @region
+%>
 
-<ul>
+<%= render KalturaAdmin.LayoutView, "table_form.html",
+      link_cancel:  region_path(@conn, :index),
+      link_delete:  region_path(@conn, :delete, @region),
+      link_edit:    region_path(@conn, :edit, @region),
+      mode:         :show,
+      item:         @region,
+      meta:         meta(@region.id)
+ %>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @region.name %>
-  </li>
 
-  <li>
-    <strong>Description:</strong>
-    <%= @region.description %>
-  </li>
 
-  <li>
-    <strong>Server groups</strong>
-    <%= decorate_server_groups(@region.server_groups) %>
-  </li>
 
-  <li>
-    <strong>Status:</strong>
-    <%= @region.status %>
-  </li>
+<%= render KalturaAdmin.LayoutView, "table_header.html",
+      style_class:  :nested,
+      entity_name:  :subnet ,
+      link_create:  subnet_path(@conn, :new, region_id: @region.id)
+%>
 
-</ul>
-
-<span><%= link "Edit", to: region_path(@conn, :edit, @region) %></span>
-<span><%= link "Back", to: region_path(@conn, :index) %></span>
+<%= render KalturaAdmin.LayoutView, "table.html",
+      style_class:       :nested,
+      items:             subnets(@region),
+      conn:              @conn,
+      entity_link_fn:    &subnet_path/3,
+      meta:              subnet_meta()
+%>

@@ -1,5 +1,16 @@
-<h1>New Region</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: :region, 
+      mode:        :create 
+%>        
 
-<%= render "form.html", Map.put(assigns, :action, region_path(@conn, :create)) %>
+<%= render KalturaAdmin.LayoutView, "form_view.html", 
+      action:      region_path(@conn, :create),
+      link_cancel: region_path(@conn, :index),
+      changeset:   @changeset,
+      mode:        :create,
+      meta:        meta()
+ %>
 
-<span><%= link "Back", to: region_path(@conn, :index) %></span>
+
+
+

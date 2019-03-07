@@ -1,0 +1,35 @@
+<!-- 
+
+The form for CREATE and EDIT operations
+
+PARAMETERS:
+
+- changeset    - the chageset
+- action       - form action(link)
+- link_cancel  - link for CANCEL or BACK operation
+- link_delete  - link for DELETE operation (can be not used)
+- mode         - operation mode. Available values: [:show, :edit, :create]
+- meta         - meta data for filling form (headers, field names, types, data and etc.)     
+
+
+-->
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Something went wrong! Please check the errors below</p>
+    </div>
+  <% end %>
+  
+  <%= link_delete = if assigns[:link_delete] do @link_delete else nil end
+      render "table_form.html",  
+            link_cancel:   @link_cancel,
+            link_delete:   link_delete,
+            mode:          @mode,
+            meta:          @meta,
+            f:             f
+    %>
+          
+  
+<% end %> 
+
+

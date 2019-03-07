@@ -1,0 +1,27 @@
+<!--
+
+HTML select component
+
+PARAMETERS:
+
+- mode       - view mode. Available values: [:create, :edit, :show]
+- meta       - meta-data (field, type, header ...)
+- item       - object
+- f          - form object
+
+-->
+
+<%= if @mode == :show do %>
+  <%= if Map.has_key?(@meta, :field) do %>
+    <%= if Map.get(@item, @meta.field) == :active do %>
+      <span class="c-yes">ACTIVE</span>
+    <% else %>
+      <span class="c-no">INACTIVE</span>
+    <% end %>
+  <% else %>
+    <%= render_for_show_by_fn(@meta, @item) %>
+  <% end %>
+
+<% else %>
+  <%= select @f, @meta.field, KalturaAdmin.EnumHelper.active_statuses, class: "form-control" %>
+<% end %>

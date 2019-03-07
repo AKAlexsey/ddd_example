@@ -1,0 +1,14 @@
+<%= render KalturaAdmin.LayoutView, "entity_header.html",
+      entity_name: "tv-stream",
+      mode:        :edit ,
+      item:        @tv_stream
+%>
+
+<%= render KalturaAdmin.LayoutView, "form_view.html",
+      action:       tv_stream_path(@conn, :update, @tv_stream),
+      link_cancel:  tv_stream_path(@conn, :show, @tv_stream),
+      link_delete:  tv_stream_path(@conn, :delete, @tv_stream),
+      changeset:    @changeset,
+      mode:         :edit,
+      meta:         KalturaAdmin.LinearChannelView.tv_stream_meta()
+ %>

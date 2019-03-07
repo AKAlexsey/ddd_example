@@ -1,5 +1,16 @@
-<h1>New Program record</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: "program record for Program##{@program.id}", 
+      mode:        :create 
+%>        
 
-<%= render "form.html", Map.put(assigns, :action, program_record_path(@conn, :create)) %>
+<%= render KalturaAdmin.LayoutView, "form_view.html", 
+      action:       program_record_path(@conn, :create),
+      link_cancel:  program_path(@conn, :show, @program),
+      changeset:    @changeset,
+      mode:         :create,
+      meta:         KalturaAdmin.ProgramView.program_record_meta()
+ %>
 
-<span><%= link "Back", to: program_record_path(@conn, :index) %></span>
+
+
+

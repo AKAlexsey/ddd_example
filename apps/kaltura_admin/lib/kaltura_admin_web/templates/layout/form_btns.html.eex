@@ -1,0 +1,32 @@
+<!--
+
+Buttons on bottom of the form (in any view, excepted table view)
+
+PARAMETERS:
+
+- mode        - view mode. Availabe values: [:create, :edit, :show]
+- link_cancel - link for CANCEL or BACK button (in order to the mode parameter)
+- link_delete - link for DELETE button
+- link_edit   - link for EDIT (for show mode only)
+
+-->
+
+<div class="row form-btns">
+
+  <%= case @mode do %>
+    <% :show -> %>
+      <%= link raw(~s'<span class="glyphicon glyphicon-chevron-left"></span> Back...'), to: @link_cancel, class: "btn btn-warning btn-cancel", title: "Back..." %>
+      <%= link raw(~s'<span class="glyphicon glyphicon-pencil"></span> Edit'),          to: @link_edit,   class: "btn btn-primary", title: "Back..." %>
+      <%= link raw(~s'<span class="glyphicon glyphicon-trash"></span> Delete'),         to: @link_delete, class: "btn btn-danger", 
+                 method: :delete, data: [confirm: "The current record will be deleted. Is it OK ?"],  title: "Delete record" %>
+    <% :edit -> %>  
+      <%= link raw(~s'<span class="glyphicon glyphicon-chevron-left"></span> Cancel'),  to: @link_cancel, class: "btn btn-warning btn-cancel", title: "Cancel" %>    
+      <%= submit raw(~s'<span class="glyphicon glyphicon-floppy-disk"></span> Save'),                     class: "btn btn-primary", title: "Save entity" %>
+      <%= link raw(~s'<span class="glyphicon glyphicon-trash"></span> Delete'),         to: @link_delete, class: "btn btn-danger", 
+                 method: :delete, data: [confirm: "The current record will be deleted. Is it OK ?"],  title: "Delete record" %>
+    <% :create -> %>
+      <%= link raw(~s'<span class="glyphicon glyphicon-chevron-left"></span> Cancel'),  to: @link_cancel, class: "btn btn-warning btn-cancel", title: "Cancel" %>    
+      <%= submit raw(~s'<span class="glyphicon glyphicon-floppy-disk"></span> Save'),                     class: "btn btn-primary", title: "Save entity" %>
+  <%end%>
+  
+</div>

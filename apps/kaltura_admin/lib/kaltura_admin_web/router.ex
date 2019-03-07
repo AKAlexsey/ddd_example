@@ -38,7 +38,7 @@ defmodule KalturaAdminWeb.Router do
     resources("/regions", RegionController)
     resources("/subnets", SubnetController)
     resources("/linear_channels", LinearChannelController)
-    resources("/tv_streams", TvStreamController, only: [:create, :delete])
+    resources("/tv_streams", TvStreamController)
     resources("/programs", ProgramController)
     resources("/program_records", ProgramRecordController)
   end

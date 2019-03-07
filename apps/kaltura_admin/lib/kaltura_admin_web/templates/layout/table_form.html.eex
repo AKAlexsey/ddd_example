@@ -1,0 +1,53 @@
+<!--
+Table for show and edit item data (in order to the mode)
+Is used for all views (create, edit,show)
+
+PARAMETERS:
+
+- meta       - meta-data (fields, types, headers ...)
+- mode       - view mode. Available values: [:create, :edit, :show]
+- item       - object for this mode operation
+- f          - form object
+- link_cancel - link for CANCEL or BACK button
+- link_delete - link for DELETE button
+- link_edit   - link for EDIT button (nil - for create and edit mode)
+
+-->
+
+
+  <table class="table-form">
+    <tbody>
+      <%= f    = if assigns[:f]    do @f    else nil end
+          item = if assigns[:item] do @item else nil end
+          for rec_meta <- @meta do %>
+
+          <%= if Enum.member?(rec_meta.mode, @mode) do  %>
+            <tr>
+              <td>
+                <%=if rec_meta.type != :hidden do %>
+                  <%=  rec_meta.header %>
+                <% end %>
+              </td>
+
+              <td>
+                <%= render "table_form_#{rec_meta.type}.html", f: f, mode: @mode, meta: rec_meta, item: item %>
+              </td>
+
+              <td>
+              <%= if @mode == :edit || @mode == :create do %>
+                <%= error_tag f, rec_meta.field %>
+              <% end %>
+              </td>
+            </tr>
+          <% end %>
+
+      <% end %>
+    </tbody>
+  </table>
+
+  <%=
+    link_delete = if assigns[:link_delete] do @link_delete else nil end
+    link_edit   = if assigns[:link_edit]   do @link_edit   else nil end
+
+    render "form_btns.html", link_cancel: @link_cancel, link_edit: link_edit, link_delete: link_delete , mode: @mode
+  %>

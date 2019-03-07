@@ -1,0 +1,18 @@
+<!--
+
+HTML select component (select from ENUM)
+
+PARAMETERS:
+
+- mode       - view mode. Available values: [:create, :edit, :show]
+- meta       - meta-data (field, type, header ...)
+- item       - object
+- f          - form object
+
+-->
+
+<%= if @mode == :show do %>
+  <%= render_for_show @meta, @item  %>
+<% else %>
+  <%= select @f, @meta.field, @meta.items, class: "form-control" %>
+<% end %>

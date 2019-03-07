@@ -33,15 +33,12 @@ defmodule KalturaAdmin.RegionController do
   end
 
   def show(conn, %{"id" => id}) do
-    region =
-      Area.get_region!(id)
-      |> Repo.preload(:server_groups)
-
+    region = id |> Area.get_region!() |> Repo.preload(:server_groups)
     render(conn, "show.html", region: region, current_user: load_user(conn))
   end
 
   def edit(conn, %{"id" => id}) do
-    region = Area.get_region!(id)
+    region = id |> Area.get_region!()
     changeset = Area.change_region(region)
 
     render(

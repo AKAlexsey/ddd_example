@@ -1,0 +1,32 @@
+<!--
+
+HTML multiselect component
+
+PARAMETERS:
+
+- mode         - view mode. Available values: [:create, :edit, :show]
+- meta         - meta-data (field, type, header ...)
+- item         - object
+- f            - form object
+
+-->
+
+<%=if @mode == :show do %>
+  <%=
+      raw html_decorate_collection( @item |> Map.get(@meta.field) |> to_select_collection(@meta.item_name_eval_fn)  ) %>
+<% else %>
+
+  <div class="cbx-group">
+    <%= for {name, id} <- @meta.items do %>
+      <div class="cbx-line">
+        <%= if Enum.member?(@meta.selected_item_ids, id) do %>
+          <input name="<%= @meta.checkbox_name %>" id="<%= '#{@meta.checkbox_name}_#{id}'%>" type="checkbox" class="form-control" value="<%= id %>" checked>
+        <% else %>
+          <input name="<%= @meta.checkbox_name %>" id="<%= '#{@meta.checkbox_name}_#{id}'%>" type="checkbox" class="form-control" value="<%= id %>">
+        <%end%>
+        <label for="<%= '#{@meta.checkbox_name}_#{id}'%>"><%= name %></label>
+      </div>
+    <%end%>
+  </div>
+
+<%end%>

@@ -29,6 +29,12 @@ defmodule KalturaAdmin.Servers do
     |> Repo.preload(preload)
   end
 
+  def list_dvr_servers(preload \\ []) do
+    from(s in Server, where: s.type == ^:dvr)
+    |> Repo.all()
+    |> Repo.preload(preload)
+  end
+
   @doc """
   Gets a single server.
 
@@ -224,6 +230,10 @@ defmodule KalturaAdmin.Servers do
     from(sgs in ServerGroupServer, where: sgs.server_id == ^server_id)
     |> Repo.all()
     |> Enum.map(fn %{server_group_id: server_group_id} -> server_group_id end)
+  end
+
+  def server_name(server) do
+    server.domain_name <> " [" <> String.upcase(to_string(server.type)) <> "]"
   end
 
   # TODO there is a lot of duplication in make_request_region_params,

@@ -1,0 +1,24 @@
+<!--
+
+HTML select component (select from entity collection)
+
+PARAMETERS:
+
+- mode       - view mode. Available values: [:create, :edit, :show]
+- meta       - meta-data (field, type, header ...)
+- item       - object
+- f          - form object
+
+-->
+
+<%= if @mode == :show do %>
+  <%= if Map.has_key?(@meta, :field) do %>
+    <%= {label, id} = Enum.find(@meta.items, {"" , 0} ,fn {_, item_id} -> item_id == Map.get(@item, @meta.field) end)
+        if id > 0, do: raw("<span class=\"elem\">#{label}</span>"), else: ""
+    %>
+  <% else %>
+    <%= render_for_show_by_fn(@meta, @item) %>
+  <% end %>
+<% else %>
+  <%= select @f, @meta.field, @meta.items, class: "form-control" %>
+<% end %>

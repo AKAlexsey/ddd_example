@@ -1,5 +1,14 @@
-<h1>Edit Subnet</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html",
+      entity_name: :subnet,
+      mode:        :edit ,
+      item:        @subnet
+%>
 
-<%= render "form.html", Map.put(assigns, :action, subnet_path(@conn, :update, @subnet)) %>
-
-<span><%= link "Back", to: subnet_path(@conn, :index) %></span>
+<%= render KalturaAdmin.LayoutView, "form_view.html",
+      action:       subnet_path(@conn, :update, @subnet),
+      link_cancel:  region_path(@conn, :show, @subnet.region),
+      link_delete:  subnet_path(@conn, :delete, @subnet),
+      changeset:    @changeset,
+      mode:         :edit,
+      meta:         KalturaAdmin.RegionView.subnet_meta()
+ %>

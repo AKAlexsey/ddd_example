@@ -1,32 +1,11 @@
-<h1>Listing Regions</h1>
+<%= render KalturaAdmin.LayoutView, "table_header.html", 
+      entity_name:  :region , 
+      link_create:  region_path(@conn, :new)
+%> 
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Status</th>
-      <th>Servers</th>
-
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for region <- @regions do %>
-    <tr>
-      <td><%= region.name %></td>
-      <td><%= region.description %></td>
-      <td><%= region.status %></td>
-      <td><%= decorate_server_groups(region.server_groups) %> </td>
-
-      <td>
-        <span><%= link "Show", to: region_path(@conn, :show, region), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Edit", to: region_path(@conn, :edit, region), class: "btn btn-default btn-xs" %></span>
-        <span><%= link "Delete", to: region_path(@conn, :delete, region), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<span><%= link "New Region", to: region_path(@conn, :new) %></span>
+<%= render KalturaAdmin.LayoutView, "table.html",      
+      items:             @regions,
+      conn:              @conn,
+      entity_link_fn:    &region_path/3,  
+      meta:              meta()
+%>        

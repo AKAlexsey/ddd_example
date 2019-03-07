@@ -1,0 +1,14 @@
+<!-- 
+
+The buttons are showed in the last column of the main table view
+
+PARAMETERS:
+
+- link_edit    - link for EDIT operation
+- link_delete  - link for DELETE operation
+
+-->
+
+<%= link "", to: @link_edit,   class: "btn btn-primary glyphicon glyphicon-pencil", title: "Edit record" %>
+<%= link "", to: @link_delete, class: "btn btn-danger glyphicon glyphicon-trash",   title: "Delete record",
+     method: :delete, data: [confirm: "The current record will be deleted. Is it OK ?"]  %>
