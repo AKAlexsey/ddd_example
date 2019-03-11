@@ -1,32 +1,31 @@
-<h1>Show Program</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: "program", 
+      mode:        :show, 
+      item:        @program
+%>        
 
-<ul>
+<%= render KalturaAdmin.LayoutView, "table_form.html", 
+      link_cancel:  program_path(@conn, :index),
+      link_delete:  program_path(@conn, :delete, @program),
+      link_edit:    program_path(@conn, :edit, @program),
+      mode:         :show,
+      item:         @program,
+      meta:         meta()
+ %>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @program.name %>
-  </li>
+<%= render KalturaAdmin.LayoutView, "table_header.html",
+      style_class:  :nested,
+      entity_name:  "program record" ,
+      link_create:  program_record_path(@conn, :new, program_id: @program.id)
+      
+%>
 
-  <li>
-    <strong>Start datetime:</strong>
-    <%= @program.start_datetime %>
-  </li>
+<%= render KalturaAdmin.LayoutView, "table.html",
+      style_class:       :nested,
+      items:             program_records(@program.id),
+      conn:              @conn,
+      entity_link_fn:    &program_record_path/3,
+      meta:              program_record_meta()
+      
+%>  
 
-  <li>
-    <strong>End datetime:</strong>
-    <%= @program.end_datetime %>
-  </li>
-
-  <li>
-    <strong>Epg:</strong>
-    <%= @program.epg_id %>
-  </li>
-
-  <li>
-    <strong>LinearChannel:</strong>
-    <%= linear_channel_name(@program) %>
-  </li>
-</ul>
-
-<span><%= link "Edit", to: program_path(@conn, :edit, @program) %></span>
-<span><%= link "Back", to: program_path(@conn, :index) %></span>

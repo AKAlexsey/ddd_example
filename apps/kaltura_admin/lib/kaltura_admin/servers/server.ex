@@ -29,7 +29,7 @@ defmodule KalturaAdmin.Servers.Server do
   @manage_port_range 0..65_535
   @domain_name_format ~r/^[a-z\d\-\.]+\.[a-z\d\-\.]+$/
   @prefix_format ~r/^[\w\-]+$/
-  @healthcheck_path_format ~r/^\/[\w\-]+$/
+  @healthcheck_path_format ~r/^\/[\w\-\/]+$/
   @ip_format ~r/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}+$/
 
   schema "servers" do

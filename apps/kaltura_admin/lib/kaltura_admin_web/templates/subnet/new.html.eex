@@ -1,5 +1,12 @@
-<h1>New Subnet</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html",
+      entity_name: "subnet for Region##{@region.id}",
+      mode:        :create
+%>
 
-<%= render "form.html", Map.put(assigns, :action, subnet_path(@conn, :create)) %>
-
-<span><%= link "Back", to: subnet_path(@conn, :index) %></span>
+<%= render KalturaAdmin.LayoutView, "form_view.html",
+      action:       subnet_path(@conn, :create),
+      link_cancel:  region_path(@conn, :show, @region),
+      changeset:    @changeset,
+      mode:         :create,
+      meta:         KalturaAdmin.RegionView.subnet_meta()
+ %>

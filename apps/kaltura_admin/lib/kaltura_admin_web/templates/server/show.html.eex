@@ -1,67 +1,14 @@
-<h1>Show Server</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: :server, 
+      mode:        :show, 
+      item:        @server  
+%>        
+<%= render KalturaAdmin.LayoutView, "table_form.html", 
+      link_cancel:  server_path(@conn, :index),
+      link_delete:  server_path(@conn, :delete, @server),
+      link_edit:    server_path(@conn, :edit, @server),
+      mode:         :show,
+      item:         @server,
+      meta:         meta()
+ %>
 
-<ul>
-
-  <li>
-    <strong>Type:</strong>
-    <%= @server.type %>
-  </li>
-
-  <li>
-    <strong>Domain name:</strong>
-    <%= @server.domain_name %>
-  </li>
-
-  <li>
-    <strong>Ip:</strong>
-    <%= @server.ip %>
-  </li>
-
-  <li>
-    <strong>Port:</strong>
-    <%= @server.port %>
-  </li>
-
-  <li>
-    <strong>Manage:</strong>
-    <%= @server.manage_ip %>
-  </li>
-
-  <li>
-    <strong>Manage port:</strong>
-    <%= @server.manage_port %>
-  </li>
-
-  <li>
-    <strong>Status:</strong>
-    <%= @server.status %>
-  </li>
-
-  <li>
-    <strong>Weight:</strong>
-    <%= @server.weight %>
-  </li>
-
-  <li>
-    <strong>Prefix:</strong>
-    <%= @server.prefix %>
-  </li>
-
-  <li>
-    <strong>Healthcheck enabled:</strong>
-    <%= @server.healthcheck_enabled %>
-  </li>
-
-  <li>
-    <strong>Healthcheck path:</strong>
-    <%= @server.healthcheck_path %>
-  </li>
-
-  <li>
-    <strong>ServerGroups</strong>
-    <%= decorate_server_groups(@server.server_groups) %>
-  </li>
-</ul>
-
-<span><%= link "Edit", to: server_path(@conn, :edit, @server) %></span>
-<span><%= link "Back", to: server_path(@conn, :index) %></span>

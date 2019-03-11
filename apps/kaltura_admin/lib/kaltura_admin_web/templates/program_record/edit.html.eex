@@ -1,5 +1,18 @@
-<h1>Edit Program record</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: "program record", 
+      mode:        :edit,
+      item:        @program_record 
+%>        
 
-<%= render "form.html", Map.put(assigns, :action, program_record_path(@conn, :update, @program_record)) %>
+<%= render KalturaAdmin.LayoutView, "form_view.html", 
+      action:       program_record_path(@conn, :update, @program_record),
+      link_cancel:  program_path(@conn, :show, @program_record.program_id),
+      link_delete:  program_record_path(@conn, :delete, @program_record),
+      changeset:    @changeset,
+      mode:         :edit,
+      meta:         KalturaAdmin.ProgramView.program_record_meta()
+ %>
 
-<span><%= link "Back", to: program_record_path(@conn, :index) %></span>
+
+
+

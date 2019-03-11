@@ -27,7 +27,8 @@ defmodule KalturaAdminWeb.TvStreamControllerTest do
 
   describe "create tv_stream" do
     test "redirects to show when data is valid", %{conn: conn, linear_channel: linear_channel} do
-      before_tv_stream_count = Repo.aggregate(TvStream, :count, :id)
+      before_tv_stream_ids = Repo.all(TvStream) |> get_ids()
+      before_tv_stream_count = length(before_tv_stream_ids)
 
       conn =
         post(
@@ -36,9 +37,13 @@ defmodule KalturaAdminWeb.TvStreamControllerTest do
           tv_stream: Map.put(@create_attrs, :linear_channel_id, linear_channel.id)
         )
 
-      assert redirected_to(conn) == linear_channel_path(conn, :edit, linear_channel)
+      after_tv_stream_ids = Repo.all(TvStream) |> get_ids()
+      assert before_tv_stream_count + 1 == length(after_tv_stream_ids)
 
-      assert before_tv_stream_count + 1 == Repo.aggregate(TvStream, :count, :id)
+      [new_tv_stream_id] = after_tv_stream_ids -- before_tv_stream_ids
+      tv_stream = Repo.get(TvStream, new_tv_stream_id)
+
+      assert redirected_to(conn) == tv_stream_path(conn, :show, tv_stream)
     end
 
     test "renders errors when data is invalid", %{conn: conn, linear_channel: linear_channel} do
@@ -92,7 +97,7 @@ defmodule KalturaAdminWeb.TvStreamControllerTest do
       linear_channel: linear_channel
     } do
       conn = delete(conn, tv_stream_path(conn, :delete, tv_stream))
-      assert redirected_to(conn) == linear_channel_path(conn, :edit, linear_channel)
+      assert redirected_to(conn) == linear_channel_path(conn, :show, linear_channel)
       assert 0 == Repo.aggregate(TvStream, :count, :id)
     end
   end
@@ -102,4 +107,6 @@ defmodule KalturaAdminWeb.TvStreamControllerTest do
     {:ok, tv_stream} = Factory.insert(:tv_stream, %{linear_channel_id: linear_channel.id})
     {:ok, tv_stream: tv_stream, linear_channel: linear_channel}
   end
+
+  def get_ids(collection), do: Enum.map(collection, & &1.id)
 end

@@ -1,0 +1,15 @@
+<!--
+
+Header view on the top of the the table presentation
+
+PARAMETERS:
+
+- entity_name  - the entity name (singular)
+- link_create  - the link for create new entity
+
+-->
+
+<div class="<%= if assigns[:style_class] do "entity-header #{@style_class}" else "entity-header" end  %>">
+  <h2><%= to_plural_capitalize(@entity_name) %></h2>
+  <%= link raw(~s'<span class="glyphicon glyphicon-file"></span>'), to: @link_create, class: "btn btn-success create", title: "Create new entity" %>
+</div>

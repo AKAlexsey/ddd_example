@@ -5,13 +5,7 @@ defmodule KalturaServer.DomainModelHandlers.ServerHandler do
   import KalturaServer.DomainModelContext, only: [normalize_enum: 1]
 
   @enum_fields [:type, :status]
-  use KalturaServer.DomainModelHandlers.AbstractHandler,
-    table: Server,
-    joined_attributes_and_models: [
-      server_group_ids: "ServerGroup",
-      program_record_ids: "ProgramRecord",
-      subnet_ids: ["Subnet", notify_always: true]
-    ]
+  use KalturaServer.DomainModelHandlers.AbstractHandler, table: Server
 
   def before_write(struct, _raw_attrs) do
     @enum_fields

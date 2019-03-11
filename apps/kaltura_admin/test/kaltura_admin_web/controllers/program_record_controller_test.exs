@@ -13,14 +13,32 @@ defmodule KalturaAdminWeb.ProgramRecordControllerTest do
 
   describe "index" do
     test "lists all program_records", %{conn: conn} do
-      conn = get(conn, program_record_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Program records"
+      {:ok, program} = Factory.insert(:program)
+      {:ok, program_record} = Factory.insert(:program_record, %{program_id: program.id})
+
+      {:ok, other_program} = Factory.insert(:program)
+
+      {:ok, other_program_record} =
+        Factory.insert(:program_record, %{program_id: other_program.id})
+
+      response_conn = get(conn, program_path(conn, :show, program))
+
+      assert html_response(response_conn, 200) =~ "Program records"
+      assert html_response(response_conn, 200) =~ program_record.path
+      refute html_response(response_conn, 200) =~ other_program_record.path
+
+      response_conn = get(conn, program_path(conn, :show, other_program))
+
+      assert html_response(response_conn, 200) =~ "Program records"
+      refute html_response(response_conn, 200) =~ program_record.path
+      assert html_response(response_conn, 200) =~ other_program_record.path
     end
   end
 
   describe "new program_record" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, program_record_path(conn, :new))
+      {:ok, program} = Factory.insert(:program)
+      conn = get(conn, program_record_path(conn, :new, %{"program_id" => program.id}))
       assert html_response(conn, 200) =~ "New Program record"
     end
   end
@@ -38,11 +56,14 @@ defmodule KalturaAdminWeb.ProgramRecordControllerTest do
       assert redirected_to(create_response) == program_record_path(create_response, :show, id)
 
       show_response = get(conn, program_record_path(conn, :show, id))
-      assert html_response(show_response, 200) =~ "Show Program record"
+      assert html_response(show_response, 200) =~ "Program record"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, program_record_path(conn, :create), program_record: @invalid_attrs)
+      {:ok, program} = Factory.insert(:program)
+      invalid_attrs = Map.put(@invalid_attrs, :program_id, program.id)
+
+      conn = post(conn, program_record_path(conn, :create), program_record: invalid_attrs)
       assert html_response(conn, 200) =~ "New Program record"
     end
   end
@@ -93,11 +114,14 @@ defmodule KalturaAdminWeb.ProgramRecordControllerTest do
     setup [:create_program_record]
 
     test "deletes chosen program_record", %{conn: conn, program_record: program_record} do
+      program_record = Repo.preload(program_record, :program)
+      program = program_record.program
+
       delete_response = delete(conn, program_record_path(conn, :delete, program_record))
-      assert redirected_to(delete_response) == program_record_path(delete_response, :index)
+      assert redirected_to(delete_response) == program_path(delete_response, :show, program)
 
       assert_error_sent(404, fn ->
-        get(conn, program_record_path(conn, :show, program_record))
+        get(conn, program_record_path(conn, :show, program_record, %{"program_id" => program.id}))
       end)
     end
   end

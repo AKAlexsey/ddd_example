@@ -1,23 +1,16 @@
-<h1>Show Program record</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: "program record", 
+      mode:        :show, 
+      item:        @program_record
+%>        
 
-<ul>
+<%= render KalturaAdmin.LayoutView, "table_form.html", 
+      link_cancel:  program_path(@conn, :show, @program),
+      link_delete:  program_record_path(@conn, :delete, @program_record),
+      link_edit:    program_record_path(@conn, :edit,   @program_record),
+      mode:         :show,
+      item:         @program_record,
+      meta:         KalturaAdmin.ProgramView.program_record_meta()
+ %>
 
-  <li>
-    <strong>Status:</strong>
-    <%= @program_record.status %>
-  </li>
 
-  <li>
-    <strong>Protocol:</strong>
-    <%= @program_record.protocol %>
-  </li>
-
-  <li>
-    <strong>Path:</strong>
-    <%= @program_record.path %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: program_record_path(@conn, :edit, @program_record) %></span>
-<span><%= link "Back", to: program_record_path(@conn, :index) %></span>

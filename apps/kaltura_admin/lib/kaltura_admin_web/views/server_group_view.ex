@@ -27,7 +27,7 @@ defmodule KalturaAdmin.ServerGroupView do
 
   def servers do
     Servers.list_servers()
-    |> Enum.map(fn %{id: id, domain_name: name} -> {name, id} end)
+    |> Enum.map(fn item -> {Servers.server_name(item), item.id} end)
   end
 
   def selected_servers(nil), do: []
@@ -40,5 +40,49 @@ defmodule KalturaAdmin.ServerGroupView do
     servers
     |> Enum.map(fn %{^name_field => name} -> name end)
     |> Enum.join(", ")
+  end
+
+  def meta(serverGroup \\ nil) do
+    server_group_id =
+      if serverGroup == nil do
+        nil
+      else
+        serverGroup.id
+      end
+
+    [
+      %{
+        :header => "Name",
+        :type => :string,
+        :field => :name,
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Status",
+        :type => :status,
+        :field => :status,
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
+        :header => "Regions",
+        :type => :multiselect,
+        :field => :regions,
+        :mode => [:table, :show, :edit, :create],
+        :checkbox_name => "server_group[region_ids][]",
+        :items => regions(),
+        :item_name_eval_fn => fn item -> item.name end,
+        :selected_item_ids => selected_regions(server_group_id)
+      },
+      %{
+        :header => "Servers",
+        :type => :multiselect,
+        :field => :servers,
+        :mode => [:table, :show, :edit, :create],
+        :checkbox_name => "server_group[server_ids][]",
+        :items => servers(),
+        :item_name_eval_fn => fn item -> Servers.server_name(item) end,
+        :selected_item_ids => selected_servers(server_group_id)
+      }
+    ]
   end
 end

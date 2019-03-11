@@ -13,14 +13,30 @@ defmodule KalturaAdminWeb.SubnetControllerTest do
 
   describe "index" do
     test "lists all subnets", %{conn: conn} do
-      conn = get(conn, subnet_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Subnets"
+      {:ok, region} = Factory.insert(:region)
+      {:ok, subnet} = Factory.insert(:subnet, %{region_id: region.id})
+
+      {:ok, other_region} = Factory.insert(:region)
+      {:ok, other_subnet} = Factory.insert(:subnet, %{region_id: other_region.id})
+
+      response_conn = get(conn, region_path(conn, :show, region))
+
+      assert html_response(response_conn, 200) =~ "Subnets"
+      assert html_response(response_conn, 200) =~ subnet.cidr
+      refute html_response(response_conn, 200) =~ other_subnet.cidr
+
+      response_conn = get(conn, region_path(conn, :show, other_region))
+
+      assert html_response(response_conn, 200) =~ "Subnets"
+      refute html_response(response_conn, 200) =~ subnet.cidr
+      assert html_response(response_conn, 200) =~ other_subnet.cidr
     end
   end
 
   describe "new subnet" do
     test "renders form", %{conn: conn} do
-      conn = get(conn, subnet_path(conn, :new))
+      {:ok, region} = Factory.insert(:region)
+      conn = get(conn, subnet_path(conn, :new, %{"region_id" => region.id}))
       assert html_response(conn, 200) =~ "New Subnet"
     end
   end
@@ -35,11 +51,13 @@ defmodule KalturaAdminWeb.SubnetControllerTest do
       assert redirected_to(create_response) == subnet_path(create_response, :show, id)
 
       show_response = get(conn, subnet_path(conn, :show, id))
-      assert html_response(show_response, 200) =~ "Show Subnet"
+      assert html_response(show_response, 200) =~ "Subnet"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, subnet_path(conn, :create), subnet: @invalid_attrs)
+      {:ok, region} = Factory.insert(:region)
+      create_attrs = Map.put(@invalid_attrs, :region_id, region.id)
+      conn = post(conn, subnet_path(conn, :create), subnet: create_attrs)
       assert html_response(conn, 200) =~ "New Subnet"
     end
   end
@@ -65,7 +83,15 @@ defmodule KalturaAdminWeb.SubnetControllerTest do
     end
 
     test "renders errors when data is invalid", %{conn: conn, subnet: subnet} do
-      conn = put(conn, subnet_path(conn, :update, subnet), subnet: @invalid_attrs)
+      {:ok, region} = Factory.insert(:region)
+
+      conn =
+        put(
+          conn,
+          subnet_path(conn, :update, subnet, %{"region_id" => region.id}),
+          subnet: @invalid_attrs
+        )
+
       assert html_response(conn, 200) =~ "Edit Subnet"
     end
   end
@@ -74,8 +100,10 @@ defmodule KalturaAdminWeb.SubnetControllerTest do
     setup [:create_subnet]
 
     test "deletes chosen subnet", %{conn: conn, subnet: subnet} do
+      subnet = Repo.preload(subnet, :region)
+      region = subnet.region
       delete_response = delete(conn, subnet_path(conn, :delete, subnet))
-      assert redirected_to(delete_response) == subnet_path(delete_response, :index)
+      assert redirected_to(delete_response) == region_path(delete_response, :show, region)
 
       assert_error_sent(404, fn ->
         get(conn, subnet_path(conn, :show, subnet))

@@ -1,0 +1,27 @@
+<!--
+
+HTML checkbox component
+
+PARAMETERS:
+
+- mode       - view mode. Available values: [:create, :edit, :show]
+- meta       - meta-data (field, type, header ...)
+- item       - object 
+- f          - form object
+
+-->
+
+<%= if @mode == :show do %>
+  <%= if Map.has_key?(@meta, :field) do %>
+    <%= if Map.get(@item, @meta.field) do %>
+      <span class="glyphicon glyphicon-ok c-yes"></span>
+    <% else %>
+      <span class="glyphicon glyphicon-remove c-no"></span>
+    <% end %>
+  <% else %>
+    <%= render_for_show @meta, @item  %>
+  <% end %>
+  
+<% else %>  
+  <%= checkbox @f, @meta.field, class: "form-control" %>
+<% end %>    

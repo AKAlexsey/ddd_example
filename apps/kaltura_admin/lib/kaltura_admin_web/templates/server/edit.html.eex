@@ -1,5 +1,15 @@
-<h1>Edit Server</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: :server, 
+      mode:        :edit, 
+      item:        @server  
+%>        
 
-<%= render "form.html", Map.put(assigns, :action, server_path(@conn, :update, @server)) %>
+<%= render KalturaAdmin.LayoutView, "form_view.html", 
+      action:       server_path(@conn, :update, @server),
+      link_cancel:  server_path(@conn, :index),
+      link_delete:  server_path(@conn, :delete, @server),
+      changeset:    @changeset,
+      mode:         :edit,
+      meta:         meta(@server)
+ %>
 
-<span><%= link "Back", to: server_path(@conn, :index) %></span>

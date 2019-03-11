@@ -1,0 +1,21 @@
+<!-- 
+
+Header of the particular entity view (create, edit, view)
+
+PARAMETERS:
+
+- entity_name  - the entity name (singular)
+- mode         - view mode. Available values: [ :create, :edit, :show]
+- item         - item object
+
+-->
+
+<div class="entity-header">
+  <h2>
+    <%= case @mode do 
+      :create -> "New #{to_capitalize(@entity_name)}:"
+      :edit   -> "Edit #{to_capitalize(@entity_name)}:"
+      :show   -> "#{to_capitalize(@entity_name)} ##{@item.id}" 
+    end %> 
+  </h2>   
+</div>

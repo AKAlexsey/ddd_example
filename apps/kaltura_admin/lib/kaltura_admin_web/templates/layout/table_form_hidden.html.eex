@@ -1,0 +1,16 @@
+<!--
+
+HTML input text component
+
+PARAMETERS:
+
+- mode       - view mode. Available values: [:create, :edit, :show]
+- meta       - meta-data (field, type, header ...)
+- item       - object
+- f          - form object
+
+-->
+
+<%=if @mode == :create do %>
+  <%= hidden_input @f, @meta.field, class: "form-control" %>
+<% end %>

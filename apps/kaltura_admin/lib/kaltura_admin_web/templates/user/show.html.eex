@@ -1,23 +1,15 @@
-<h2>Show user</h2>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: :user, 
+      mode:        :show, 
+      item:        @user  
+%>        
 
-<ul>
+<%= render KalturaAdmin.LayoutView, "table_form.html", 
+      link_cancel:  user_path(@conn, :index),
+      link_delete:  user_path(@conn, :delete, @user),
+      link_edit:    user_path(@conn, :edit, @user),
+      mode:         :show,
+      item:         @user,
+      meta:         meta()
+ %>
 
-  <li>
-    <strong>Email:</strong>
-    <%= @user.email %>
-  </li>
-
-  <li>
-    <strong>First name:</strong>
-    <%= @user.first_name %>
-  </li>
-
-  <li>
-    <strong>Last name:</strong>
-    <%= @user.last_name %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: user_path(@conn, :edit, @user) %></span>
-<span><%= link "Back", to: user_path(@conn, :index) %></span>

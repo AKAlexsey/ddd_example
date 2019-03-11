@@ -1,6 +1,6 @@
 alias KalturaAdmin.Servers.Server
 alias KalturaAdmin.Protocols.NotifyServerAttrs
-alias KalturaAdmin.Servers.{ServerGroupServer}
+alias KalturaAdmin.Servers.ServerGroupServer
 alias KalturaAdmin.Content.ProgramRecord
 alias KalturaAdmin.Repo
 

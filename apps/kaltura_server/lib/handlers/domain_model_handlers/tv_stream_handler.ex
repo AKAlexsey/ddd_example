@@ -5,11 +5,7 @@ defmodule KalturaServer.DomainModelHandlers.TvStreamHandler do
   alias DomainModel.TvStream
   import KalturaServer.DomainModelContext, only: [normalize_enum: 1]
 
-  use KalturaServer.DomainModelHandlers.AbstractHandler,
-    table: TvStream,
-    joined_attributes_and_models: [
-      linear_channel_id: "LinearChannel"
-    ]
+  use KalturaServer.DomainModelHandlers.AbstractHandler, table: TvStream
 
   def before_write(struct, raw_attrs) do
     @enum_fields

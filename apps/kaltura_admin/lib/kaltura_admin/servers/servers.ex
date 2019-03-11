@@ -29,6 +29,12 @@ defmodule KalturaAdmin.Servers do
     |> Repo.preload(preload)
   end
 
+  def list_dvr_servers(preload \\ []) do
+    from(s in Server, where: s.type == ^:dvr)
+    |> Repo.all()
+    |> Repo.preload(preload)
+  end
+
   @doc """
   Gets a single server.
 
@@ -77,8 +83,24 @@ defmodule KalturaAdmin.Servers do
   """
   def update_server(%Server{} = server, attrs) do
     server
-    |> Server.changeset(attrs)
+    |> Server.changeset(add_empty_server_group_ids(attrs))
     |> Repo.update_and_notify()
+  end
+
+  defp add_empty_server_group_ids(%{server_group_ids: _ids} = attrs), do: attrs
+  defp add_empty_server_group_ids(%{"server_group_ids" => _ids} = attrs), do: attrs
+
+  defp add_empty_server_group_ids(attrs) do
+    Map.put(attrs, appropriate_map_key(attrs, :server_group_ids), [])
+  end
+
+  defp appropriate_map_key(attrs, key_name) do
+    attrs
+    |> Map.keys()
+    |> List.first()
+    |> (fn first_element ->
+          if(is_atom(first_element), do: key_name, else: to_string(key_name))
+        end).()
   end
 
   @doc """
@@ -174,9 +196,28 @@ defmodule KalturaAdmin.Servers do
 
   """
   def update_server_group(%ServerGroup{} = server_group, attrs) do
+    update_attrs =
+      attrs
+      |> add_empty_server_ids()
+      |> add_empty_region_ids()
+
     server_group
-    |> ServerGroup.changeset(attrs)
+    |> ServerGroup.changeset(update_attrs)
     |> Repo.update_and_notify()
+  end
+
+  defp add_empty_server_ids(%{server_ids: _ids} = attrs), do: attrs
+  defp add_empty_server_ids(%{"server_ids" => _ids} = attrs), do: attrs
+
+  defp add_empty_server_ids(attrs) do
+    Map.put(attrs, appropriate_map_key(attrs, :server_ids), [])
+  end
+
+  defp add_empty_region_ids(%{region_ids: _ids} = attrs), do: attrs
+  defp add_empty_region_ids(%{"region_ids" => _ids} = attrs), do: attrs
+
+  defp add_empty_region_ids(attrs) do
+    Map.put(attrs, appropriate_map_key(attrs, :region_ids), [])
   end
 
   @doc """
@@ -224,6 +265,10 @@ defmodule KalturaAdmin.Servers do
     from(sgs in ServerGroupServer, where: sgs.server_id == ^server_id)
     |> Repo.all()
     |> Enum.map(fn %{server_group_id: server_group_id} -> server_group_id end)
+  end
+
+  def server_name(server) do
+    server.domain_name <> " [" <> String.upcase(to_string(server.type)) <> "]"
   end
 
   # TODO there is a lot of duplication in make_request_region_params,

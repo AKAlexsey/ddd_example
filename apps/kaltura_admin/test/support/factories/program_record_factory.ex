@@ -6,7 +6,7 @@ defmodule KalturaAdmin.ProgramRecordFactory do
 
   def default_attrs,
     do: %{
-      path: "#{Faker.Lorem.word()}",
+      path: "#{Faker.Lorem.word()}#{:rand.uniform(10000)}#{:rand.uniform(10000)}",
       status: :planned,
       protocol: :HLS
     }

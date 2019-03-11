@@ -1,5 +1,18 @@
-<h1>Edit Program</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: "program", 
+      mode:        :edit,
+      item:        @program 
+%>        
 
-<%= render "form.html", Map.put(assigns, :action, program_path(@conn, :update, @program)) %>
+<%= render KalturaAdmin.LayoutView, "form_view.html", 
+      action:       program_path(@conn, :update, @program),
+      link_cancel:  program_path(@conn, :index),
+      link_delete:  program_path(@conn, :delete, @program),
+      changeset:    @changeset,
+      mode:         :edit,
+      meta:         meta()
+ %>
 
-<span><%= link "Back", to: program_path(@conn, :index) %></span>
+
+
+

@@ -14,7 +14,7 @@ defmodule KalturaAdminWeb.RegionControllerTest do
   describe "index" do
     test "lists all regions", %{conn: conn} do
       conn = get(conn, region_path(conn, :index))
-      assert html_response(conn, 200) =~ "Listing Regions"
+      assert html_response(conn, 200) =~ "Regions"
     end
   end
 
@@ -33,7 +33,7 @@ defmodule KalturaAdminWeb.RegionControllerTest do
       assert redirected_to(create_response) == region_path(create_response, :show, id)
 
       show_response = get(conn, region_path(conn, :show, id))
-      assert html_response(show_response, 200) =~ "Show Region"
+      assert html_response(show_response, 200) =~ "Region"
     end
 
     test "renders errors when data is invalid", %{conn: conn} do

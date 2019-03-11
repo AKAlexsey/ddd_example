@@ -19,3 +19,23 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+
+/**
+ * Is adding 'click' event for some TD elements of the main view table (with data)
+ * Such 'td' element must have properties:
+ * - class="clickable"
+ * - data-click-path="/some/url/when/click"
+ */
+
+var tdElements = document.getElementsByClassName('clickable');
+for(var i = 0; i < tdElements.length; i++) {
+  tdElements[i].addEventListener('click', function(mEvent) {
+    window.location.href = mEvent.currentTarget.dataset.clickPath
+  })
+}
+
+
+
+
+

@@ -1,0 +1,44 @@
+<!-- 
+
+Table view
+
+PARAMETERS:
+
+- meta           - meta-data for presentation (headers, field names, types, datas)
+- items          - items array
+- entity_link_fn - function for preparing link for current entity class (with arrity 3)
+- conn           - the 'connection' object
+
+-->
+
+<table class="<%= if assigns[:style_class] do "table table-data #{@style_class}" else "table table-data" end  %>">
+  <thead>
+    <tr>
+      <%= for record_meta <- @meta do %>
+        <%= if Enum.member?(record_meta.mode, :table) do %>
+          <th><%=record_meta.header%></th>
+        <%end%>
+      <%end%>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for item <- @items do %>
+        <tr>
+          <%= for record_meta <- @meta do %>
+            <%= if Enum.member?(record_meta.mode, :table) do %>
+              <td class="clickable" data-click-path="<%= @entity_link_fn.(@conn, :show, item) %>">
+                <%= render "table_form_#{record_meta.type}.html", f: nil, mode: :show, meta: record_meta, item: item %> 
+              </td>
+            <%end%>
+          <%end%>
+
+          <td class="row-btns">
+            <%= render "record_btns.html", 
+                  link_edit:   @entity_link_fn.(@conn, :edit,   item) ,
+                  link_delete: @entity_link_fn.(@conn, :delete, item)  %>        
+          </td>
+        </tr>
+    <%end%>
+  </tbody>
+</table>

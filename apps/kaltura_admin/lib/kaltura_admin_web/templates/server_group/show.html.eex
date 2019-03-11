@@ -1,37 +1,15 @@
-<h1>Show Server group</h1>
+<%= render KalturaAdmin.LayoutView, "entity_header.html", 
+      entity_name: :server_group, 
+      mode:        :show, 
+      item:        @server_group  
+%>        
 
-<ul>
+<%= render KalturaAdmin.LayoutView, "table_form.html", 
+      link_cancel:  server_group_path(@conn, :index),
+      link_delete:  server_group_path(@conn, :delete, @server_group),
+      link_edit:    server_group_path(@conn, :edit, @server_group),
+      mode:         :show,
+      item:         @server_group,
+      meta:         meta()
+ %>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @server_group.name %>
-  </li>
-
-  <li>
-    <strong>Description:</strong>
-    <%= @server_group.description %>
-  </li>
-
-  <li>
-    <strong>Status:</strong>
-    <%= @server_group.status %>
-  </li>
-
-  <li>
-    <strong>Regions:</strong>
-    <%= decorate_collection(@server_group.regions) %>
-  </li>
-
-  <li>
-    <strong>TvStreams:</strong>
-    <%= decorate_collection(@server_group.linear_channels) %>
-  </li>
-
-  <li>
-    <strong>Servers:</strong>
-    <%= decorate_collection(@server_group.servers, :domain_name) %>
-  </li>
-</ul>
-
-<span><%= link "Edit", to: server_group_path(@conn, :edit, @server_group) %></span>
-<span><%= link "Back", to: server_group_path(@conn, :index) %></span>

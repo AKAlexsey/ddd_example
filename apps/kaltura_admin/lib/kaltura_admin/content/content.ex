@@ -225,6 +225,10 @@ defmodule KalturaAdmin.Content do
     Repo.all(ProgramRecord)
   end
 
+  def list_program_records(program_id) do
+    Repo.all(from(pr in ProgramRecord, where: pr.program_id == ^program_id))
+  end
+
   @doc """
   Gets a single program_record.
 
@@ -239,7 +243,11 @@ defmodule KalturaAdmin.Content do
       ** (Ecto.NoResultsError)
 
   """
-  def get_program_record!(id), do: Repo.get!(ProgramRecord, id)
+  def get_program_record!(id, preload \\ []) do
+    ProgramRecord
+    |> Repo.get!(id)
+    |> Repo.preload(preload)
+  end
 
   @doc """
   Creates a program_record.
