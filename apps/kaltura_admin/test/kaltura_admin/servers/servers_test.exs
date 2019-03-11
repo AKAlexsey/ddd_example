@@ -3,7 +3,7 @@ defmodule KalturaAdmin.ServersTest do
 
   alias KalturaAdmin.Servers
   import Mock
-  @domain_model_handler_module Application.get_env(:kaltura_server, :domain_model_handler)
+  alias KalturaAdmin.Services.DomainModelCache
 
   describe "servers" do
     alias KalturaAdmin.Servers.Server
@@ -65,7 +65,7 @@ defmodule KalturaAdmin.ServersTest do
     end
 
     test "create_server/1 with valid data creates a server" do
-      with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         assert {:ok, %Server{} = server} = Servers.create_server(@valid_attrs)
         assert server.domain_name == "some-domain.name"
         assert server.healthcheck_enabled == true
@@ -78,7 +78,7 @@ defmodule KalturaAdmin.ServersTest do
         assert server.status == :active
         assert server.type == :edge
         assert server.weight == 42
-        assert_called(@domain_model_handler_module.handle(:insert, %{model_name: "Server"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -87,7 +87,7 @@ defmodule KalturaAdmin.ServersTest do
     end
 
     test "update_server/2 with valid data updates the server" do
-      with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         server = server_fixture()
         assert {:ok, %Server{} = server} = Servers.update_server(server, @update_attrs)
         assert server.domain_name == "some-updated-domain.name"
@@ -101,7 +101,7 @@ defmodule KalturaAdmin.ServersTest do
         assert server.status == :inactive
         assert server.type == :edge
         assert server.weight == 43
-        assert_called(@domain_model_handler_module.handle(:update, %{model_name: "Server"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -112,11 +112,11 @@ defmodule KalturaAdmin.ServersTest do
     end
 
     test "delete_server/1 deletes the server" do
-      with_mock @domain_model_handler_module, handle: fn :delete, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         server = server_fixture()
         assert {:ok, %Server{}} = Servers.delete_server(server)
         assert_raise Ecto.NoResultsError, fn -> Servers.get_server!(server.id) end
-        assert_called(@domain_model_handler_module.handle(:delete, %{model_name: "Server"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -157,12 +157,12 @@ defmodule KalturaAdmin.ServersTest do
     end
 
     test "create_server_group/1 with valid data creates a server_group" do
-      with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         assert {:ok, %ServerGroup{} = server_group} = Servers.create_server_group(@valid_attrs)
         assert server_group.description == "some description"
         assert server_group.name == "some name"
         assert server_group.status == :active
-        assert_called(@domain_model_handler_module.handle(:insert, %{model_name: "ServerGroup"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -173,14 +173,14 @@ defmodule KalturaAdmin.ServersTest do
     test "update_server_group/2 with valid data updates the server_group" do
       server_group = server_group_fixture()
 
-      with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         assert {:ok, %ServerGroup{} = server_group} =
                  Servers.update_server_group(server_group, @update_attrs)
 
         assert server_group.description == "some updated description"
         assert server_group.name == "some updated name"
         assert server_group.status == :inactive
-        assert_called(@domain_model_handler_module.handle(:update, %{model_name: "ServerGroup"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -196,10 +196,10 @@ defmodule KalturaAdmin.ServersTest do
     test "delete_server_group/1 deletes the server_group" do
       server_group = server_group_fixture()
 
-      with_mock @domain_model_handler_module, handle: fn :delete, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         assert {:ok, %ServerGroup{}} = Servers.delete_server_group(server_group)
         assert_raise Ecto.NoResultsError, fn -> Servers.get_server_group!(server_group.id) end
-        assert_called(@domain_model_handler_module.handle(:delete, %{model_name: "ServerGroup"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 

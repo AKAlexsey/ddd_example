@@ -11,15 +11,4 @@ defmodule KalturaAdmin.PublicApiTest do
       assert_called(DomainModelCache.get_all_records())
     end
   end
-
-  test "#get_one_record" do
-    model = "Program"
-    id = 1
-
-    with_mock(DomainModelCache, get_one_record: fn _, _ -> :ok end) do
-      PublicApi.cache_model_record(model, id)
-      :timer.sleep(50)
-      assert_called(DomainModelCache.get_one_record(model, id))
-    end
-  end
 end

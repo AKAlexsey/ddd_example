@@ -4,7 +4,7 @@ defmodule KalturaAdmin.ContentTest do
   alias KalturaAdmin.Content
   alias KalturaAdmin.Servers.ServerGroup
   import Mock
-  @domain_model_handler_module Application.get_env(:kaltura_server, :domain_model_handler)
+  alias KalturaAdmin.Services.DomainModelCache
 
   describe "linear_channels" do
     alias KalturaAdmin.Content.LinearChannel
@@ -48,7 +48,7 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "create_linear_channel/1 with valid data creates a linear_channel" do
-      with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         {:ok, %ServerGroup{id: server_group_id}} = Factory.insert(:server_group)
 
         create_attrs =
@@ -64,9 +64,7 @@ defmodule KalturaAdmin.ContentTest do
         assert linear_channel.name == "some name"
         assert linear_channel.server_group_id == server_group_id
 
-        assert_called(
-          @domain_model_handler_module.handle(:insert, %{model_name: "LinearChannel"})
-        )
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -78,7 +76,7 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "create_linear_channel/1 does not validate server_group_id if dvr_enabled = false" do
-      with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         assert {:ok, %LinearChannel{} = linear_channel} =
                  Content.create_linear_channel(@valid_attrs)
 
@@ -89,9 +87,7 @@ defmodule KalturaAdmin.ContentTest do
         assert linear_channel.name == "some name"
         assert is_nil(linear_channel.server_group_id)
 
-        assert_called(
-          @domain_model_handler_module.handle(:insert, %{model_name: "LinearChannel"})
-        )
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -148,7 +144,7 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "update_linear_channel/2 with valid data updates the linear_channel #1" do
-      with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         {:ok, server_group} = Factory.insert(:server_group)
         linear_channel = linear_channel_fixture()
         update_attrs = Map.put(@update_attrs, :server_group_id, server_group.id)
@@ -163,14 +159,12 @@ defmodule KalturaAdmin.ContentTest do
         assert linear_channel.name == "some updated name"
         assert linear_channel.server_group_id == server_group.id
 
-        assert_called(
-          @domain_model_handler_module.handle(:update, %{model_name: "LinearChannel"})
-        )
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
     test "update_linear_channel/2 with valid data updates the linear_channel #2" do
-      with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         linear_channel = linear_channel_fixture()
         update_attrs = Map.put(@update_attrs, :dvr_enabled, false)
 
@@ -184,9 +178,7 @@ defmodule KalturaAdmin.ContentTest do
         assert linear_channel.name == "some updated name"
         assert is_nil(linear_channel.server_group_id)
 
-        assert_called(
-          @domain_model_handler_module.handle(:update, %{model_name: "LinearChannel"})
-        )
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -251,14 +243,12 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "delete_linear_channel/1 deletes the linear_channel" do
-      with_mock @domain_model_handler_module, handle: fn :delete, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         linear_channel = linear_channel_fixture()
         assert {:ok, %LinearChannel{}} = Content.delete_linear_channel(linear_channel)
         assert_raise Ecto.NoResultsError, fn -> Content.get_linear_channel!(linear_channel.id) end
 
-        assert_called(
-          @domain_model_handler_module.handle(:delete, %{model_name: "LinearChannel"})
-        )
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -302,7 +292,7 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "create_program/1 with valid data creates a program" do
-      with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         {:ok, linear_channel} = Factory.insert(:linear_channel)
         attrs = Map.put(@valid_attrs, :linear_channel_id, linear_channel.id)
         assert {:ok, %Program{} = program} = Content.create_program(attrs)
@@ -310,7 +300,7 @@ defmodule KalturaAdmin.ContentTest do
         assert program.epg_id == "some epg_id"
         assert program.name == "some name"
         assert program.start_datetime == ~N[2010-04-17 14:00:00]
-        assert_called(@domain_model_handler_module.handle(:insert, %{model_name: "Program"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -319,7 +309,7 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "update_program/2 with valid data updates the program" do
-      with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         program = program_fixture()
         {:ok, linear_channel} = Factory.insert(:linear_channel)
         attrs = Map.put(@update_attrs, :linear_channel_id, linear_channel.id)
@@ -328,7 +318,7 @@ defmodule KalturaAdmin.ContentTest do
         assert program.epg_id == "some updated epg_id"
         assert program.name == "some updated name"
         assert program.start_datetime == ~N[2011-05-18 15:01:01]
-        assert_called(@domain_model_handler_module.handle(:update, %{model_name: "Program"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -339,11 +329,11 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "delete_program/1 deletes the program" do
-      with_mock @domain_model_handler_module, handle: fn :delete, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         program = program_fixture()
         assert {:ok, %Program{}} = Content.delete_program(program)
         assert_raise Ecto.NoResultsError, fn -> Content.get_program!(program.id) end
-        assert_called(@domain_model_handler_module.handle(:delete, %{model_name: "Program"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -377,7 +367,7 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "create_program_record/1 with valid data creates a program_record" do
-      with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         {:ok, program} = Factory.insert(:program)
         {:ok, server} = Factory.insert(:server)
         attrs = Map.merge(@valid_attrs, %{server_id: server.id, program_id: program.id})
@@ -387,9 +377,7 @@ defmodule KalturaAdmin.ContentTest do
         assert program_record.path == "some path"
         assert program_record.status == :planned
 
-        assert_called(
-          @domain_model_handler_module.handle(:insert, %{model_name: "ProgramRecord"})
-        )
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -398,7 +386,7 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "update_program_record/2 with valid data updates the program_record" do
-      with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         program_record = program_record_fixture()
         {:ok, program} = Factory.insert(:program)
         {:ok, server} = Factory.insert(:server)
@@ -411,9 +399,7 @@ defmodule KalturaAdmin.ContentTest do
         assert program_record.path == "some updated path"
         assert program_record.status == :running
 
-        assert_called(
-          @domain_model_handler_module.handle(:update, %{model_name: "ProgramRecord"})
-        )
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -427,14 +413,12 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "delete_program_record/1 deletes the program_record" do
-      with_mock @domain_model_handler_module, handle: fn :delete, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         program_record = program_record_fixture()
         assert {:ok, %ProgramRecord{}} = Content.delete_program_record(program_record)
         assert_raise Ecto.NoResultsError, fn -> Content.get_program_record!(program_record.id) end
 
-        assert_called(
-          @domain_model_handler_module.handle(:delete, %{model_name: "ProgramRecord"})
-        )
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -483,14 +467,14 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "create_tv_stream/1 with valid data creates a tv_stream" do
-      with_mock @domain_model_handler_module, handle: fn :insert, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         assert {:ok, %TvStream{} = tv_stream} = Content.create_tv_stream(valid_attrs())
         assert tv_stream.encryption == "some encryption"
         assert tv_stream.protocol == "some protocol"
         assert tv_stream.status == "some status"
         assert tv_stream.stream_path == "some stream_path"
 
-        assert_called(@domain_model_handler_module.handle(:insert, %{model_name: "TvStream"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -505,7 +489,7 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "update_tv_stream/2 with valid data updates the tv_stream" do
-      with_mock @domain_model_handler_module, handle: fn :update, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         tv_stream = tv_stream_fixture()
         assert {:ok, %TvStream{} = tv_stream} = Content.update_tv_stream(tv_stream, @update_attrs)
         assert tv_stream.encryption == "some updated encryption"
@@ -513,7 +497,7 @@ defmodule KalturaAdmin.ContentTest do
         assert tv_stream.status == "some updated status"
         assert tv_stream.stream_path == "some updated stream_path"
 
-        assert_called(@domain_model_handler_module.handle(:update, %{model_name: "TvStream"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 
@@ -534,12 +518,12 @@ defmodule KalturaAdmin.ContentTest do
     end
 
     test "delete_tv_stream/1 deletes the tv_stream" do
-      with_mock @domain_model_handler_module, handle: fn :delete, %{} -> :ok end do
+      with_mock DomainModelCache, get_all_records: fn -> :ok end do
         tv_stream = tv_stream_fixture()
         assert {:ok, %TvStream{}} = Content.delete_tv_stream(tv_stream)
         assert_raise Ecto.NoResultsError, fn -> Content.get_tv_stream!(tv_stream.id) end
 
-        assert_called(@domain_model_handler_module.handle(:delete, %{model_name: "TvStream"}))
+        assert_called(DomainModelCache.get_all_records())
       end
     end
 

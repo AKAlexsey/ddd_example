@@ -5,12 +5,7 @@ defmodule KalturaServer.DomainModelHandlers.ProgramRecordHandler do
   import KalturaServer.DomainModelContext, only: [normalize_enum: 1]
 
   @enum_fields [:status, :protocol]
-  use KalturaServer.DomainModelHandlers.AbstractHandler,
-    table: ProgramRecord,
-    joined_attributes_and_models: [
-      program_id: "Program",
-      server_id: "Server"
-    ]
+  use KalturaServer.DomainModelHandlers.AbstractHandler, table: ProgramRecord
 
   def before_write(struct, raw_attrs) do
     @enum_fields

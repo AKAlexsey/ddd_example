@@ -8,7 +8,8 @@ defmodule KalturaAdmin.ServerFactory do
 
   def default_attrs(),
     do: %{
-      domain_name: "#{Faker.Internet.domain_name()}#{:rand.uniform(10000)}#{:rand.uniform(10000)}",
+      domain_name:
+        "#{Faker.Internet.domain_name()}#{:rand.uniform(10000)}#{:rand.uniform(10000)}",
       healthcheck_enabled: true,
       healthcheck_path: "/#{Faker.Lorem.word()}#{:rand.uniform(10000)}#{:rand.uniform(10000)}",
       ip: Faker.Internet.ip_v4_address(),

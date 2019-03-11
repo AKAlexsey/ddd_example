@@ -3,10 +3,5 @@ defmodule KalturaServer.DomainModelHandlers.ProgramHandler do
 
   alias DomainModel.Program
 
-  use KalturaServer.DomainModelHandlers.AbstractHandler,
-    table: Program,
-    joined_attributes_and_models: [
-      linear_channel_id: "LinearChannel",
-      program_record_ids: "ProgramRecord"
-    ]
+  use KalturaServer.DomainModelHandlers.AbstractHandler, table: Program
 end

@@ -17,19 +17,21 @@ defmodule KalturaAdminWeb.ProgramRecordControllerTest do
       {:ok, program_record} = Factory.insert(:program_record, %{program_id: program.id})
 
       {:ok, other_program} = Factory.insert(:program)
-      {:ok, other_subnet} = Factory.insert(:program_record, %{program_id: other_program.id})
+
+      {:ok, other_program_record} =
+        Factory.insert(:program_record, %{program_id: other_program.id})
 
       response_conn = get(conn, program_path(conn, :show, program))
 
       assert html_response(response_conn, 200) =~ "Program records"
       assert html_response(response_conn, 200) =~ program_record.path
-      refute html_response(response_conn, 200) =~ other_subnet.path
+      refute html_response(response_conn, 200) =~ other_program_record.path
 
       response_conn = get(conn, program_path(conn, :show, other_program))
 
       assert html_response(response_conn, 200) =~ "Program records"
       refute html_response(response_conn, 200) =~ program_record.path
-      assert html_response(response_conn, 200) =~ other_subnet.path
+      assert html_response(response_conn, 200) =~ other_program_record.path
     end
   end
 
