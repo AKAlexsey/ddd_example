@@ -81,7 +81,7 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
       assert {%{
                 resp_headers: [
                   {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"location", redirect_path}
+                  {"Location", redirect_path}
                 ]
               }, 302, ""} = VodResponser.make_response(conn)
 
@@ -98,7 +98,7 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
 
       assert redirect_conn.resp_headers == [
                {"cache-control", "max-age=0, private, must-revalidate"},
-               {"location", redirect_path}
+               {"Location", redirect_path}
              ]
     end
   end
@@ -180,7 +180,7 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
       assert {%{
                 resp_headers: [
                   {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"location", redirect_path}
+                  {"Location", redirect_path}
                 ]
               }, 302, ""} = VodResponser.make_response(conn)
 
@@ -197,7 +197,7 @@ defmodule KalturaServer.RequestProcessing.VodResponserTest do
 
       assert redirect_conn.resp_headers == [
                {"cache-control", "max-age=0, private, must-revalidate"},
-               {"location", redirect_path}
+               {"Location", redirect_path}
              ]
     end
   end

@@ -36,7 +36,7 @@ defmodule KalturaServer.RequestProcessing.VodResponser do
 
   defp vod_response({conn, %{domain_name: _, port: _, vod_path: _} = data}) do
     {
-      put_resp_header(conn, "location", make_live_redirect_path(data)),
+      put_resp_header(conn, "Location", make_live_redirect_path(data)),
       302,
       ""
     }

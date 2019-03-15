@@ -130,7 +130,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       assert {%{
                 resp_headers: [
                   {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"location", response_redirect_path}
+                  {"Location", response_redirect_path}
                 ]
               }, 302, ""} = CatchupResponser.make_response(conn)
 
@@ -144,7 +144,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       assert {%{
                 resp_headers: [
                   {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"location", response_redirect_path}
+                  {"Location", response_redirect_path}
                 ]
               }, 302, ""} = CatchupResponser.make_response(conn)
 
@@ -279,7 +279,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       assert {%{
                 resp_headers: [
                   {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"location", response_redirect_path}
+                  {"Location", response_redirect_path}
                 ]
               }, 302, ""} = CatchupResponser.make_response(conn)
 
@@ -293,7 +293,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       assert {%{
                 resp_headers: [
                   {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"location", response_redirect_path}
+                  {"Location", response_redirect_path}
                 ]
               }, 302, ""} = CatchupResponser.make_response(conn)
 
