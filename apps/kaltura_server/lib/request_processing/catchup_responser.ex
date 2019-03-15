@@ -54,7 +54,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponser do
          {conn, %{domain_name: _, port: _, dvr_server_prefix: _, record_path: _} = data}
        ) do
     {
-      put_resp_header(conn, "location", make_catchup_redirect_path(data)),
+      put_resp_header(conn, "Location", make_catchup_redirect_path(data)),
       302,
       ""
     }

@@ -96,7 +96,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", redirect_path}
+                 {"Location", redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
@@ -114,7 +114,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", ^redirect_path}
+                 {"Location", ^redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
     end
@@ -210,7 +210,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", redirect_path}
+                 {"Location", redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
@@ -228,7 +228,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", ^redirect_path}
+                 {"Location", ^redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
     end
@@ -362,7 +362,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", redirect_path}
+                 {"Location", redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
@@ -377,7 +377,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", redirect_path}
+                 {"Location", redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
@@ -513,7 +513,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", redirect_path}
+                 {"Location", redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
@@ -528,7 +528,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", redirect_path}
+                 {"Location", redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
@@ -616,7 +616,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", redirect_path}
+                 {"Location", redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
@@ -634,7 +634,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", ^redirect_path}
+                 {"Location", ^redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
     end
@@ -720,7 +720,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", redirect_path}
+                 {"Location", redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
@@ -738,7 +738,7 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"location", ^redirect_path}
+                 {"Location", ^redirect_path}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
     end
