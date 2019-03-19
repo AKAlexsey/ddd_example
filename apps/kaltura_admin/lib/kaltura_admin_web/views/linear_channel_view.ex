@@ -81,21 +81,21 @@ defmodule KalturaAdmin.LinearChannelView do
         :header => "Status",
         :type => :select,
         :field => :status,
-        :items => TvStream.statuses(),
+        :items => recording_statuses(),
         :mode => [:table, :show, :edit, :create]
       },
       %{
         :header => "Protocol",
         :type => :select,
         :field => :protocol,
-        :items => TvStream.protocols(),
+        :items => stream_protocols(),
         :mode => [:table, :show, :edit, :create]
       },
       %{
         :header => "Encryption",
         :type => :select,
         :field => :encryption,
-        :items => TvStream.encryption(),
+        :items => encryptions(),
         :mode => [:table, :show, :edit, :create]
       },
       %{

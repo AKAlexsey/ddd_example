@@ -3,7 +3,7 @@ defmodule KalturaAdmin.Area.Region do
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias KalturaAdmin.{ActiveStatus, Area, Repo}
+  alias KalturaAdmin.{Area, Repo}
   alias KalturaAdmin.Area.{RegionServerGroup, Subnet}
   alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
   alias KalturaAdmin.Servers.ServerGroup
@@ -15,7 +15,7 @@ defmodule KalturaAdmin.Area.Region do
   schema "regions" do
     field(:description, :string)
     field(:name, :string)
-    field(:status, ActiveStatus)
+    field(:status, :string)
 
     has_many(
       :region_server_groups,

@@ -2,9 +2,6 @@ defmodule KalturaServer.DomainModelFactories.TvStream do
   @moduledoc false
 
   use KalturaServer.DomainModelFactories.AbstractFactory, table: DomainModel.TvStream
-  import KalturaServer.DomainModelContext, only: [normalize_enum: 1]
-
-  @enum_fields [:status, :protocol, :encryption]
 
   def default_attrs do
     %{
@@ -29,7 +26,6 @@ defmodule KalturaServer.DomainModelFactories.TvStream do
   defp prepare_attrs(attrs) do
     default_attrs()
     |> Map.merge(attrs)
-    |> normalize_enums()
     |> put_complex_search_index()
   end
 
@@ -52,12 +48,5 @@ defmodule KalturaServer.DomainModelFactories.TvStream do
 
     write_attrs
     |> Map.put(:complex_search_index, {epg_id, status, protocol})
-  end
-
-  defp normalize_enums(write_attrs) do
-    @enum_fields
-    |> Enum.reduce(write_attrs, fn field, new_attrs ->
-      Map.update!(new_attrs, field, &normalize_enum/1)
-    end)
   end
 end

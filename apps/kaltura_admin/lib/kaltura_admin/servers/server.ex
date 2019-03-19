@@ -3,8 +3,8 @@ defmodule KalturaAdmin.Servers.Server do
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias KalturaAdmin.{ActiveStatus, Repo, Servers, ServerType}
   alias KalturaAdmin.Content.ProgramRecord
+  alias KalturaAdmin.{Repo, Servers}
   alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
   alias KalturaAdmin.Servers.{ServerGroup, ServerGroupServer}
   use DomainModelNotifier, observers: [DomainModelObserver]
@@ -41,8 +41,8 @@ defmodule KalturaAdmin.Servers.Server do
     field(:manage_port, :integer)
     field(:port, :integer)
     field(:prefix, :string)
-    field(:status, ActiveStatus)
-    field(:type, ServerType)
+    field(:status, :string)
+    field(:type, :string)
     field(:weight, :integer)
 
     has_many(
@@ -66,7 +66,7 @@ defmodule KalturaAdmin.Servers.Server do
     |> cast_server_groups(id, attrs)
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
-    |> validate_domain_name_uniq()
+    |> validate_domain_name_type_uniq()
     |> validate_domain_name_format()
     |> validate_weight()
     |> validate_port()
@@ -96,9 +96,9 @@ defmodule KalturaAdmin.Servers.Server do
     |> cast_assoc(:server_group_servers, with: &ServerGroupServer.server_changeset/2)
   end
 
-  def validate_domain_name_uniq(changeset) do
+  def validate_domain_name_type_uniq(changeset) do
     changeset
-    |> unique_constraint(:domain_name)
+    |> unique_constraint(:domain_name, name: :servers_domain_name_type_index)
   end
 
   def validate_domain_name_format(changeset) do

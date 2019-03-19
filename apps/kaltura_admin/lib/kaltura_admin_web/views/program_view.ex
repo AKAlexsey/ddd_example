@@ -2,7 +2,6 @@ defmodule KalturaAdmin.ProgramView do
   use KalturaAdminWeb, :view
 
   alias KalturaAdmin.Content
-  alias KalturaAdmin.Content.TvStream
   alias KalturaAdmin.Servers
   alias KalturaAdmin.Util
 
@@ -86,7 +85,14 @@ defmodule KalturaAdmin.ProgramView do
         :type => :select,
         :field => :protocol,
         :mode => [:table, :show, :edit, :create],
-        :items => TvStream.protocols()
+        :items => stream_protocols()
+      },
+      %{
+        :header => "Encryption",
+        :type => :select,
+        :field => :encryption,
+        :mode => [:table, :show, :edit, :create],
+        :items => encryptions()
       },
       %{
         :header => "Status",

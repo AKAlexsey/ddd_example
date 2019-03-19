@@ -45,6 +45,7 @@ defdatabase DomainModel do
              :protocol,
              :path,
              :prefix,
+             :encryption,
              :complex_search_index
            ],
            type: :ordered_set do
@@ -181,6 +182,7 @@ defdatabase DomainModel do
     Amnesia.Table.add_index(DomainModel.Server, :healthcheck_enabled)
     Amnesia.Table.add_index(DomainModel.LinearChannel, :epg_id)
     Amnesia.Table.add_index(DomainModel.TvStream, :complex_search_index)
+    Amnesia.Table.add_index(DomainModel.ProgramRecord, :complex_search_index)
   end
 
   # TODO Probably there is some native way to make table struct from mnesia query result.

@@ -91,26 +91,6 @@ defmodule KalturaServer.DomainModelContextTest do
     end
   end
 
-  describe "#normalize_enum" do
-    test "Return UPCASEBINARY if given is :atom" do
-      assert "ACTIVE" == DomainModelContext.normalize_enum(:active)
-    end
-
-    test "Return UPCASEBINARY if given is \"binary\"" do
-      assert "ACTIVE" == DomainModelContext.normalize_enum("active")
-    end
-
-    test "Return UPCASEBINARY if given is \"bInaRy\"" do
-      assert "ACTIVE" == DomainModelContext.normalize_enum("aCtiVe")
-    end
-
-    test "Raise error if given argument is number" do
-      assert_raise(FunctionClauseError, fn ->
-        DomainModelContext.normalize_enum(4)
-      end)
-    end
-  end
-
   describe "#get_subnets_for_ip" do
     setup do
       cidr1 = "147.147.147.147/30"

@@ -26,11 +26,11 @@ defimpl NotifyServerAttrs, for: Subnet do
     put_server_ids(attrs, record_with_preloads)
   end
 
-  defp put_server_ids(attrs, %{region: %{status: :active, server_groups: server_groups}}) do
+  defp put_server_ids(attrs, %{region: %{status: "ACTIVE", server_groups: server_groups}}) do
     server_ids =
       server_groups
       |> Enum.map(fn
-        %{status: :active, servers: servers} ->
+        %{status: "ACTIVE", servers: servers} ->
           Enum.map(servers, & &1.id)
 
         _ ->

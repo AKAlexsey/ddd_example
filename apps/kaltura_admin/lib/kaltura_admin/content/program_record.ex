@@ -5,18 +5,17 @@ defmodule KalturaAdmin.Content.ProgramRecord do
   import Ecto.Changeset
   alias KalturaAdmin.Content.Program
   alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
-  alias KalturaAdmin.{RecordingStatus, StreamProtocol}
   alias KalturaAdmin.Servers.Server
   use DomainModelNotifier, observers: [DomainModelObserver]
 
-  @cast_fields [:status, :protocol, :path, :server_id, :program_id]
-  @required_fields [:status, :protocol, :path, :server_id, :program_id]
+  @cast_fields [:status, :protocol, :encryption, :path, :server_id, :program_id]
+  @required_fields [:status, :protocol, :encryption, :path, :server_id, :program_id]
 
   schema "program_records" do
     field(:path, :string)
-    field(:status, RecordingStatus)
-    field(:protocol, StreamProtocol)
-
+    field(:status, :string)
+    field(:protocol, :string)
+    field(:encryption, :string)
     belongs_to(:server, Server)
     belongs_to(:program, Program)
 

@@ -1,8 +1,8 @@
 defmodule KalturaAdminWeb.RegionControllerTest do
   use KalturaAdmin.ConnCase
 
-  @create_attrs %{description: Faker.Lorem.sentence(), name: "Old name", status: :active}
-  @update_attrs %{description: Faker.Lorem.sentence(), name: "New name", status: :inactive}
+  @create_attrs %{description: Faker.Lorem.sentence(), name: "Old name", status: "ACTIVE"}
+  @update_attrs %{description: Faker.Lorem.sentence(), name: "New name", status: "INACTIVE"}
   @invalid_attrs %{description: nil, name: nil, status: nil}
 
   setup tags do

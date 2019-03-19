@@ -17,8 +17,8 @@ defmodule KalturaAdmin.ServersTest do
       manage_port: 42,
       port: 80,
       prefix: "some-prefix",
-      status: :active,
-      type: :edge,
+      status: "ACTIVE",
+      type: "EDGE",
       weight: 42
     }
     @update_attrs %{
@@ -30,8 +30,8 @@ defmodule KalturaAdmin.ServersTest do
       manage_port: 43,
       port: 443,
       prefix: "some-updated-prefix",
-      status: :inactive,
-      type: :edge,
+      status: "INACTIVE",
+      type: "EDGE",
       weight: 43
     }
     @invalid_attrs %{
@@ -75,8 +75,8 @@ defmodule KalturaAdmin.ServersTest do
         assert server.manage_port == 42
         assert server.port == 80
         assert server.prefix == "some-prefix"
-        assert server.status == :active
-        assert server.type == :edge
+        assert server.status == "ACTIVE"
+        assert server.type == "EDGE"
         assert server.weight == 42
         assert_called(DomainModelCache.get_all_records())
       end
@@ -98,8 +98,8 @@ defmodule KalturaAdmin.ServersTest do
         assert server.manage_port == 43
         assert server.port == 443
         assert server.prefix == "some-updated-prefix"
-        assert server.status == :inactive
-        assert server.type == :edge
+        assert server.status == "INACTIVE"
+        assert server.type == "EDGE"
         assert server.weight == 43
         assert_called(DomainModelCache.get_all_records())
       end
@@ -129,11 +129,11 @@ defmodule KalturaAdmin.ServersTest do
   describe "server_groups" do
     alias KalturaAdmin.Servers.ServerGroup
 
-    @valid_attrs %{description: "some description", name: "some name", status: :active}
+    @valid_attrs %{description: "some description", name: "some name", status: "ACTIVE"}
     @update_attrs %{
       description: "some updated description",
       name: "some updated name",
-      status: :inactive
+      status: "INACTIVE"
     }
     @invalid_attrs %{description: nil, name: nil, status: nil}
 
@@ -161,7 +161,7 @@ defmodule KalturaAdmin.ServersTest do
         assert {:ok, %ServerGroup{} = server_group} = Servers.create_server_group(@valid_attrs)
         assert server_group.description == "some description"
         assert server_group.name == "some name"
-        assert server_group.status == :active
+        assert server_group.status == "ACTIVE"
         assert_called(DomainModelCache.get_all_records())
       end
     end
@@ -179,7 +179,7 @@ defmodule KalturaAdmin.ServersTest do
 
         assert server_group.description == "some updated description"
         assert server_group.name == "some updated name"
-        assert server_group.status == :inactive
+        assert server_group.status == "INACTIVE"
         assert_called(DomainModelCache.get_all_records())
       end
     end

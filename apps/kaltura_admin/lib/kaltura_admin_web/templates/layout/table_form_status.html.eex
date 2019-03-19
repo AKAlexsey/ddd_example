@@ -13,7 +13,7 @@ PARAMETERS:
 
 <%= if @mode == :show do %>
   <%= if Map.has_key?(@meta, :field) do %>
-    <%= if Map.get(@item, @meta.field) == :active do %>
+    <%= if Map.get(@item, @meta.field) == "ACTIVE" do %>
       <span class="c-yes">ACTIVE</span>
     <% else %>
       <span class="c-no">INACTIVE</span>
@@ -23,5 +23,5 @@ PARAMETERS:
   <% end %>
 
 <% else %>
-  <%= select @f, @meta.field, KalturaAdmin.EnumHelper.active_statuses, class: "form-control" %>
+  <%= select @f, @meta.field, statuses(), class: "form-control" %>
 <% end %>

@@ -6,8 +6,6 @@ defmodule KalturaAdmin.Services.DomainModelCache do
   alias KalturaAdmin.Protocols.NotifyServerAttrs
   alias KalturaAdmin.Repo
 
-  import Ecto.Query, only: [from: 2]
-
   @caching_models [
     {KalturaAdmin.Area.Region, [:subnets, :server_groups]},
     {KalturaAdmin.Area.Subnet, [region: [server_groups: :servers]]},

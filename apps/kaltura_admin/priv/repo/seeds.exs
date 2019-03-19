@@ -72,7 +72,7 @@ dvr_server_ids =
       domain_name: domain_name,
       port: 80,
       weight: 20 + :rand.uniform(31),
-      type: :dvr
+      type: "DVR"
     })
   end)
   |> get_ids.()
@@ -85,7 +85,7 @@ edge_server_ids =
       domain_name: domain_name,
       port: 80,
       weight: 20 + :rand.uniform(31),
-      type: :edge
+      type: "EDGE"
     })
   end)
   |> get_ids.()
@@ -120,9 +120,6 @@ server_group_ids =
 
 random_server_group_id = fn -> random_stream_function.(server_group_ids, 1).() |> hd() end
 
-protocols =
-  KalturaAdmin.StreamProtocol.__enum_map__()
-  |> Keyword.keys()
 {:ok, tv_stream_data} =
   YamlElixir.read_from_file(
     "#{File.cwd!()}/apps/kaltura_admin/priv/repo/seed_data/tv_stream_data.yml"
@@ -175,14 +172,18 @@ program_ids
 |> Enum.each(fn program_id ->
   dvr_server_ids
   |> Enum.each(fn server_id ->
-    protocols
+    KalturaAdmin.Enums.stream_protocols()
     |> Enum.each(fn protocol ->
-      Factory.insert(:program_record, %{
-        server_id: server_id,
-        program_id: program_id,
-        status: :completed,
-        protocol: protocol
-      })
+      KalturaAdmin.Enums.encryptions()
+      |> Enum.each(fn encryption ->
+        Factory.insert(:program_record, %{
+          server_id: server_id,
+          program_id: program_id,
+          status: "COMPLETED",
+          protocol: protocol,
+          encryption: encryption
+        })
+      end)
     end)
   end)
 end)

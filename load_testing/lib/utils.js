@@ -1,4 +1,4 @@
-const PROTOCOLS = ['hls', 'mpd', 'mpd_wv', 'mpd_pr']
+const PROTOCOLS = ['hls', 'hls_wv', 'hls_pr', 'mpd', 'mpd_wv', 'mpd_pr']
 const LOREM_WORDS = [
     'quas',
     'fuga',

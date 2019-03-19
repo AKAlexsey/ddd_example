@@ -1,9 +1,9 @@
 defmodule KalturaAdminWeb.ProgramRecordControllerTest do
   use KalturaAdmin.ConnCase
 
-  @create_attrs %{protocol: :HLS, path: "/content", status: :planned}
-  @update_attrs %{protocol: :HLS, path: "/content", status: :planned}
-  @invalid_attrs %{protocol: nil, path: nil, status: nil}
+  @create_attrs %{protocol: "HLS", encryption: "NONE", path: "/content", status: "PLANNED"}
+  @update_attrs %{protocol: "HLS", encryption: "NONE", path: "/content", status: "PLANNED"}
+  @invalid_attrs %{protocol: nil, encryption: nil, path: nil, status: nil}
 
   setup tags do
     {:ok, user} = Factory.insert(:admin)

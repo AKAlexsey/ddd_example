@@ -30,7 +30,7 @@ defmodule KalturaAdmin.Servers do
   end
 
   def list_dvr_servers(preload \\ []) do
-    from(s in Server, where: s.type == ^:dvr)
+    from(s in Server, where: s.type == "DVR")
     |> Repo.all()
     |> Repo.preload(preload)
   end

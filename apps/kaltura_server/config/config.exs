@@ -8,4 +8,4 @@ config :kaltura_server, KalturaServer.RequestProcessing.MainRouter,
   https_keyfile: "priv/cert/selfsigned_key.pem",
   https_certfile: "priv/cert/selfsigned.pem"
 
-config :plug, validate_header_keys_during_test: :false
+config :plug, validate_header_keys_during_test: false

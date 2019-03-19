@@ -8,9 +8,11 @@ defmodule KalturaServer.DomainModelFactories.ProgramRecord do
       id: next_table_id(),
       program_id: nil,
       server_id: nil,
-      status: "PLANNED",
+      status: "COMPLETED",
       protocol: "HLS",
-      path: "#{Faker.Lorem.word()}"
+      encryption: "NONE",
+      path: "#{Faker.Lorem.word()}",
+      prefix: "#{Faker.Lorem.word()}"
     }
   end
 

@@ -23,10 +23,16 @@ defmodule KalturaAdmin.ServerView do
 
     [
       %{
+        :header => "Server name",
+        :type => :string,
+        :mode => [:table],
+        :eval_fn => fn ob -> "#{ob.domain_name} [#{ob.type}]" end
+      },
+      %{
         :header => "Domain name",
         :type => :string,
         :field => :domain_name,
-        :mode => [:table, :show, :edit, :create]
+        :mode => [:show, :edit, :create]
       },
       %{
         :header => "Status",
@@ -38,7 +44,7 @@ defmodule KalturaAdmin.ServerView do
         :header => "Type",
         :type => :select,
         :field => :type,
-        :mode => [:table, :show, :edit, :create],
+        :mode => [:show, :edit, :create],
         :items => server_types()
       },
       %{:header => "IP", :type => :string, :field => :ip, :mode => [:table, :edit, :create]},

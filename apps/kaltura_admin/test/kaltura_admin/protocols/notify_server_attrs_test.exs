@@ -23,6 +23,7 @@ defmodule KalturaAdmin.Protocols.NotifyServerAttrsTest do
                :server_id,
                :status,
                :protocol,
+               :encryption,
                :path,
                :epg_id,
                :prefix
@@ -92,9 +93,9 @@ defmodule KalturaAdmin.Protocols.NotifyServerAttrsTest do
     end
   end
 
-  describe "#get for subnet filters :server_ids only for :active ServerGroup and Region" do
+  describe "#get for subnet filters :server_ids only for ACTIVE ServerGroup and Region" do
     setup do
-      {:ok, server_group} = Factory.insert(:server_group, %{status: :active})
+      {:ok, server_group} = Factory.insert(:server_group, %{status: "ACTIVE"})
       {:ok, server1} = Factory.insert(:server, %{server_group_ids: [server_group.id]})
       {:ok, server2} = Factory.insert(:server, %{server_group_ids: [server_group.id]})
       {:ok, region} = Factory.insert(:region, %{server_group_ids: [server_group.id]})
@@ -117,18 +118,18 @@ defmodule KalturaAdmin.Protocols.NotifyServerAttrsTest do
       assert result.server_ids == server_ids
     end
 
-    test "Return [] if join ServerGroup is :inactive", %{server_group: server_group, subnet: sn} do
+    test "Return [] if join ServerGroup is INACTIVE", %{server_group: server_group, subnet: sn} do
       server_group
-      |> ServerGroup.changeset(%{status: :inactive})
+      |> ServerGroup.changeset(%{status: "INACTIVE"})
       |> Repo.update()
 
       result = NotifyServerAttrs.get(sn)
       assert result.server_ids == []
     end
 
-    test "Return [] if join Region is :inactive", %{region: region, subnet: subnet} do
+    test "Return [] if join Region is INACTIVE", %{region: region, subnet: subnet} do
       region
-      |> Region.changeset(%{status: :inactive})
+      |> Region.changeset(%{status: "INACTIVE"})
       |> Repo.update()
 
       result = NotifyServerAttrs.get(subnet)

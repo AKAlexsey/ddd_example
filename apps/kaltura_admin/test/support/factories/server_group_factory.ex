@@ -8,7 +8,7 @@ defmodule KalturaAdmin.ServerGroupFactory do
     do: %{
       name: Faker.Lorem.word(),
       description: Faker.Lorem.sentence(),
-      status: :active
+      status: "ACTIVE"
     }
 
   def build(attrs) do
