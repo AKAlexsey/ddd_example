@@ -11,13 +11,13 @@ defmodule KalturaAdmin.AreaTest do
     @valid_attrs %{
       description: "Old description",
       name: "Old name",
-      status: :active
+      status: "ACTIVE"
     }
 
     @update_attrs %{
       description: "New description",
       name: "New name",
-      status: :inactive
+      status: "INACTIVE"
     }
 
     @invalid_attrs %{description: nil, name: nil, status: nil}
@@ -43,7 +43,7 @@ defmodule KalturaAdmin.AreaTest do
         assert {:ok, %Region{} = region} = Area.create_region(@valid_attrs)
         assert region.description == "Old description"
         assert region.name == "Old name"
-        assert region.status == :active
+        assert region.status == "ACTIVE"
         assert_called(DomainModelCache.get_all_records())
       end
     end
@@ -58,7 +58,7 @@ defmodule KalturaAdmin.AreaTest do
         assert {:ok, %Region{} = region} = Area.update_region(region, @update_attrs)
         assert region.description == "New description"
         assert region.name == "New name"
-        assert region.status == :inactive
+        assert region.status == "INACTIVE"
         assert_called(DomainModelCache.get_all_records())
       end
     end

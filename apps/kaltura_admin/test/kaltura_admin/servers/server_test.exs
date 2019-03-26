@@ -69,11 +69,12 @@ defmodule KalturaAdmin.ServerTest do
       assert %{valid?: false, errors: [prefix: _]} = changeset
     end
 
-    test "Validate :domain_name is uniq", %{server: server} do
+    test "Validate : [domain_name:type] is unique", %{server: server} do
       {:ok, other_server} = Factory.insert(:server)
 
-      refute server.domain_name == other_server.domain_name
-      changeset = Server.changeset(server, %{domain_name: other_server.domain_name})
+      changeset =
+        Server.changeset(server, %{domain_name: other_server.domain_name, type: other_server.type})
+
       assert {:error, %{valid?: false, errors: [domain_name: _]}} = Repo.update(changeset)
     end
 

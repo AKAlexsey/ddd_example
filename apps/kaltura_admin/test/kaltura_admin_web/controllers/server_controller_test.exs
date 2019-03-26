@@ -10,8 +10,8 @@ defmodule KalturaAdmin.ServerControllerTest do
     manage_port: 42,
     port: 80,
     prefix: "some-prefix",
-    status: :active,
-    type: :edge,
+    status: "ACTIVE",
+    type: "EDGE",
     weight: 42
   }
   @update_attrs %{
@@ -22,8 +22,8 @@ defmodule KalturaAdmin.ServerControllerTest do
     manage_ip: Faker.Internet.ip_v4_address(),
     manage_port: 43,
     port: 443,
-    status: :active,
-    type: :edge,
+    status: "ACTIVE",
+    type: "EDGE",
     weight: 43
   }
   @invalid_attrs %{

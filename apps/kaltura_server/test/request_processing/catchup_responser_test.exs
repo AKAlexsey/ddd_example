@@ -78,6 +78,15 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
           status: "COMPLETED"
         })
 
+      %{path: hls_pr_path} =
+        Factory.insert(:program_record, %{
+          server_id: dvr_server1_id,
+          program_id: program_id,
+          protocol: "HLS",
+          status: "COMPLETED",
+          encryption: "CENC"
+        })
+
       %{path: mpd_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server2_id,
@@ -86,10 +95,30 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
           status: "COMPLETED"
         })
 
+      %{path: mpd_pr_path} =
+        Factory.insert(:program_record, %{
+          server_id: dvr_server2_id,
+          program_id: program_id,
+          protocol: "MPD",
+          status: "COMPLETED",
+          encryption: "CENC"
+        })
+
       hls_conn =
         conn(:get, "/btv/catchup/hls/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: "HLS",
+          protocol: "hls",
+          encryption: "",
+          resource_id: epg_id,
+          ip_address: {123, 123, 123, 123}
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
+      hls_pr_conn =
+        conn(:get, "/btv/catchup/hls_pr/#{epg_id}")
+        |> Map.put(:assigns, %{
+          protocol: "hls",
+          encryption: "pr",
           resource_id: epg_id,
           ip_address: {123, 123, 123, 123}
         })
@@ -98,7 +127,18 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       mpd_conn =
         conn(:get, "/btv/catchup/mpd/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: "MPD",
+          protocol: "mpd",
+          encryption: "",
+          resource_id: epg_id,
+          ip_address: {123, 123, 123, 123}
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
+      mpd_pr_conn =
+        conn(:get, "/btv/catchup/mpd_pr/#{epg_id}")
+        |> Map.put(:assigns, %{
+          protocol: "mpd",
+          encryption: "pr",
           resource_id: epg_id,
           ip_address: {123, 123, 123, 123}
         })
@@ -109,46 +149,62 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       hls_redirect_path_with_port =
         "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix1}/#{hls_path}"
 
+      hls_pr_redirect_path_without_port =
+        "http://#{domain_name1}/dvr/#{dvr_prefix1}/#{hls_pr_path}"
+
+      hls_pr_redirect_path_with_port =
+        "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix1}/#{hls_pr_path}"
+
       mpd_redirect_path_without_port = "http://#{domain_name1}/dvr/#{dvr_prefix2}/#{mpd_path}"
 
       mpd_redirect_path_with_port =
         "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix2}/#{mpd_path}"
 
+      mpd_pr_redirect_path_without_port =
+        "http://#{domain_name1}/dvr/#{dvr_prefix2}/#{mpd_pr_path}"
+
+      mpd_pr_redirect_path_with_port =
+        "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix2}/#{mpd_pr_path}"
+
       {
         :ok,
         hls_conn: hls_conn,
         hls_paths: [hls_redirect_path_without_port, hls_redirect_path_with_port],
+        hls_pr_conn: hls_pr_conn,
+        hls_pr_paths: [hls_pr_redirect_path_without_port, hls_pr_redirect_path_with_port],
         mpd_conn: mpd_conn,
-        mpd_paths: [mpd_redirect_path_without_port, mpd_redirect_path_with_port]
+        mpd_paths: [mpd_redirect_path_without_port, mpd_redirect_path_with_port],
+        mpd_pr_conn: mpd_pr_conn,
+        mpd_pr_paths: [mpd_pr_redirect_path_without_port, mpd_pr_redirect_path_with_port]
       }
     end
 
-    test "Redirect to right path if appropriate server exist #1", %{
+    test "Redirect to right path if appropriate server exist (HLS none)", %{
       hls_conn: conn,
       hls_paths: redirect_paths
     } do
-      assert {%{
-                resp_headers: [
-                  {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"Location", response_redirect_path}
-                ]
-              }, 302, ""} = CatchupResponser.make_response(conn)
-
-      assert response_redirect_path in redirect_paths
+      test_asserts(conn, redirect_paths)
     end
 
-    test "Redirect to right path if appropriate server exist #2", %{
+    test "Redirect to right path if appropriate server exist (HLS playready)", %{
+      hls_pr_conn: conn,
+      hls_pr_paths: redirect_paths
+    } do
+      test_asserts(conn, redirect_paths)
+    end
+
+    test "Redirect to right path if appropriate server exist (MPD none)", %{
       mpd_conn: conn,
       mpd_paths: redirect_paths
     } do
-      assert {%{
-                resp_headers: [
-                  {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"Location", response_redirect_path}
-                ]
-              }, 302, ""} = CatchupResponser.make_response(conn)
+      test_asserts(conn, redirect_paths)
+    end
 
-      assert response_redirect_path in redirect_paths
+    test "Redirect to right path if appropriate server exist (MPD playready)", %{
+      mpd_pr_conn: conn,
+      mpd_pr_paths: redirect_paths
+    } do
+      test_asserts(conn, redirect_paths)
     end
   end
 
@@ -227,6 +283,15 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
           status: "COMPLETED"
         })
 
+      %{path: hls_pr_path} =
+        Factory.insert(:program_record, %{
+          server_id: dvr_server1_id,
+          program_id: program_id,
+          protocol: "HLS",
+          status: "COMPLETED",
+          encryption: "CENC"
+        })
+
       %{path: mpd_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server2_id,
@@ -235,10 +300,30 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
           status: "COMPLETED"
         })
 
+      %{path: mpd_pr_path} =
+        Factory.insert(:program_record, %{
+          server_id: dvr_server2_id,
+          program_id: program_id,
+          protocol: "MPD",
+          status: "COMPLETED",
+          encryption: "CENC"
+        })
+
       hls_conn =
         conn(:get, "/btv/catchup/hls/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: "HLS",
+          protocol: "hls",
+          encryption: "",
+          resource_id: epg_id,
+          ip_address: {123, 123, 123, 123}
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
+      hls_pr_conn =
+        conn(:get, "/btv/catchup/hls_pr/#{epg_id}")
+        |> Map.put(:assigns, %{
+          protocol: "hls",
+          encryption: "pr",
           resource_id: epg_id,
           ip_address: {123, 123, 123, 123}
         })
@@ -247,7 +332,18 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       mpd_conn =
         conn(:get, "/btv/catchup/mpd/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: "MPD",
+          protocol: "mpd",
+          encryption: "",
+          resource_id: epg_id,
+          ip_address: {123, 123, 123, 123}
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
+      mpd_pr_conn =
+        conn(:get, "/btv/catchup/mpd_pr/#{epg_id}")
+        |> Map.put(:assigns, %{
+          protocol: "mpd",
+          encryption: "pr",
           resource_id: epg_id,
           ip_address: {123, 123, 123, 123}
         })
@@ -258,46 +354,62 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       hls_redirect_path_with_port =
         "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix1}/#{hls_path}"
 
+      hls_pr_redirect_path_without_port =
+        "https://#{domain_name1}/dvr/#{dvr_prefix1}/#{hls_pr_path}"
+
+      hls_pr_redirect_path_with_port =
+        "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix1}/#{hls_pr_path}"
+
       mpd_redirect_path_without_port = "https://#{domain_name1}/dvr/#{dvr_prefix2}/#{mpd_path}"
 
       mpd_redirect_path_with_port =
         "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix2}/#{mpd_path}"
 
+      mpd_pr_redirect_path_without_port =
+        "https://#{domain_name1}/dvr/#{dvr_prefix2}/#{mpd_pr_path}"
+
+      mpd_pr_redirect_path_with_port =
+        "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix2}/#{mpd_pr_path}"
+
       {
         :ok,
         hls_conn: hls_conn,
         hls_paths: [hls_redirect_path_without_port, hls_redirect_path_with_port],
+        hls_pr_conn: hls_pr_conn,
+        hls_pr_paths: [hls_pr_redirect_path_without_port, hls_pr_redirect_path_with_port],
         mpd_conn: mpd_conn,
-        mpd_paths: [mpd_redirect_path_without_port, mpd_redirect_path_with_port]
+        mpd_paths: [mpd_redirect_path_without_port, mpd_redirect_path_with_port],
+        mpd_pr_conn: mpd_pr_conn,
+        mpd_pr_paths: [mpd_pr_redirect_path_without_port, mpd_pr_redirect_path_with_port]
       }
     end
 
-    test "Redirect to right path if appropriate server exist #1", %{
+    test "Redirect to right path if appropriate server exist (HLS, none)", %{
       hls_conn: conn,
       hls_paths: redirect_paths
     } do
-      assert {%{
-                resp_headers: [
-                  {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"Location", response_redirect_path}
-                ]
-              }, 302, ""} = CatchupResponser.make_response(conn)
-
-      assert response_redirect_path in redirect_paths
+      test_asserts(conn, redirect_paths)
     end
 
-    test "Redirect to right path if appropriate server exist #2", %{
+    test "Redirect to right path if appropriate server exist (HLS, playready)", %{
+      hls_pr_conn: conn,
+      hls_pr_paths: redirect_paths
+    } do
+      test_asserts(conn, redirect_paths)
+    end
+
+    test "Redirect to right path if appropriate server exist (MPD none)", %{
       mpd_conn: conn,
       mpd_paths: redirect_paths
     } do
-      assert {%{
-                resp_headers: [
-                  {"cache-control", "max-age=0, private, must-revalidate"},
-                  {"Location", response_redirect_path}
-                ]
-              }, 302, ""} = CatchupResponser.make_response(conn)
+      test_asserts(conn, redirect_paths)
+    end
 
-      assert response_redirect_path in redirect_paths
+    test "Redirect to right path if appropriate server exist (MPD playready)", %{
+      mpd_pr_conn: conn,
+      mpd_pr_paths: redirect_paths
+    } do
+      test_asserts(conn, redirect_paths)
     end
   end
 
@@ -305,7 +417,8 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
     setup do
       conn = %Plug.Conn{
         assigns: %{
-          protocol: :hls,
+          protocol: "hls",
+          encryption: "",
           resource_id: "p_epg_1234",
           ip_address: {124, 123, 123, 123}
         },
@@ -316,9 +429,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
       {:ok, conn: conn}
     end
 
-    test "Return 400 error if passed is not connection", %{
-      conn: %{assigns: assigns}
-    } do
+    test "Return 400 error if passed is not connection", %{conn: %{assigns: assigns}} do
       invalid_conn = %{assigns: assigns}
 
       assert {^invalid_conn, 400, "Request invalid"} =
@@ -328,5 +439,16 @@ defmodule KalturaServer.RequestProcessing.CatchupResponserTest do
     test "Return 404 error if server can not be found", %{conn: conn} do
       assert {^conn, 404, "Server not found"} = CatchupResponser.make_response(conn)
     end
+  end
+
+  def test_asserts(conn, redirect_paths) do
+    assert {%{
+              resp_headers: [
+                {"cache-control", "max-age=0, private, must-revalidate"},
+                {"Location", response_redirect_path}
+              ]
+            }, 302, ""} = CatchupResponser.make_response(conn)
+
+    assert response_redirect_path in redirect_paths
   end
 end

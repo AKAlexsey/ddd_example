@@ -7,10 +7,6 @@ defmodule KalturaAdmin.Content.TvStream do
   alias KalturaAdmin.Observers.{DomainModelNotifier, DomainModelObserver}
   use DomainModelNotifier, observers: [DomainModelObserver]
 
-  @statuses ["ACTIVE", "INACTIVE"]
-  @protocols ["HLS", "MPD"]
-  @encryption ["NONE", "COMMON", "WIDEVINE", "PLAYREADY"]
-
   @cast_fields [
     :stream_path,
     :status,
@@ -37,10 +33,6 @@ defmodule KalturaAdmin.Content.TvStream do
 
     timestamps()
   end
-
-  def statuses, do: @statuses
-  def protocols, do: @protocols
-  def encryption, do: @encryption
 
   @doc false
   def changeset(tv_stream, attrs) do

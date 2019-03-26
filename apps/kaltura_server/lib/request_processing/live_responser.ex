@@ -6,6 +6,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponser do
   import Plug.Conn
   alias KalturaServer.ClosestEdgeServerService
   alias KalturaServer.DomainModelContext, as: Context
+  alias KalturaServer.RequestProcessing.RequestHelper
 
   @spec make_response(Plug.Conn.t()) :: {Plug.Conn.t(), integer, binary}
   def make_response(%Plug.Conn{} = conn) do
@@ -23,46 +24,14 @@ defmodule KalturaServer.RequestProcessing.LiveResponser do
          {%Plug.Conn{assigns: %{resource_id: epg_id, protocol: protocol, encryption: encryption}} =
             conn, data}
        ) do
-    with [_ | _] = tv_streams <- Context.find_tv_streams(epg_id, protocol),
-         %{stream_path: stream_path} <-
-           find_most_appropriate_tv_stream(tv_streams, protocol, encryption) do
-      enriched_data =
-        data
-        |> Map.merge(%{
-          stream_path: stream_path
-        })
+    approp_rec =
+      Context.find_tv_streams(epg_id, protocol)
+      |> RequestHelper.obtain_entity_by_encryption(RequestHelper.normalize_encryption(encryption))
 
-      {conn, enriched_data}
-    else
-      _ ->
-        {conn, data}
+    case approp_rec do
+      nil -> {conn, data}
+      _ -> {conn, data |> Map.merge(%{stream_path: approp_rec.stream_path})}
     end
-  end
-
-  defp find_most_appropriate_tv_stream(tv_streams, "mpd", "wv") do
-    with nil <- find_tv_stream_with_encryption(tv_streams, "WIDEVINE"),
-         nil <- find_tv_stream_with_encryption(tv_streams, "COMMON") do
-      nil
-    else
-      tv_stream -> tv_stream
-    end
-  end
-
-  defp find_most_appropriate_tv_stream(tv_streams, "mpd", "pr") do
-    with nil <- find_tv_stream_with_encryption(tv_streams, "PLAYREADY"),
-         nil <- find_tv_stream_with_encryption(tv_streams, "COMMON") do
-      nil
-    else
-      tv_stream -> tv_stream
-    end
-  end
-
-  defp find_most_appropriate_tv_stream(tv_streams, _, _) do
-    find_tv_stream_with_encryption(tv_streams, "NONE")
-  end
-
-  defp find_tv_stream_with_encryption(tv_streams, encryption) do
-    Enum.find(tv_streams, fn %{encryption: enc} -> enc == Context.normalize_enum(encryption) end)
   end
 
   defp put_server_domain_data({%Plug.Conn{assigns: %{ip_address: ip_address}} = conn, data}) do

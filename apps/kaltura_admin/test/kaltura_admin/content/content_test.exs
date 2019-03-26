@@ -346,9 +346,14 @@ defmodule KalturaAdmin.ContentTest do
   describe "program_records" do
     alias KalturaAdmin.Content.ProgramRecord
 
-    @valid_attrs %{protocol: :HLS, path: "some path", status: :planned}
-    @update_attrs %{protocol: :MPD, path: "some updated path", status: :running}
-    @invalid_attrs %{protocol: nil, path: nil, status: nil}
+    @valid_attrs %{protocol: "HLS", encryption: "NONE", path: "some path", status: "PLANNED"}
+    @update_attrs %{
+      protocol: "MPD",
+      encryption: "NONE",
+      path: "some updated path",
+      status: "RUNNING"
+    }
+    @invalid_attrs %{protocol: nil, encryption: nil, path: nil, status: nil}
 
     def program_record_fixture(attrs \\ %{}) do
       {:ok, program_record} = Factory.insert(:program_record, Enum.into(attrs, @valid_attrs))
@@ -373,9 +378,9 @@ defmodule KalturaAdmin.ContentTest do
         attrs = Map.merge(@valid_attrs, %{server_id: server.id, program_id: program.id})
         assert {:ok, %ProgramRecord{} = program_record} = Content.create_program_record(attrs)
 
-        assert program_record.protocol == :HLS
+        assert program_record.protocol == "HLS"
         assert program_record.path == "some path"
-        assert program_record.status == :planned
+        assert program_record.status == "PLANNED"
 
         assert_called(DomainModelCache.get_all_records())
       end
@@ -395,9 +400,9 @@ defmodule KalturaAdmin.ContentTest do
         assert {:ok, %ProgramRecord{} = program_record} =
                  Content.update_program_record(program_record, attrs)
 
-        assert program_record.protocol == :MPD
+        assert program_record.protocol == "MPD"
         assert program_record.path == "some updated path"
-        assert program_record.status == :running
+        assert program_record.status == "RUNNING"
 
         assert_called(DomainModelCache.get_all_records())
       end

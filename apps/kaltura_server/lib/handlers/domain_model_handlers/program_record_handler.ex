@@ -2,16 +2,11 @@ defmodule KalturaServer.DomainModelHandlers.ProgramRecordHandler do
   @moduledoc false
 
   alias DomainModel.ProgramRecord
-  import KalturaServer.DomainModelContext, only: [normalize_enum: 1]
 
-  @enum_fields [:status, :protocol]
   use KalturaServer.DomainModelHandlers.AbstractHandler, table: ProgramRecord
 
   def before_write(struct, raw_attrs) do
-    @enum_fields
-    |> Enum.reduce(struct, fn field, new_struct ->
-      Map.update!(new_struct, field, &normalize_enum/1)
-    end)
+    struct
     |> put_complex_search_index(raw_attrs)
   end
 
@@ -21,7 +16,7 @@ defmodule KalturaServer.DomainModelHandlers.ProgramRecordHandler do
        ) do
     struct
     |> Map.merge(%{
-      complex_search_index: {epg_id, normalize_enum(status), normalize_enum(protocol)}
+      complex_search_index: {epg_id, status, protocol}
     })
   end
 end

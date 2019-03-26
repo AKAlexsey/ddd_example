@@ -16,6 +16,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
       mpd_none_tv_stream_id = 779
       mpd_common_tv_stream_id = 780
       hls_tv_stream_id = 781
+      hls_common_tv_stream_id = 782
 
       Factory.insert(:subnet, %{
         id: subnet_id,
@@ -60,7 +61,8 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
             mpd_pr_tv_stream_id,
             mpd_none_tv_stream_id,
             mpd_common_tv_stream_id,
-            hls_tv_stream_id
+            hls_tv_stream_id,
+            hls_common_tv_stream_id
           ]
         })
 
@@ -77,7 +79,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           id: mpd_common_tv_stream_id,
           linear_channel_id: linear_channel_id,
           protocol: "MPD",
-          encryption: "COMMON"
+          encryption: "CENC"
         })
 
       %{stream_path: mpd_wv_stream_path} =
@@ -102,6 +104,14 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           linear_channel_id: linear_channel_id,
           protocol: "HLS",
           encryption: "NONE"
+        })
+
+      %{stream_path: hls_common_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: hls_common_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "HLS",
+          encryption: "CENC"
         })
 
       Factory.insert(:server_group, %{
@@ -151,26 +161,44 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
+      hls_pr_conn =
+        conn(:get, "/btv/live/hls_pr/#{epg_id}")
+        |> Map.put(:assigns, %{
+          protocol: "hls",
+          encryption: "pr",
+          resource_id: epg_id,
+          ip_address: {123, 123, 123, 123}
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
+      hls_wv_conn =
+        conn(:get, "/btv/live/hls_wv/#{epg_id}")
+        |> Map.put(:assigns, %{
+          protocol: "hls",
+          encryption: "wv",
+          resource_id: epg_id,
+          ip_address: {123, 123, 123, 123}
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
       mpd_pr_redirect_path_without_port = "http://#{domain_name1}/#{mpd_pr_stream_path}"
-
       mpd_pr_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_pr_stream_path}"
-
       mpd_common_redirect_path_without_port = "http://#{domain_name1}/#{mpd_common_stream_path}"
 
       mpd_common_redirect_path_with_port =
         "http://#{domain_name2}:#{port}/#{mpd_common_stream_path}"
 
       mpd_wv_redirect_path_without_port = "http://#{domain_name1}/#{mpd_wv_stream_path}"
-
       mpd_wv_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_wv_stream_path}"
-
       mpd_none_redirect_path_without_port = "http://#{domain_name1}/#{mpd_none_stream_path}"
-
       mpd_none_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_none_stream_path}"
 
       hls_redirect_path_without_port = "http://#{domain_name1}/#{hls_stream_path}"
-
       hls_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{hls_stream_path}"
+      hls_pr_redirect_path_without_port = "http://#{domain_name1}/#{hls_common_stream_path}"
+      hls_pr_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{hls_common_stream_path}"
+      hls_wv_redirect_path_without_port = "http://#{domain_name1}/#{hls_common_stream_path}"
+      hls_wv_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{hls_common_stream_path}"
 
       {
         :ok,
@@ -178,6 +206,8 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
         mpd_wv_conn: mpd_wv_conn,
         mpd_conn: mpd_conn,
         hls_conn: hls_conn,
+        hls_pr_conn: hls_pr_conn,
+        hls_wv_conn: hls_wv_conn,
         mpd_pr_redirect_path_with_port: mpd_pr_redirect_path_with_port,
         mpd_pr_redirect_path_without_port: mpd_pr_redirect_path_without_port,
         mpd_common_redirect_path_with_port: mpd_common_redirect_path_with_port,
@@ -188,6 +218,10 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
         mpd_none_redirect_path_without_port: mpd_none_redirect_path_without_port,
         hls_redirect_path_with_port: hls_redirect_path_with_port,
         hls_redirect_path_without_port: hls_redirect_path_without_port,
+        hls_pr_redirect_path_with_port: hls_pr_redirect_path_with_port,
+        hls_pr_redirect_path_without_port: hls_pr_redirect_path_without_port,
+        hls_wv_redirect_path_with_port: hls_wv_redirect_path_with_port,
+        hls_wv_redirect_path_without_port: hls_wv_redirect_path_without_port,
         port_server_id: best_server2_id,
         mpd_pr_tv_stream_id: mpd_pr_tv_stream_id,
         mpd_common_tv_stream_id: mpd_common_tv_stream_id
@@ -271,7 +305,20 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
       assert redirect_path in [redirect_path1, redirect_path2]
     end
 
-    test "Redirect to right path if appropriate server exist #6 stream_meta hls", %{
+    test "Return error if there is no TvStream with given codec and protocol", %{
+      mpd_pr_conn: conn,
+      mpd_pr_tv_stream_id: tv_stream_id1,
+      mpd_common_tv_stream_id: tv_stream_id2
+    } do
+      Amnesia.transaction(fn ->
+        DomainModel.TvStream.delete(tv_stream_id1)
+        DomainModel.TvStream.delete(tv_stream_id2)
+      end)
+
+      assert assert {^conn, 404, "Server not found"} = LiveResponser.make_response(conn)
+    end
+
+    test "Redirect to right path if appropriate server exist #6 stream_meta HLS (none)", %{
       hls_conn: conn,
       hls_redirect_path_without_port: redirect_path1,
       hls_redirect_path_with_port: redirect_path2
@@ -286,17 +333,34 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
       assert redirect_path in [redirect_path1, redirect_path2]
     end
 
-    test "Return error if there is no TvStream with given codec and protocol", %{
-      mpd_pr_conn: conn,
-      mpd_pr_tv_stream_id: tv_stream_id1,
-      mpd_common_tv_stream_id: tv_stream_id2
+    test "Redirect to right path if appropriate server exist #6 stream_meta HLS (PLAYREADY)", %{
+      hls_pr_conn: conn,
+      hls_pr_redirect_path_without_port: redirect_path1,
+      hls_pr_redirect_path_with_port: redirect_path2
     } do
-      Amnesia.transaction(fn ->
-        DomainModel.TvStream.delete(tv_stream_id1)
-        DomainModel.TvStream.delete(tv_stream_id2)
-      end)
+      assert {%{
+                resp_headers: [
+                  {"cache-control", "max-age=0, private, must-revalidate"},
+                  {"Location", redirect_path}
+                ]
+              }, 302, ""} = LiveResponser.make_response(conn)
 
-      assert assert {^conn, 404, "Server not found"} = LiveResponser.make_response(conn)
+      assert redirect_path in [redirect_path1, redirect_path2]
+    end
+
+    test "Redirect to right path if appropriate server exist #6 stream_meta HLS (WIDEVINE)", %{
+      hls_wv_conn: conn,
+      hls_wv_redirect_path_without_port: redirect_path1,
+      hls_wv_redirect_path_with_port: redirect_path2
+    } do
+      assert {%{
+                resp_headers: [
+                  {"cache-control", "max-age=0, private, must-revalidate"},
+                  {"Location", redirect_path}
+                ]
+              }, 302, ""} = LiveResponser.make_response(conn)
+
+      assert redirect_path in [redirect_path1, redirect_path2]
     end
   end
 
@@ -313,6 +377,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
       mpd_none_tv_stream_id = 779
       mpd_common_tv_stream_id = 780
       hls_tv_stream_id = 781
+      hls_common_tv_stream_id = 782
 
       Factory.insert(:subnet, %{
         id: subnet_id,
@@ -357,7 +422,8 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
             mpd_pr_tv_stream_id,
             mpd_none_tv_stream_id,
             mpd_common_tv_stream_id,
-            hls_tv_stream_id
+            hls_tv_stream_id,
+            hls_common_tv_stream_id
           ]
         })
 
@@ -374,7 +440,7 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           id: mpd_common_tv_stream_id,
           linear_channel_id: linear_channel_id,
           protocol: "MPD",
-          encryption: "COMMON"
+          encryption: "CENC"
         })
 
       %{stream_path: mpd_wv_stream_path} =
@@ -399,6 +465,14 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
           linear_channel_id: linear_channel_id,
           protocol: "HLS",
           encryption: "NONE"
+        })
+
+      %{stream_path: hls_common_stream_path} =
+        Factory.insert(:tv_stream, %{
+          id: hls_common_tv_stream_id,
+          linear_channel_id: linear_channel_id,
+          protocol: "HLS",
+          encryption: "CENC"
         })
 
       Factory.insert(:server_group, %{
@@ -448,26 +522,45 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
+      hls_pr_conn =
+        conn(:get, "/btv/live/hls_pr/#{epg_id}")
+        |> Map.put(:assigns, %{
+          protocol: "hls",
+          encryption: "pr",
+          resource_id: epg_id,
+          ip_address: {123, 123, 123, 123}
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
+      hls_wv_conn =
+        conn(:get, "/btv/live/hls_wv/#{epg_id}")
+        |> Map.put(:assigns, %{
+          protocol: "hls",
+          encryption: "wv",
+          resource_id: epg_id,
+          ip_address: {123, 123, 123, 123}
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
       mpd_pr_redirect_path_without_port = "https://#{domain_name1}/#{mpd_pr_stream_path}"
-
       mpd_pr_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_pr_stream_path}"
-
       mpd_common_redirect_path_without_port = "https://#{domain_name1}/#{mpd_common_stream_path}"
 
       mpd_common_redirect_path_with_port =
         "http://#{domain_name2}:#{port}/#{mpd_common_stream_path}"
 
       mpd_wv_redirect_path_without_port = "https://#{domain_name1}/#{mpd_wv_stream_path}"
-
       mpd_wv_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_wv_stream_path}"
-
       mpd_none_redirect_path_without_port = "https://#{domain_name1}/#{mpd_none_stream_path}"
-
       mpd_none_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_none_stream_path}"
 
       hls_redirect_path_without_port = "https://#{domain_name1}/#{hls_stream_path}"
-
       hls_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{hls_stream_path}"
+
+      hls_common_redirect_path_without_port = "https://#{domain_name1}/#{hls_common_stream_path}"
+
+      hls_common_redirect_path_with_port =
+        "http://#{domain_name2}:#{port}/#{hls_common_stream_path}"
 
       {
         :ok,
@@ -475,6 +568,8 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
         mpd_wv_conn: mpd_wv_conn,
         mpd_conn: mpd_conn,
         hls_conn: hls_conn,
+        hls_pr_conn: hls_pr_conn,
+        hls_wv_conn: hls_wv_conn,
         mpd_pr_redirect_path_with_port: mpd_pr_redirect_path_with_port,
         mpd_pr_redirect_path_without_port: mpd_pr_redirect_path_without_port,
         mpd_common_redirect_path_with_port: mpd_common_redirect_path_with_port,
@@ -485,6 +580,8 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
         mpd_none_redirect_path_without_port: mpd_none_redirect_path_without_port,
         hls_redirect_path_with_port: hls_redirect_path_with_port,
         hls_redirect_path_without_port: hls_redirect_path_without_port,
+        hls_common_redirect_path_with_port: hls_common_redirect_path_with_port,
+        hls_common_redirect_path_without_port: hls_common_redirect_path_without_port,
         port_server_id: best_server2_id,
         mpd_pr_tv_stream_id: mpd_pr_tv_stream_id,
         mpd_common_tv_stream_id: mpd_common_tv_stream_id
@@ -568,7 +665,20 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
       assert redirect_path in [redirect_path1, redirect_path2]
     end
 
-    test "Redirect to right path if appropriate server exist #6 stream_meta hls", %{
+    test "Return error if there is no TvStream with given codec and protocol", %{
+      mpd_pr_conn: conn,
+      mpd_pr_tv_stream_id: tv_stream_id1,
+      mpd_common_tv_stream_id: tv_stream_id2
+    } do
+      Amnesia.transaction(fn ->
+        DomainModel.TvStream.delete(tv_stream_id1)
+        DomainModel.TvStream.delete(tv_stream_id2)
+      end)
+
+      assert assert {^conn, 404, "Server not found"} = LiveResponser.make_response(conn)
+    end
+
+    test "Redirect to right path if appropriate server exist #6 stream_meta HLS (none)", %{
       hls_conn: conn,
       hls_redirect_path_without_port: redirect_path1,
       hls_redirect_path_with_port: redirect_path2
@@ -583,17 +693,34 @@ defmodule KalturaServer.RequestProcessing.LiveResponserTest do
       assert redirect_path in [redirect_path1, redirect_path2]
     end
 
-    test "Return error if there is no TvStream with given codec and protocol", %{
-      mpd_pr_conn: conn,
-      mpd_pr_tv_stream_id: tv_stream_id1,
-      mpd_common_tv_stream_id: tv_stream_id2
+    test "Redirect to right path if appropriate server exist #6 stream_meta HLS (PLAYREADY)", %{
+      hls_pr_conn: conn,
+      hls_common_redirect_path_without_port: redirect_path1,
+      hls_common_redirect_path_with_port: redirect_path2
     } do
-      Amnesia.transaction(fn ->
-        DomainModel.TvStream.delete(tv_stream_id1)
-        DomainModel.TvStream.delete(tv_stream_id2)
-      end)
+      assert {%{
+                resp_headers: [
+                  {"cache-control", "max-age=0, private, must-revalidate"},
+                  {"Location", redirect_path}
+                ]
+              }, 302, ""} = LiveResponser.make_response(conn)
 
-      assert assert {^conn, 404, "Server not found"} = LiveResponser.make_response(conn)
+      assert redirect_path in [redirect_path1, redirect_path2]
+    end
+
+    test "Redirect to right path if appropriate server exist #6 stream_meta HLS (WIDEVINE)", %{
+      hls_wv_conn: conn,
+      hls_common_redirect_path_without_port: redirect_path1,
+      hls_common_redirect_path_with_port: redirect_path2
+    } do
+      assert {%{
+                resp_headers: [
+                  {"cache-control", "max-age=0, private, must-revalidate"},
+                  {"Location", redirect_path}
+                ]
+              }, 302, ""} = LiveResponser.make_response(conn)
+
+      assert redirect_path in [redirect_path1, redirect_path2]
     end
   end
 

@@ -54,9 +54,7 @@ defmodule KalturaAdminWeb do
       import KalturaAdminWeb.Router.Helpers
       import KalturaAdmin.ErrorHelpers
       import KalturaAdmin.Gettext
-
-      # Import functions for using in selects
-      import KalturaAdmin.EnumHelper
+      import KalturaAdmin.Enums
     end
   end
 

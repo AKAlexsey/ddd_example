@@ -14,25 +14,24 @@ defmodule KalturaServer.DomainModelContext do
     :mnesia.dirty_index_match_object(
       DomainModel.TvStream,
       {DomainModel.TvStream, :"$1", :"$2", :"$3", :"$4", :"$5", :"$6",
-       {epg_id, "ACTIVE", normalize_enum(protocol)}},
+       {epg_id, "ACTIVE", String.upcase(protocol)}},
       8
     )
-    |> Enum.map(&make_domain_model_table_record/1)
+    |> make_domain_model_table_records()
   end
 
   @doc """
   Find ProgramRecord by epg_id, protocol, encryption.
   """
-  @spec find_program_record(binary, atom) :: map() | nil
-  def find_program_record(epg_id, protocol) do
+  @spec find_program_records(binary, binary) :: map() | nil
+  def find_program_records(epg_id, protocol) do
     :mnesia.dirty_index_match_object(
       DomainModel.ProgramRecord,
-      {DomainModel.ProgramRecord, :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7",
-       {epg_id, "COMPLETED", normalize_enum(protocol)}},
-      9
+      {DomainModel.ProgramRecord, :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8",
+       {epg_id, "COMPLETED", String.upcase(protocol)}},
+      10
     )
-    |> get_transaction_first_value()
-    |> make_domain_model_table_record()
+    |> make_domain_model_table_records()
   end
 
   @doc """
@@ -57,7 +56,7 @@ defmodule KalturaServer.DomainModelContext do
       ])
     end)
     |> Enum.sort_by(fn [_, _, _, _, parsed_cidr, _, _, _, _] -> -1 * parsed_cidr.mask end)
-    |> Enum.map(fn attrs -> DomainModel.make_table_record(attrs) end)
+    |> make_domain_model_table_records()
   end
 
   @doc """
@@ -85,11 +84,8 @@ defmodule KalturaServer.DomainModelContext do
         }
       ])
     end)
-    |> Enum.map(&make_domain_model_table_record(&1))
+    |> make_domain_model_table_records()
   end
-
-  defp get_transaction_first_value([head | _tail]), do: head
-  defp get_transaction_first_value([]), do: nil
 
   @doc """
   Gets ids list and variable name. And return IN clause for mnesia query.
@@ -109,21 +105,6 @@ defmodule KalturaServer.DomainModelContext do
       value, clause ->
         {:orelse, {:==, variable_name, value}, clause}
     end)
-  end
-
-  @doc """
-  Gets "binary" ot :atom and return "UPCASEBINARY"
-  """
-  @spec normalize_enum(atom | binary) :: binary
-  def normalize_enum(protocol) when is_atom(protocol) do
-    protocol
-    |> to_string()
-    |> normalize_enum()
-  end
-
-  def normalize_enum(protocol) do
-    protocol
-    |> String.upcase()
   end
 
   @doc """
@@ -160,5 +141,10 @@ defmodule KalturaServer.DomainModelContext do
   def make_domain_model_table_record(attrs) when is_tuple(attrs) do
     attrs
     |> DomainModel.make_table_record()
+  end
+
+  def make_domain_model_table_records(records) when is_list(records) do
+    records
+    |> Enum.map(fn record -> make_domain_model_table_record(record) end)
   end
 end

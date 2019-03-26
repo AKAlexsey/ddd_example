@@ -305,22 +305,27 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
         Factory.insert(:program_record, %{
           server_id: dvr_server1_id,
           program_id: program_id,
-          protocol: "HLS",
-          status: "COMPLETED"
+          protocol: "HLS"
         })
 
       %{path: mpd_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server2_id,
           program_id: program_id,
+          protocol: "MPD"
+        })
+
+      %{path: mpd_cenc_path} =
+        Factory.insert(:program_record, %{
+          server_id: dvr_server2_id,
+          program_id: program_id,
           protocol: "MPD",
-          status: "COMPLETED"
+          encryption: "CENC"
         })
 
       hls_conn =
         conn(:get, "/btv/catchup/hls/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: "HLS",
           resource_id: epg_id,
           ip_address: "123.123.123.123"
         })
@@ -329,7 +334,22 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       mpd_conn =
         conn(:get, "/btv/catchup/mpd/#{epg_id}")
         |> Map.put(:assigns, %{
-          protocol: "MPD",
+          resource_id: epg_id,
+          ip_address: "123.123.123.123"
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
+      mpd_pr_conn =
+        conn(:get, "/btv/catchup/mpd_pr/#{epg_id}")
+        |> Map.put(:assigns, %{
+          resource_id: epg_id,
+          ip_address: "123.123.123.123"
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
+      mpd_wv_conn =
+        conn(:get, "/btv/catchup/mpd_wv/#{epg_id}")
+        |> Map.put(:assigns, %{
           resource_id: epg_id,
           ip_address: "123.123.123.123"
         })
@@ -345,16 +365,32 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       mpd_redirect_path_with_port =
         "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix2}/#{mpd_path}"
 
+      mpd_pr_redirect_path_without_port =
+        "http://#{domain_name1}/dvr/#{dvr_prefix2}/#{mpd_cenc_path}"
+
+      mpd_pr_redirect_path_with_port =
+        "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix2}/#{mpd_cenc_path}"
+
+      mpd_wv_redirect_path_without_port =
+        "http://#{domain_name1}/dvr/#{dvr_prefix2}/#{mpd_cenc_path}"
+
+      mpd_wv_redirect_path_with_port =
+        "http://#{domain_name2}:#{port}/dvr/#{dvr_prefix2}/#{mpd_cenc_path}"
+
       {
         :ok,
         hls_conn: hls_conn,
         hls_paths: [hls_redirect_path_without_port, hls_redirect_path_with_port],
         mpd_conn: mpd_conn,
-        mpd_paths: [mpd_redirect_path_without_port, mpd_redirect_path_with_port]
+        mpd_paths: [mpd_redirect_path_without_port, mpd_redirect_path_with_port],
+        mpd_pr_conn: mpd_pr_conn,
+        mpd_pr_paths: [mpd_pr_redirect_path_without_port, mpd_pr_redirect_path_with_port],
+        mpd_wv_conn: mpd_wv_conn,
+        mpd_wv_paths: [mpd_wv_redirect_path_without_port, mpd_wv_redirect_path_with_port]
       }
     end
 
-    test "Redirect to right path if program record with given protocol exist #1", %{
+    test "Redirect to right path if program record with given protocol exist (HLS) #1", %{
       hls_conn: conn,
       hls_paths: redirect_paths
     } do
@@ -369,9 +405,39 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
       assert redirect_path in redirect_paths
     end
 
-    test "Redirect to right path if program record with given protocol exist #2", %{
+    test "Redirect to right path if program record with given protocol exist (MPD) #2", %{
       mpd_conn: conn,
       mpd_paths: redirect_paths
+    } do
+      assert %{
+               status: 302,
+               resp_headers: [
+                 {"cache-control", "max-age=0, private, must-revalidate"},
+                 {"Location", redirect_path}
+               ]
+             } = MainRouter.call(conn, MainRouter.init([]))
+
+      assert redirect_path in redirect_paths
+    end
+
+    test "Redirect to right path if program record with given protocol exist (MPD, PR) #2", %{
+      mpd_pr_conn: conn,
+      mpd_pr_paths: redirect_paths
+    } do
+      assert %{
+               status: 302,
+               resp_headers: [
+                 {"cache-control", "max-age=0, private, must-revalidate"},
+                 {"Location", redirect_path}
+               ]
+             } = MainRouter.call(conn, MainRouter.init([]))
+
+      assert redirect_path in redirect_paths
+    end
+
+    test "Redirect to right path if program record with given protocol exist (MPD, WV) #2", %{
+      mpd_wv_conn: conn,
+      mpd_wv_paths: redirect_paths
     } do
       assert %{
                status: 302,
@@ -456,16 +522,14 @@ defmodule KalturaServer.RequestProcessing.MainRouterTest do
         Factory.insert(:program_record, %{
           server_id: dvr_server1_id,
           program_id: program_id,
-          protocol: "HLS",
-          status: "COMPLETED"
+          protocol: "HLS"
         })
 
       %{path: mpd_path} =
         Factory.insert(:program_record, %{
           server_id: dvr_server2_id,
           program_id: program_id,
-          protocol: "MPD",
-          status: "COMPLETED"
+          protocol: "MPD"
         })
 
       hls_conn =

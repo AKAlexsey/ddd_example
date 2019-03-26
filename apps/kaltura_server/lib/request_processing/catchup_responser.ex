@@ -6,6 +6,7 @@ defmodule KalturaServer.RequestProcessing.CatchupResponser do
   import Plug.Conn
   alias KalturaServer.ClosestEdgeServerService
   alias KalturaServer.DomainModelContext, as: Context
+  alias KalturaServer.RequestProcessing.RequestHelper
 
   @spec make_response(Plug.Conn.t()) :: {Plug.Conn.t(), integer, binary}
   def make_response(%Plug.Conn{} = conn) do
@@ -20,20 +21,24 @@ defmodule KalturaServer.RequestProcessing.CatchupResponser do
   end
 
   def put_resource_params(
-        {%Plug.Conn{assigns: %{resource_id: epg_id, protocol: protocol}} = conn, data}
+        {%Plug.Conn{assigns: %{resource_id: epg_id, protocol: protocol, encryption: encryption}} =
+           conn, data}
       ) do
-    with %{prefix: prefix, path: path} <- Context.find_program_record(epg_id, protocol) do
-      enriched_data =
-        data
-        |> Map.merge(%{
-          record_path: path,
-          dvr_server_prefix: prefix
-        })
+    approp_rec =
+      Context.find_program_records(epg_id, protocol)
+      |> RequestHelper.obtain_entity_by_encryption(RequestHelper.normalize_encryption(encryption))
 
-      {conn, enriched_data}
-    else
-      _ ->
+    case approp_rec do
+      nil ->
         {conn, data}
+
+      _ ->
+        {conn,
+         data
+         |> Map.merge(%{
+           record_path: approp_rec.path,
+           dvr_server_prefix: approp_rec.prefix
+         })}
     end
   end
 

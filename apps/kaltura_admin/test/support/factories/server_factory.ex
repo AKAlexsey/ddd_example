@@ -17,8 +17,8 @@ defmodule KalturaAdmin.ServerFactory do
       manage_port: :rand.uniform(@maximum_port),
       port: 80,
       prefix: "edge#{:rand.uniform(10000)}#{:rand.uniform(10000)}",
-      status: :active,
-      type: :edge,
+      status: "ACTIVE",
+      type: "EDGE",
       weight: 5
     }
 
