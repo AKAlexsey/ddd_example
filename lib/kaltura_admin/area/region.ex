@@ -26,7 +26,7 @@ defmodule CtiKaltura.Area.Region do
 
     many_to_many(:server_groups, ServerGroup, join_through: RegionServerGroup)
 
-    has_many(:subnets, Subnet, foreign_key: :region_id)
+    has_many(:subnets, Subnet, foreign_key: :region_id, on_delete: :delete_all)
 
     timestamps()
   end

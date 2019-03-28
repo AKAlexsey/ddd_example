@@ -42,6 +42,9 @@ defmodule CtiKaltura.Content.LinearChannel do
     |> Repo.preload(:tv_streams)
     |> cast(attrs, @cast_fields)
     |> validate_required(@required_fields)
+    |> unique_constraint(:name)
+    |> unique_constraint(:code_name)
+    |> unique_constraint(:epg_id)
     |> validate_server_group_id_if_necessary()
     |> cast_tv_streams(attrs)
   end

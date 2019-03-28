@@ -37,4 +37,12 @@ defmodule CtiKaltura.ErrorHelpers do
       Gettext.dgettext(CtiKaltura.Gettext, "errors", msg, opts)
     end
   end
+
+  def prepare_error_message(changeset) do
+    changeset.errors
+    |> Enum.into(%{})
+    |> Map.values()
+    |> Enum.into([], fn {mes, _} -> mes end)
+    |> Enum.join(", ")
+  end
 end

@@ -38,6 +38,7 @@ defmodule CtiKaltura.Area.Subnet do
 
   defp validate_cidr(changeset) do
     changeset
+    |> unique_constraint(:cidr)
     |> validate_format(:cidr, @cidr_format)
     |> validate_cidr_values()
   end

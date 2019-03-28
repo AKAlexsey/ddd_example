@@ -5,8 +5,8 @@ defmodule CtiKaltura.ReleaseTasks do
   2. Создание схемы для Mnesia
   3. Перенос БД в Mnesia
   """
-  alias Ecto.Migrator
   alias CtiKaltura.Seed
+  alias Ecto.Migrator
 
   @otp_app :cti_kaltura
   @kaltura_admin_public_api Application.get_env(:cti_kaltura, :public_api)[:module]

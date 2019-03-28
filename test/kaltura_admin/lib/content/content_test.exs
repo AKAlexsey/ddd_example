@@ -96,51 +96,60 @@ defmodule CtiKaltura.ContentTest do
     end
 
     test "create_linear_channel/1 validate name uniques" do
-      {:ok, %LinearChannel{}} = Content.create_linear_channel(@valid_attrs)
+      {:ok, linear_channel} = Content.create_linear_channel(@valid_attrs)
 
       duplicate_attrs =
         Map.merge(@valid_attrs, %{
+          name: linear_channel.name,
           code_name: Faker.Lorem.word(),
           epg_id: "#{Faker.Lorem.word()}_#{:rand.uniform(100)}"
         })
 
-      assert @valid_attrs.name == duplicate_attrs.name
+      {:error, %{errors: errors}} = Content.create_linear_channel(duplicate_attrs)
 
-      assert_raise(Ecto.ConstraintError, fn ->
-        Content.create_linear_channel(duplicate_attrs)
-      end)
+      assert errors == [
+               name:
+                 {"has already been taken",
+                  [constraint: :unique, constraint_name: "linear_channels_name_index"]}
+             ]
     end
 
-    test "create_linear_channel/1 validate name code_name" do
-      {:ok, %LinearChannel{}} = Content.create_linear_channel(@valid_attrs)
+    test "create_linear_channel/1 validate code_name" do
+      {:ok, linear_channel} = Content.create_linear_channel(@valid_attrs)
 
       duplicate_attrs =
         Map.merge(@valid_attrs, %{
           name: Faker.Lorem.word(),
+          code_name: linear_channel.code_name,
           epg_id: "#{Faker.Lorem.word()}_#{:rand.uniform(100)}"
         })
 
-      assert @valid_attrs.code_name == duplicate_attrs.code_name
+      {:error, %{errors: errors}} = Content.create_linear_channel(duplicate_attrs)
 
-      assert_raise(Ecto.ConstraintError, fn ->
-        Content.create_linear_channel(duplicate_attrs)
-      end)
+      assert errors == [
+               code_name:
+                 {"has already been taken",
+                  [constraint: :unique, constraint_name: "linear_channels_code_name_index"]}
+             ]
     end
 
-    test "create_linear_channel/1 validate name epg_id" do
-      {:ok, %LinearChannel{}} = Content.create_linear_channel(@valid_attrs)
+    test "create_linear_channel/1 validate epg_id is unique" do
+      {:ok, linear_channel} = Content.create_linear_channel(@valid_attrs)
 
       duplicate_attrs =
         Map.merge(@valid_attrs, %{
           name: Faker.Lorem.word(),
-          code_name: "#{Faker.Lorem.word()}_#{:rand.uniform(100)}"
+          code_name: "#{Faker.Lorem.word()}_#{:rand.uniform(100)}",
+          epg_id: linear_channel.epg_id
         })
 
-      assert @valid_attrs.epg_id == duplicate_attrs.epg_id
+      {:error, %{errors: errors}} = Content.create_linear_channel(duplicate_attrs)
 
-      assert_raise(Ecto.ConstraintError, fn ->
-        Content.create_linear_channel(duplicate_attrs)
-      end)
+      assert errors == [
+               epg_id:
+                 {"has already been taken",
+                  [constraint: :unique, constraint_name: "linear_channels_epg_id_index"]}
+             ]
     end
 
     test "create_linear_channel/1 with invalid data returns error changeset" do
@@ -190,8 +199,8 @@ defmodule CtiKaltura.ContentTest do
       end
     end
 
-    test "udpate_linear_channel/1 validate name uniques" do
-      {:ok, %LinearChannel{}} = Content.create_linear_channel(@valid_attrs)
+    test "udpate_linear_channel/1 validate name is unique" do
+      {:ok, linear_channel} = Content.create_linear_channel(@valid_attrs)
 
       valid_attrs_2 =
         Map.merge(@valid_attrs, %{
@@ -200,15 +209,20 @@ defmodule CtiKaltura.ContentTest do
           name: "#{Faker.Lorem.word()}"
         })
 
-      {:ok, %LinearChannel{} = linear_channel} = Content.create_linear_channel(valid_attrs_2)
+      {:ok, linear_channel_2} = Content.create_linear_channel(valid_attrs_2)
 
-      assert_raise(Ecto.ConstraintError, fn ->
-        Content.update_linear_channel(linear_channel, %{name: @valid_attrs.name})
-      end)
+      {:error, %{errors: errors}} =
+        Content.update_linear_channel(linear_channel_2, %{:code_name => linear_channel.code_name})
+
+      assert errors == [
+               code_name:
+                 {"has already been taken",
+                  [constraint: :unique, constraint_name: "linear_channels_code_name_index"]}
+             ]
     end
 
-    test "udpate_linear_channel/1 validate code_name uniques" do
-      {:ok, %LinearChannel{}} = Content.create_linear_channel(@valid_attrs)
+    test "udpate_linear_channel/1 validate code_name is unique" do
+      {:ok, linear_channel} = Content.create_linear_channel(@valid_attrs)
 
       valid_attrs_2 =
         Map.merge(@valid_attrs, %{
@@ -217,15 +231,20 @@ defmodule CtiKaltura.ContentTest do
           name: "#{Faker.Lorem.word()}"
         })
 
-      {:ok, %LinearChannel{} = linear_channel} = Content.create_linear_channel(valid_attrs_2)
+      {:ok, linear_channel_2} = Content.create_linear_channel(valid_attrs_2)
 
-      assert_raise(Ecto.ConstraintError, fn ->
-        Content.update_linear_channel(linear_channel, %{code_name: @valid_attrs.code_name})
-      end)
+      {:error, %{errors: errors}} =
+        Content.update_linear_channel(linear_channel_2, %{:code_name => linear_channel.code_name})
+
+      assert errors == [
+               code_name:
+                 {"has already been taken",
+                  [constraint: :unique, constraint_name: "linear_channels_code_name_index"]}
+             ]
     end
 
-    test "udpate_linear_channel/1 validate epg_id uniques" do
-      {:ok, %LinearChannel{}} = Content.create_linear_channel(@valid_attrs)
+    test "udpate_linear_channel/1 validate epg_id is unique" do
+      {:ok, linear_channel} = Content.create_linear_channel(@valid_attrs)
 
       valid_attrs_2 =
         Map.merge(@valid_attrs, %{
@@ -234,11 +253,16 @@ defmodule CtiKaltura.ContentTest do
           name: "#{Faker.Lorem.word()}"
         })
 
-      {:ok, %LinearChannel{} = linear_channel} = Content.create_linear_channel(valid_attrs_2)
+      {:ok, linear_channel_2} = Content.create_linear_channel(valid_attrs_2)
 
-      assert_raise(Ecto.ConstraintError, fn ->
-        Content.update_linear_channel(linear_channel, %{epg_id: @valid_attrs.epg_id})
-      end)
+      {:error, %{errors: errors}} =
+        Content.update_linear_channel(linear_channel_2, %{epg_id: linear_channel.epg_id})
+
+      assert errors == [
+               epg_id:
+                 {"has already been taken",
+                  [constraint: :unique, constraint_name: "linear_channels_epg_id_index"]}
+             ]
     end
 
     test "update_linear_channel/2 with invalid data returns error changeset" do

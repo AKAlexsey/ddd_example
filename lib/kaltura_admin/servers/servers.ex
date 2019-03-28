@@ -116,7 +116,15 @@ defmodule CtiKaltura.Servers do
 
   """
   def delete_server(%Server{} = server) do
-    Repo.delete_and_notify(server)
+    server
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.foreign_key_constraint(
+      :program_records,
+      name: :program_records_server_id_fkey,
+      message:
+        "There are program records on this server. Remove related program records and try again"
+    )
+    |> Repo.delete_and_notify()
   end
 
   @doc """

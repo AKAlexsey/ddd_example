@@ -14,7 +14,7 @@ defmodule CtiKaltura.UserControllerTest do
   setup tags do
     {:ok, user} = Factory.insert(:admin)
 
-    {:ok, conn: authorize(tags[:conn], user)}
+    {:ok, conn: authorize(tags[:conn], user), logined_user: user}
   end
 
   test "lists all entries on index", %{conn: conn} do
@@ -69,10 +69,16 @@ defmodule CtiKaltura.UserControllerTest do
     assert html_response(conn, 200) =~ "Edit User"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
+  test "deletes chosen user", %{conn: conn} do
     user = Repo.insert!(%User{})
     conn = delete(conn, user_path(conn, :delete, user))
     assert redirected_to(conn) == user_path(conn, :index)
     refute Repo.get(User, user.id)
+  end
+
+  test "deletes current user", %{conn: conn, logined_user: logined_user} do
+    conn = delete(conn, user_path(conn, :delete, logined_user))
+    assert redirected_to(conn) == user_path(conn, :index)
+    assert Repo.get(User, logined_user.id)
   end
 end

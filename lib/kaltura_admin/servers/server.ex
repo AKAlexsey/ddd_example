@@ -49,7 +49,8 @@ defmodule CtiKaltura.Servers.Server do
       :server_group_servers,
       ServerGroupServer,
       foreign_key: :server_id,
-      on_replace: :delete
+      on_replace: :delete,
+      on_delete: :delete_all
     )
 
     many_to_many(:server_groups, ServerGroup, join_through: ServerGroupServer)

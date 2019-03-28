@@ -69,12 +69,18 @@ defmodule CtiKaltura.SubnetTest do
       assert %{valid?: true} = changeset
     end
 
-    test "Validate :name is uniq", %{subnet: subnet} do
+    test "Validate :name is unique", %{subnet: subnet} do
       {:ok, other_subnet} = Factory.insert(:subnet)
 
       refute subnet.name == other_subnet.name
       changeset = Subnet.changeset(subnet, %{name: other_subnet.name})
       assert {:error, %{valid?: false, errors: [name: _]}} = Repo.update(changeset)
+    end
+
+    test "Validate :cidr is unique", %{subnet: subnet} do
+      {:ok, other_subnet} = Factory.insert(:subnet)
+      changeset = Subnet.changeset(subnet, %{cidr: other_subnet.cidr})
+      assert {:error, %{valid?: false, errors: [cidr: _]}} = Repo.update(changeset)
     end
   end
 end
