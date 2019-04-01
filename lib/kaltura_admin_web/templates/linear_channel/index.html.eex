@@ -1,0 +1,11 @@
+<%= render CtiKaltura.LayoutView, "table_header.html",
+      entity_name:  "TV channel" ,
+      link_create:  linear_channel_path(@conn, :new)
+%>
+
+<%= render CtiKaltura.LayoutView, "table.html",
+      items:             @linear_channels,
+      conn:              @conn,
+      entity_link_fn:    &linear_channel_path/3,
+      meta:              meta()
+%>

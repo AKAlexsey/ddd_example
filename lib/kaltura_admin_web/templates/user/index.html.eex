@@ -1,0 +1,11 @@
+<%= render CtiKaltura.LayoutView, "table_header.html",
+      entity_name:  :user , 
+      link_create:  user_path(@conn, :new)
+%>        
+
+<%= render CtiKaltura.LayoutView, "table.html",
+      items:          @users,
+      conn:           @conn,
+      entity_link_fn: &user_path/3,  
+      meta:           meta()
+%>        
