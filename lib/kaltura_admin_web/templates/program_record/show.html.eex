@@ -1,0 +1,16 @@
+<%= render CtiKaltura.LayoutView, "entity_header.html",
+      entity_name: "program record", 
+      mode:        :show, 
+      item:        @program_record
+%>        
+
+<%= render CtiKaltura.LayoutView, "table_form.html",
+      link_cancel:  program_path(@conn, :show, @program),
+      link_delete:  program_record_path(@conn, :delete, @program_record),
+      link_edit:    program_record_path(@conn, :edit,   @program_record),
+      mode:         :show,
+      item:         @program_record,
+      meta:         CtiKaltura.ProgramView.program_record_meta()
+ %>
+
+

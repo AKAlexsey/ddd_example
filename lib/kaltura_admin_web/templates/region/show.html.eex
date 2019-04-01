@@ -1,0 +1,31 @@
+<%= render CtiKaltura.LayoutView, "entity_header.html",
+      entity_name: :region,
+      mode:        :show,
+      item:        @region
+%>
+
+<%= render CtiKaltura.LayoutView, "table_form.html",
+      link_cancel:  region_path(@conn, :index),
+      link_delete:  region_path(@conn, :delete, @region),
+      link_edit:    region_path(@conn, :edit, @region),
+      mode:         :show,
+      item:         @region,
+      meta:         meta(@region.id)
+ %>
+
+
+
+
+<%= render CtiKaltura.LayoutView, "table_header.html",
+      style_class:  :nested,
+      entity_name:  :subnet ,
+      link_create:  subnet_path(@conn, :new, region_id: @region.id)
+%>
+
+<%= render CtiKaltura.LayoutView, "table.html",
+      style_class:       :nested,
+      items:             subnets(@region),
+      conn:              @conn,
+      entity_link_fn:    &subnet_path/3,
+      meta:              subnet_meta()
+%>

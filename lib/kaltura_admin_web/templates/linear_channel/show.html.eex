@@ -1,0 +1,28 @@
+<%= render CtiKaltura.LayoutView, "entity_header.html",
+      entity_name: "TV channel",
+      mode:        :show,
+      item:        @linear_channel
+%>
+
+<%= render CtiKaltura.LayoutView, "table_form.html",
+      link_cancel:  linear_channel_path(@conn, :index),
+      link_delete:  linear_channel_path(@conn, :delete, @linear_channel),
+      link_edit:    linear_channel_path(@conn, :edit, @linear_channel),
+      mode:         :show,
+      item:         @linear_channel,
+      meta:         meta()
+ %>
+
+<%= render CtiKaltura.LayoutView, "table_header.html",
+      entity_name:  "Tv stream" ,
+      link_create:  tv_stream_path(@conn, :new, linear_channel_id: @linear_channel.id),
+      type:         :nested
+%>
+
+<%= render CtiKaltura.LayoutView, "table.html",
+      items:             tv_streams(@linear_channel.id),
+      conn:              @conn,
+      entity_link_fn:    &tv_stream_path/3,
+      meta:              tv_stream_meta(),
+      type:              :nested
+%>

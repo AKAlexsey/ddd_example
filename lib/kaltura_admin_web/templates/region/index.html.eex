@@ -1,0 +1,11 @@
+<%= render CtiKaltura.LayoutView, "table_header.html",
+      entity_name:  :region , 
+      link_create:  region_path(@conn, :new)
+%> 
+
+<%= render CtiKaltura.LayoutView, "table.html",
+      items:             @regions,
+      conn:              @conn,
+      entity_link_fn:    &region_path/3,  
+      meta:              meta()
+%>        

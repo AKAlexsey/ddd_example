@@ -1,0 +1,14 @@
+<%= render CtiKaltura.LayoutView, "entity_header.html",
+      entity_name: :region,
+      mode:        :edit,
+      item:        @region
+%>
+
+<%= render CtiKaltura.LayoutView, "form_view.html",
+      action:       region_path(@conn, :update, @region),
+      link_cancel:  region_path(@conn, :index),
+      link_delete:  region_path(@conn, :delete, @region),
+      changeset:    @changeset,
+      mode:         :edit,
+      meta:         meta(@region.id)
+ %>

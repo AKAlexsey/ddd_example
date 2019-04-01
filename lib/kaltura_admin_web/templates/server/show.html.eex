@@ -1,0 +1,14 @@
+<%= render CtiKaltura.LayoutView, "entity_header.html",
+      entity_name: :server, 
+      mode:        :show, 
+      item:        @server  
+%>        
+<%= render CtiKaltura.LayoutView, "table_form.html",
+      link_cancel:  server_path(@conn, :index),
+      link_delete:  server_path(@conn, :delete, @server),
+      link_edit:    server_path(@conn, :edit, @server),
+      mode:         :show,
+      item:         @server,
+      meta:         meta()
+ %>
+

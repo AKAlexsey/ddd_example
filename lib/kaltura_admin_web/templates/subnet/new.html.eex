@@ -1,0 +1,12 @@
+<%= render CtiKaltura.LayoutView, "entity_header.html",
+      entity_name: "subnet for Region##{@region.id}",
+      mode:        :create
+%>
+
+<%= render CtiKaltura.LayoutView, "form_view.html",
+      action:       subnet_path(@conn, :create),
+      link_cancel:  region_path(@conn, :show, @region),
+      changeset:    @changeset,
+      mode:         :create,
+      meta:         CtiKaltura.RegionView.subnet_meta()
+ %>

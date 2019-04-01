@@ -1,0 +1,31 @@
+<%= render CtiKaltura.LayoutView, "entity_header.html",
+      entity_name: "program", 
+      mode:        :show, 
+      item:        @program
+%>        
+
+<%= render CtiKaltura.LayoutView, "table_form.html",
+      link_cancel:  program_path(@conn, :index),
+      link_delete:  program_path(@conn, :delete, @program),
+      link_edit:    program_path(@conn, :edit, @program),
+      mode:         :show,
+      item:         @program,
+      meta:         meta()
+ %>
+
+<%= render CtiKaltura.LayoutView, "table_header.html",
+      style_class:  :nested,
+      entity_name:  "program record" ,
+      link_create:  program_record_path(@conn, :new, program_id: @program.id)
+      
+%>
+
+<%= render CtiKaltura.LayoutView, "table.html",
+      style_class:       :nested,
+      items:             program_records(@program.id),
+      conn:              @conn,
+      entity_link_fn:    &program_record_path/3,
+      meta:              program_record_meta()
+      
+%>  
+

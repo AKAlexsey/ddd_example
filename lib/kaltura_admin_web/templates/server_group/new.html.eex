@@ -1,0 +1,13 @@
+<%= render CtiKaltura.LayoutView, "entity_header.html",
+      entity_name: "server group", 
+      mode:        :create 
+%>        
+
+<%= render CtiKaltura.LayoutView, "form_view.html",
+      action:       server_group_path(@conn, :create),
+      link_cancel:  server_group_path(@conn, :index),
+      changeset:    @changeset,
+      mode:         :create,
+      meta:         meta()
+ %>
+

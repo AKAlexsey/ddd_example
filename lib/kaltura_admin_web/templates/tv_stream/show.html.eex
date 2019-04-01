@@ -1,0 +1,14 @@
+<%= render CtiKaltura.LayoutView, "entity_header.html",
+      entity_name: "tv-stream",
+      mode:        :show,
+      item:        @tv_stream
+%>
+
+<%= render CtiKaltura.LayoutView, "table_form.html",
+      link_cancel:  linear_channel_path(@conn, :show, @linear_channel),
+      link_delete:  tv_stream_path(@conn, :delete, @tv_stream),
+      link_edit:    tv_stream_path(@conn, :edit,   @tv_stream),
+      mode:         :show,
+      item:         @tv_stream,
+      meta:         CtiKaltura.LinearChannelView.tv_stream_meta()
+ %>
