@@ -1,6 +1,7 @@
 defmodule CtiKaltura.ProgramRecordTest do
   use CtiKaltura.DataCase
 
+  alias CtiKaltura.Content
   alias CtiKaltura.Content.ProgramRecord
 
   describe "#changeset" do
@@ -53,6 +54,26 @@ defmodule CtiKaltura.ProgramRecordTest do
     test "Validate :program exist", %{program_record: program_record} do
       changeset = ProgramRecord.changeset(program_record, %{program_id: 777})
       assert {:error, %{valid?: false, errors: [program: _]}} = Repo.update(changeset)
+    end
+
+    test "Validate [protocol, encryption, program_id] unique", %{program_record: program_record} do
+      {:ok, new_program_record} = Factory.insert(:program_record)
+
+      {:error, %{:errors => errors}} =
+        Content.update_program_record(new_program_record, %{
+          :encryption => program_record.encryption,
+          :protocol => program_record.protocol,
+          :program_id => program_record.program_id
+        })
+
+      assert errors == [
+               protocol:
+                 {"The pair 'protocol', 'encryption' must be unique",
+                  [
+                    constraint: :unique,
+                    constraint_name: "program_records_protocol_encryption_program_id_index"
+                  ]}
+             ]
     end
   end
 end

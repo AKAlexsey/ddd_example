@@ -1,7 +1,7 @@
 defmodule CtiKaltura.ServerController do
   use CtiKalturaWeb, :controller
 
-  alias CtiKaltura.{Repo, Servers}
+  alias CtiKaltura.{ErrorHelpers, Repo, Servers}
   alias CtiKaltura.Servers.Server
 
   def index(conn, _params) do
@@ -82,10 +82,17 @@ defmodule CtiKaltura.ServerController do
 
   def delete(conn, %{"id" => id}) do
     server = Servers.get_server!(id)
-    {:ok, _server} = Servers.delete_server(server)
 
-    conn
-    |> put_flash(:info, "Server deleted successfully.")
-    |> redirect(to: server_path(conn, :index))
+    case Servers.delete_server(server) do
+      {:ok, _server} ->
+        conn
+        |> put_flash(:info, "Server deleted successfully.")
+        |> redirect(to: server_path(conn, :index))
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, ErrorHelpers.prepare_error_message(changeset))
+        |> redirect(to: server_path(conn, :index))
+    end
   end
 end

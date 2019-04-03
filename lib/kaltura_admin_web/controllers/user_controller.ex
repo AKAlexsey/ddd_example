@@ -55,13 +55,20 @@ defmodule CtiKaltura.UserController do
 
   def delete(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
+    logined_user = load_user(conn)
 
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
-    Repo.delete!(user)
+    if user.id == logined_user.id do
+      conn
+      |> put_flash(:error, "You cannot remove yourself!")
+      |> redirect(to: user_path(conn, :index))
+    else
+      # Here we use delete! (with a bang) because we expect
+      # it to always work (and if it does not, it will raise).
+      Repo.delete!(user)
 
-    conn
-    |> put_flash(:info, "User deleted successfully.")
-    |> redirect(to: user_path(conn, :index))
+      conn
+      |> put_flash(:info, "User deleted successfully.")
+      |> redirect(to: user_path(conn, :index))
+    end
   end
 end

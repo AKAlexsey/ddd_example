@@ -1,7 +1,7 @@
 defmodule CtiKaltura.ServerGroupController do
   use CtiKalturaWeb, :controller
 
-  alias CtiKaltura.Servers
+  alias CtiKaltura.{ErrorHelpers, Servers}
   alias CtiKaltura.Servers.ServerGroup
 
   def index(conn, _params) do
@@ -85,10 +85,17 @@ defmodule CtiKaltura.ServerGroupController do
 
   def delete(conn, %{"id" => id}) do
     server_group = Servers.get_server_group!(id)
-    {:ok, _server_group} = Servers.delete_server_group(server_group)
 
-    conn
-    |> put_flash(:info, "Server group deleted successfully.")
-    |> redirect(to: server_group_path(conn, :index))
+    case Servers.delete_server_group(server_group) do
+      {:ok, _server_group} ->
+        conn
+        |> put_flash(:info, "Server group deleted successfully.")
+        |> redirect(to: server_group_path(conn, :index))
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, ErrorHelpers.prepare_error_message(changeset))
+        |> redirect(to: server_group_path(conn, :index))
+    end
   end
 end

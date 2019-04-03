@@ -1,11 +1,13 @@
 defmodule CtiKaltura.ProgramTest do
   use CtiKaltura.DataCase
 
+  alias CtiKaltura.Content
   alias CtiKaltura.Content.Program
 
   describe "#changeset" do
     setup do
       {:ok, program} = Factory.insert(:program)
+      Factory.insert(:program_record, %{:program_id => program.id})
 
       {:ok, program: program}
     end
@@ -45,7 +47,7 @@ defmodule CtiKaltura.ProgramTest do
       assert %{valid?: false, errors: [linear_channel_id: _]} = changeset
     end
 
-    test "Validate :epg_id is uniq", %{program: program} do
+    test "Validate :epg_id is unique", %{program: program} do
       {:ok, other_program} = Factory.insert(:program)
 
       refute program.epg_id == other_program.epg_id
@@ -56,6 +58,16 @@ defmodule CtiKaltura.ProgramTest do
     test "Validate :linear_channel exist", %{program: program} do
       changeset = Program.changeset(program, %{linear_channel_id: 777})
       assert {:error, %{valid?: false, errors: [linear_channel: _]}} = Repo.update(changeset)
+    end
+
+    test " Remove linear channel with Program dependency", %{program: program} do
+      {:error, %{errors: errors}} = Content.delete_program(program)
+
+      assert errors == [
+               program_records:
+                 {"There are program records for current program. Remove related program records and try again",
+                  [constraint: :foreign, constraint_name: "program_records_program_id_fkey"]}
+             ]
     end
   end
 end

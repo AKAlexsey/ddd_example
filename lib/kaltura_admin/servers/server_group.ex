@@ -22,7 +22,8 @@ defmodule CtiKaltura.Servers.ServerGroup do
       :region_server_groups,
       RegionServerGroup,
       foreign_key: :server_group_id,
-      on_replace: :delete
+      on_replace: :delete,
+      on_delete: :delete_all
     )
 
     many_to_many(:regions, Region, join_through: RegionServerGroup)
@@ -33,7 +34,8 @@ defmodule CtiKaltura.Servers.ServerGroup do
       :server_group_servers,
       ServerGroupServer,
       foreign_key: :server_group_id,
-      on_replace: :delete
+      on_replace: :delete,
+      on_delete: :delete_all
     )
 
     many_to_many(:servers, Server, join_through: ServerGroupServer)

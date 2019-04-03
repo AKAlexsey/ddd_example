@@ -29,13 +29,20 @@ import "phoenix_html"
  */
 
 var tdElements = document.getElementsByClassName('clickable');
-for(var i = 0; i < tdElements.length; i++) {
-  tdElements[i].addEventListener('click', function(mEvent) {
+for (var i = 0; i < tdElements.length; i++) {
+  tdElements[i].addEventListener('click', function (mEvent) {
     window.location.href = mEvent.currentTarget.dataset.clickPath
   })
 }
 
-
-
-
-
+/**
+ * Handlers for PASSWORD link and input field components
+ */
+var passBtn = document.getElementById('pass-change-button');
+if (passBtn != null) {
+  passBtn.addEventListener('click', function (mEvent) {
+    mEvent.currentTarget.style.display = "none"
+    document.getElementById('pass').style.display = "initial"
+    document.getElementById('pass').focus()
+  })
+}

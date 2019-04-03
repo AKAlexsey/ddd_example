@@ -29,6 +29,7 @@ defmodule CtiKaltura.Content.ProgramRecord do
     |> validate_required(@required_fields)
     |> validate_server_present()
     |> validate_program_present()
+    |> validate_protocol_encryption_program_id_unique()
   end
 
   defp validate_server_present(changeset) do
@@ -39,5 +40,14 @@ defmodule CtiKaltura.Content.ProgramRecord do
   defp validate_program_present(changeset) do
     changeset
     |> assoc_constraint(:program)
+  end
+
+  defp validate_protocol_encryption_program_id_unique(changeset) do
+    changeset
+    |> unique_constraint(
+      :protocol,
+      name: :program_records_protocol_encryption_program_id_index,
+      message: "The pair 'protocol', 'encryption' must be unique"
+    )
   end
 end

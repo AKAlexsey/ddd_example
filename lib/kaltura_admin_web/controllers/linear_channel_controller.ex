@@ -1,7 +1,7 @@
 defmodule CtiKaltura.LinearChannelController do
   use CtiKalturaWeb, :controller
 
-  alias CtiKaltura.Content
+  alias CtiKaltura.{Content, ErrorHelpers}
   alias CtiKaltura.Content.{LinearChannel, TvStream}
 
   def index(conn, _params) do
@@ -86,10 +86,17 @@ defmodule CtiKaltura.LinearChannelController do
 
   def delete(conn, %{"id" => id}) do
     linear_channel = Content.get_linear_channel!(id)
-    {:ok, _linear_channel} = Content.delete_linear_channel(linear_channel)
 
-    conn
-    |> put_flash(:info, "Linear channel deleted successfully.")
-    |> redirect(to: linear_channel_path(conn, :index))
+    case Content.delete_linear_channel(linear_channel) do
+      {:ok, _linear_channel} ->
+        conn
+        |> put_flash(:info, "Linear channel deleted successfully.")
+        |> redirect(to: linear_channel_path(conn, :index))
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, ErrorHelpers.prepare_error_message(changeset))
+        |> redirect(to: linear_channel_path(conn, :index))
+    end
   end
 end

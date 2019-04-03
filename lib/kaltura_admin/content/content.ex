@@ -92,7 +92,14 @@ defmodule CtiKaltura.Content do
 
   """
   def delete_linear_channel(%LinearChannel{} = linear_channel) do
-    Repo.delete_and_notify(linear_channel)
+    linear_channel
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.foreign_key_constraint(
+      :programs,
+      name: :programs_linear_channel_id_fkey,
+      message: "There are programs for current channel. Remove related programs and try again"
+    )
+    |> Repo.delete_and_notify()
   end
 
   @doc """
@@ -194,7 +201,15 @@ defmodule CtiKaltura.Content do
 
   """
   def delete_program(%Program{} = program) do
-    Repo.delete_and_notify(program)
+    program
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.foreign_key_constraint(
+      :program_records,
+      name: :program_records_program_id_fkey,
+      message:
+        "There are program records for current program. Remove related program records and try again"
+    )
+    |> Repo.delete_and_notify()
   end
 
   @doc """
