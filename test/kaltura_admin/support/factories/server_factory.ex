@@ -1,4 +1,6 @@
 defmodule CtiKaltura.ServerFactory do
+  @moduledoc false
+
   alias CtiKaltura.Repo
   alias CtiKaltura.Servers.Server
 
@@ -6,7 +8,7 @@ defmodule CtiKaltura.ServerFactory do
 
   @maximum_port 65_535
 
-  def default_attrs(),
+  def default_attrs,
     do: %{
       domain_name:
         "#{Faker.Internet.domain_name()}#{:rand.uniform(10000)}#{:rand.uniform(10000)}",

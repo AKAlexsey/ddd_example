@@ -1,7 +1,7 @@
 defmodule CtiKaltura.SubnetFactory do
   @moduledoc false
-  alias CtiKaltura.{Repo, Factory}
   alias CtiKaltura.Area.Subnet
+  alias CtiKaltura.{Factory, Repo}
 
   Faker.start()
 

@@ -1,7 +1,7 @@
 defmodule CtiKaltura.TvStreamFactory do
   @moduledoc false
-  alias CtiKaltura.{Repo, Factory}
   alias CtiKaltura.Content.TvStream
+  alias CtiKaltura.{Factory, Repo}
 
   Faker.start()
 

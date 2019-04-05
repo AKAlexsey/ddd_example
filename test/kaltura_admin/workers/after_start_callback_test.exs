@@ -1,7 +1,7 @@
 defmodule CtiKaltura.Workers.AfterStartCallbackTest do
   use CtiKaltura.DataCase
-  alias CtiKaltura.Workers.AfterStartCallback
   alias CtiKaltura.ReleaseTasks
+  alias CtiKaltura.Workers.AfterStartCallback
   import Mock
 
   describe "#init" do

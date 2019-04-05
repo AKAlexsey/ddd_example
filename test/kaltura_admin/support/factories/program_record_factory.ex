@@ -1,7 +1,7 @@
 defmodule CtiKaltura.ProgramRecordFactory do
   @moduledoc false
-  alias CtiKaltura.{Repo, Factory}
   alias CtiKaltura.Content.ProgramRecord
+  alias CtiKaltura.{Factory, Repo}
 
   Faker.start()
 

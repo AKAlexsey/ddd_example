@@ -12,14 +12,16 @@ defmodule CtiKaltura.MnesiaTestSupport do
   def flush_database_tables do
     Amnesia.transaction(fn ->
       DomainModel.tables()
-      |> Enum.each(fn table ->
-        Amnesia.Table.foldl(table, [], fn record, acc ->
-          acc ++ [elem(record, 1)]
-        end)
-        |> Enum.each(fn id ->
-          table.delete(id)
-        end)
-      end)
+      |> Enum.each(&flush_table/1)
+    end)
+  end
+
+  defp flush_table(table) do
+    Amnesia.Table.foldl(table, [], fn record, acc ->
+      acc ++ [elem(record, 1)]
+    end)
+    |> Enum.each(fn id ->
+      table.delete(id)
     end)
   end
 end

@@ -4,13 +4,13 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandlerTest do
   import Mock
 
   alias CtiKaltura.DomainModelHandlers.{
+    LinearChannelHandler,
     ProgramHandler,
     ProgramRecordHandler,
     RegionHandler,
     ServerGroupHandler,
     ServerHandler,
-    SubnetHandler,
-    LinearChannelHandler
+    SubnetHandler
   }
 
   alias CtiKaltura.Handlers.DomainModelHandler

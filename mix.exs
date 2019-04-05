@@ -36,6 +36,7 @@ defmodule CtiKaltura.MixProject do
     do: ["lib", "priv", "web", "test/kaltura_admin/support", "test/kaltura_server/support"]
 
   defp elixirc_paths(:dev), do: ["lib", "priv", "web", "test/kaltura_admin/support"]
+  defp elixirc_paths(:prod), do: ["lib", "priv", "web"]
   defp elixirc_paths(_), do: ["lib", "priv", "web", "test/kaltura_admin/support"]
 
   defp deps do
