@@ -4,14 +4,14 @@ defmodule CtiKaltura.MnesiaFactory do
   """
 
   alias CtiKaltura.DomainModelFactories.{
+    LinearChannel,
+    Program,
+    ProgramRecord,
     Region,
     Server,
     ServerGroup,
     Subnet,
-    LinearChannel,
-    TvStream,
-    Program,
-    ProgramRecord
+    TvStream
   }
 
   Faker.start()

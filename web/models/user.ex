@@ -27,22 +27,30 @@ defmodule CtiKaltura.User do
   def changeset(struct, params \\ %{})
 
   def changeset(%CtiKaltura.User{:id => nil} = struct, params) do
-    changeset_with_pass(struct, params)
+    changeset_with_password(struct, params)
   end
 
   def changeset(struct, %{:password => pass} = params) do
     if pass == nil or byte_size(pass) == 0 do
-      changeset_without_pass(struct, params)
+      changeset_without_password(struct, params)
     else
-      changeset_with_pass(struct, params)
+      changeset_with_password(struct, params)
+    end
+  end
+
+  def changeset(struct, %{"password" => pass} = params) do
+    if pass == nil or byte_size(pass) == 0 do
+      changeset_without_password(struct, params)
+    else
+      changeset_with_password(struct, params)
     end
   end
 
   def changeset(struct, params) do
-    changeset_without_pass(struct, params)
+    changeset_without_password(struct, params)
   end
 
-  defp changeset_with_pass(struct, params) do
+  defp changeset_with_password(struct, params) do
     struct
     |> cast(params, @user_fields)
     |> validate_required(@user_fields)
@@ -52,7 +60,7 @@ defmodule CtiKaltura.User do
     |> put_password_hash()
   end
 
-  defp changeset_without_pass(struct, params) do
+  defp changeset_without_password(struct, params) do
     struct
     |> cast(params, @user_fields_without_pass)
     |> validate_required(@user_fields_without_pass)

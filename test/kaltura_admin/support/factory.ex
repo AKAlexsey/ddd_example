@@ -5,15 +5,15 @@ defmodule CtiKaltura.Factory do
   Faker.start()
 
   alias CtiKaltura.{
-    UserFactory,
     LinearChannelFactory,
-    TvStreamFactory,
     ProgramFactory,
     ProgramRecordFactory,
+    RegionFactory,
     ServerFactory,
     ServerGroupFactory,
-    RegionFactory,
-    SubnetFactory
+    SubnetFactory,
+    TvStreamFactory,
+    UserFactory
   }
 
   @spec build(atom, map()) :: {:ok, any()} | {:error, any()}

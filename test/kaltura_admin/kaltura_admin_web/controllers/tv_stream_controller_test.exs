@@ -1,8 +1,8 @@
 defmodule CtiKalturaWeb.TvStreamControllerTest do
   use CtiKaltura.ConnCase, async: false
 
-  alias CtiKaltura.Repo
   alias CtiKaltura.Content.TvStream
+  alias CtiKaltura.Repo
 
   @create_attrs %{
     encryption: "some encryption",
@@ -10,7 +10,8 @@ defmodule CtiKalturaWeb.TvStreamControllerTest do
     status: "some status",
     stream_path: "some stream_path"
   }
-  # @update_attrs %{encryption: "some updated encryption", protocol: "some updated protocol", status: "some updated status", stream_path: "some updated stream_path"}
+  # @update_attrs %{encryption: "some updated encryption", protocol: "some updated protocol",
+  # status: "some updated status", stream_path: "some updated stream_path"}
   @invalid_attrs %{encryption: nil, protocol: nil, status: nil, stream_path: nil}
 
   def fixture(:tv_stream) do

@@ -8,13 +8,13 @@ defmodule CtiKaltura.ServersRemovingTest do
     # ServerGroup
     {:ok, %{:id => server_group_id}} = Factory.insert(:server_group, %{})
 
-    # LinearChannel 
+    # LinearChannel
     {:ok, %{:id => linear_channel_id}} =
       Factory.insert(:linear_channel, %{
         server_group_id: server_group_id
       })
 
-    # Program 
+    # Program
     {:ok, %{:id => program_id}} =
       Factory.insert(:program, %{
         linear_channel_id: linear_channel_id

@@ -16,13 +16,13 @@ defmodule CtiKaltura.DataCase do
 
   using do
     quote do
-      alias CtiKaltura.Repo
       alias CtiKaltura.Factory
+      alias CtiKaltura.Repo
 
+      import CtiKaltura.ModelCase
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import CtiKaltura.ModelCase
     end
   end
 

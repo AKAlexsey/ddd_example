@@ -56,6 +56,33 @@ defmodule CtiKaltura.UserTest do
     assert changeset.valid?
   end
 
+  describe "Update user password" do
+    setup do
+      {:ok, user} = Factory.insert(:user)
+      {:ok, user: user}
+    end
+
+    test "password with 5 chars atom keys", %{user: user} do
+      changeset = User.changeset(user, %{password: "12345"})
+      refute changeset.valid?
+    end
+
+    test "password with 6 chars atom keys", %{user: user} do
+      changeset = User.changeset(user, %{password: "123456"})
+      assert changeset.valid?
+    end
+
+    test "password with 5 chars string keys", %{user: user} do
+      changeset = User.changeset(user, %{"password" => "12345"})
+      refute changeset.valid?
+    end
+
+    test "password with 6 chars string keys", %{user: user} do
+      changeset = User.changeset(user, %{"password" => "123456"})
+      assert changeset.valid?
+    end
+  end
+
   test " email is unique" do
     Factory.insert(:user, @valid_attrs)
     changeset = User.changeset(%User{}, @valid_attrs)

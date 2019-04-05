@@ -42,6 +42,6 @@ config :cti_kaltura, CtiKaltura.Repo,
   hostname: "localhost",
   pool_size: 80
 
-if File.exists?("apps/cti_kaltura/config/stage.custom.exs") do
+if File.exists?("config/stage.custom.exs") do
   import_config("stage.custom.exs")
 end

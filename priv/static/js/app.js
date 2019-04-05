@@ -274,6 +274,18 @@ for (var i = 0; i < tdElements.length; i++) {
     window.location.href = mEvent.currentTarget.dataset.clickPath;
   });
 }
+
+/**
+ * Handlers for PASSWORD link and input field components
+ */
+var passBtn = document.getElementById('pass-change-button');
+if (passBtn != null) {
+  passBtn.addEventListener('click', function (mEvent) {
+    mEvent.currentTarget.style.display = "none";
+    document.getElementById('pass').style.display = "initial";
+    document.getElementById('pass').focus();
+  });
+}
 });
 
 ;require.register("web/static/js/socket.js", function(exports, require, module) {

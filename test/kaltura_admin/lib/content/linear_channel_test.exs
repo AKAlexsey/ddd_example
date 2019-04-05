@@ -1,8 +1,8 @@
 defmodule KalturaAdmin.LinearChannelTest do
   use CtiKaltura.DataCase
 
-  alias CtiKaltura.Content.LinearChannel
   alias CtiKaltura.Content
+  alias CtiKaltura.Content.LinearChannel
 
   describe "Delete linear channel: " do
     setup do

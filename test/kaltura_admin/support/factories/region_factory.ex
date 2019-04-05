@@ -1,7 +1,7 @@
 defmodule CtiKaltura.RegionFactory do
   @moduledoc false
-  alias CtiKaltura.Repo
   alias CtiKaltura.Area.Region
+  alias CtiKaltura.Repo
 
   Faker.start()
 

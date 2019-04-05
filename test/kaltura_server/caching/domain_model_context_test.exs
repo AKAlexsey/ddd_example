@@ -2,8 +2,8 @@ defmodule CtiKaltura.DomainModelContextTest do
   use CtiKaltura.MnesiaTestCase
 
   alias CtiKaltura.DomainModelContext
-  alias DomainModel.LinearChannel
   alias CtiKaltura.DomainModelFactories.Region
+  alias DomainModel.LinearChannel
 
   describe "#find_tv_streams" do
     setup do

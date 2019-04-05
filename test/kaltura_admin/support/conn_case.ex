@@ -20,10 +20,11 @@ defmodule CtiKaltura.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      alias CtiKaltura.{Repo, Factory, User}
       alias CtiKaltura.Authorization.Guardian, as: GuardImpl
-      alias Plug.Conn
+      alias CtiKaltura.{Factory, Repo, User}
       alias Guardian.Plug, as: GPlug
+      alias Plug.Conn
+
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
