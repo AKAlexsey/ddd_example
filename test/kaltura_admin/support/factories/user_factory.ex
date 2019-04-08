@@ -7,14 +7,16 @@ defmodule CtiKaltura.UserFactory do
     email: "admin@email.ru",
     first_name: "Admin",
     last_name: "Admin",
-    password: "qweasd123"
+    password: "qweasd123",
+    role: "ADMIN"
   }
 
   @default_user_attrs %{
     email: Faker.Internet.email(),
     first_name: Faker.Name.first_name(),
     last_name: Faker.Name.last_name(),
-    password: "qweasd123"
+    password: "qweasd123",
+    role: "MANAGER"
   }
 
   def build_admin(attrs) do

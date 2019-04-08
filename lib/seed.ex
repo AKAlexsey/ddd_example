@@ -13,7 +13,8 @@ defmodule CtiKaltura.Seed do
       email: "admin@cti.ru",
       first_name: "Admin",
       last_name: "Admin",
-      password: "qweasd123"
+      password: "qweasd123",
+      role: "ADMIN"
     })
     |> Repo.insert!()
 
