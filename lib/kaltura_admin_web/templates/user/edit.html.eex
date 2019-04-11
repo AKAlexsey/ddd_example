@@ -1,16 +1,52 @@
 <%= render CtiKaltura.LayoutView, "entity_header.html",
-      entity_name: :user, 
-      mode:        :edit, 
-      item:        @user  
-%>        
+      entity_name: :user,
+      mode:        :edit,
+      item:        @user
+%>
 
-<%= render CtiKaltura.LayoutView, "form_view.html",
-      action:       user_path(@conn, :update, @user),
-      link_cancel:  user_path(@conn, :index),
-      link_delete:  user_path(@conn, :delete, @user),
-      changeset:    @changeset,
-      mode:         :edit,
-      meta:         meta()
- %>
+<%= form_for @changeset, user_path(@conn, :update, @user), fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Something went wrong! Please check the errors below</p>
+    </div>
+  <% end %>
 
+  <table class="table-form">
+    <tbody>
+      <tr>
+        <td>Email</td>
+        <td><%= text_input f, :email, class: "form-control" %></td>
+        <td><%= error_tag f, :email %></td>
+      </tr>
+      <tr>
+        <td>First name</td>
+        <td><%= text_input f, :first_name, class: "form-control" %></td>
+        <td><%= error_tag f, :first_name %></td>
+      </tr>
+      <tr>
+        <td>Last name</td>
+        <td><%= text_input f, :last_name, class: "form-control" %></td>
+        <td><%= error_tag f, :last_name %></td>
+      </tr>
+      <tr>
+        <td>Role</td>
+        <td>
+          <%= if @can_change_role do %>
+            <%= select f, :role, roles(), class: "form-control" %>
+          <% else %>
+            <%= @user.role %>
+          <% end %>
+        </td>
+        <td><%= error_tag f, :role %></td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td><%= render CtiKaltura.LayoutView, "table_form_password.html", f: f, mode: :edit, meta: %{:field => :password} %></td>
+        <td><%= error_tag f, :password %></td>
+      </tr>
+    </tbody>
+  </table>
 
+  <%= render CtiKaltura.LayoutView, "form_btns.html", link_cancel: user_path(@conn, :index), link_edit: nil, link_delete: user_path(@conn, :delete, @user) , mode: :edit  %>
+
+<% end %>

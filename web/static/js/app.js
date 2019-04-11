@@ -43,6 +43,7 @@ if (passBtn != null) {
   passBtn.addEventListener('click', function (mEvent) {
     mEvent.currentTarget.style.display = "none"
     document.getElementById('pass').style.display = "initial"
+    document.getElementById('pass').readOnly = false
     document.getElementById('pass').focus()
   })
 }

@@ -13,11 +13,12 @@ defmodule CtiKaltura.User do
     field(:last_name, :string)
     field(:password_hash, :string)
     field(:password, :string, virtual: true)
+    field(:role, :string)
     timestamps()
   end
 
-  @user_fields [:email, :first_name, :last_name, :password]
-  @user_fields_without_pass [:email, :first_name, :last_name]
+  @user_fields [:email, :first_name, :last_name, :password, :role]
+  @user_fields_without_pass [:email, :first_name, :last_name, :role]
   @mail_regex ~r/^[A-Za-z0-9._%+-+']+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
   @min_password_length 6
 

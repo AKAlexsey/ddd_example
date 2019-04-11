@@ -1,11 +1,13 @@
-<%= render CtiKaltura.LayoutView, "table_header.html",
-      entity_name:  :user , 
-      link_create:  user_path(@conn, :new)
-%>        
+<div class="entity-header">
+  <h2>Users</h2>
+  <%= if has_permissions_to_create?(@current_user) do %>
+      <%= link raw(~s'<span class="glyphicon glyphicon-file"></span>'), to: user_path(@conn, :new), class: "btn btn-success create", title: "Create new entity" %>
+  <% end %>
+</div>
 
 <%= render CtiKaltura.LayoutView, "table.html",
       items:          @users,
       conn:           @conn,
-      entity_link_fn: &user_path/3,  
+      entity_link_fn: &user_path/3,
       meta:           meta()
-%>        
+%>
