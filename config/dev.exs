@@ -20,10 +20,10 @@ use Mix.Config
 # configured to run both http and https servers on
 # different ports.
 config :cti_kaltura, CtiKaltura.Endpoint,
-  http: [port: 4000],
+  http: [port: System.get_env("PORT") || 4000],
+  check_origin: false,
   debug_errors: true,
   code_reloader: true,
-  check_origin: false,
   watchers: [
     node: ["node_modules/brunch/bin/brunch", "watch", "--stdin", cd: Path.expand("../", __DIR__)]
   ]
@@ -53,7 +53,30 @@ config :cti_kaltura, CtiKaltura.Repo,
   password: "postgres",
   database: "cti_kaltura_dev",
   hostname: "localhost",
-  pool_size: 80
+  pool_size: 40
+
+config :libcluster,
+       debug: true,
+       topologies: [
+         cti_kaltura: [
+           # The selected clustering strategy. Required.
+           strategy: Cluster.Strategy.Epmd,
+           # Configuration for the provided strategy. Optional.
+           config: [hosts: [:"first@127.0.0.1", :"second@127.0.0.1"]],
+           # The function to use for connecting nodes. The node
+           # name will be appended to the argument list. Optional
+           connect: {:net_kernel, :connect, []},
+           # The function to use for disconnecting nodes. The node
+           # name will be appended to the argument list. Optional
+           disconnect: {:net_kernel, :disconnect, []},
+           # The function to use for listing nodes.
+           # This function must return a list of node names. Optional
+           list_nodes: {:erlang, :nodes, [:connected]},
+           # A list of options for the supervisor child spec
+           # of the selected strategy. Optional
+           child_spec: [restart: :transient]
+         ]
+       ]
 
 if File.exists?("config/dev.custom.exs") do
   import_config("dev.custom.exs")

@@ -23,6 +23,7 @@ defmodule CtiKaltura.MixProject do
       mod: {CtiKaltura, []},
       extra_applications: [
         :logger,
+        :libcluster,
         :amnesia,
         :runtime_tools,
         :plug_cowboy,
@@ -56,6 +57,10 @@ defmodule CtiKaltura.MixProject do
       {:benchee, "~> 0.11", only: :dev},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:faker, "~> 0.11"},
+      # Clustering
+      # {:syn, "~> 1.6"}, # Закомментировано т.к. пока нет необходимости использовать SYN, достаточно :global
+      {:libcluster, "~> 3.0"},
+      {:individual, "~> 0.2.1"},
       # Authorization
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},

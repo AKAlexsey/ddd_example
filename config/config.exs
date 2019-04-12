@@ -34,7 +34,20 @@ config :cti_kaltura, domain_model_handler: CtiKaltura.Handlers.DomainModelHandle
 config :cti_kaltura, after_start_callback_timeout: 3000
 
 config :cti_kaltura, CtiKaltura.RequestProcessing.MainRouter,
-  http_port: [dev: 4001, test: 4003, prod: 4001, stage: 4001]
+  http_port: [
+    dev:
+      (fn
+         nil ->
+           4001
+
+         port ->
+           {number, ""} = Integer.parse(port)
+           number
+       end).(System.get_env("API_PORT")),
+    test: 4003,
+    prod: 4001,
+    stage: 4001
+  ]
 
 config :plug, validate_header_keys_during_test: false
 
