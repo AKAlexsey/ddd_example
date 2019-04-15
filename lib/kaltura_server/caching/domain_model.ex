@@ -1,4 +1,5 @@
 use Amnesia
+alias CtiKaltura.NodesService
 
 defdatabase DomainModel do
   deftable LinearChannel,
@@ -12,7 +13,8 @@ defdatabase DomainModel do
              :program_ids,
              :tv_stream_ids
            ],
-           type: :ordered_set do
+           type: :ordered_set,
+           copying: [memory: NodesService.get_nodes()] do
     @type t :: %LinearChannel{
             id: integer,
             epg_id: String.t(),
@@ -26,7 +28,8 @@ defdatabase DomainModel do
   end
 
   deftable Program, [:id, :name, :linear_channel_id, :epg_id, :program_record_ids],
-    type: :ordered_set do
+    type: :ordered_set,
+    copying: [memory: NodesService.get_nodes()] do
     @type t :: %Program{
             id: integer,
             name: String.t(),
@@ -48,7 +51,8 @@ defdatabase DomainModel do
              :encryption,
              :complex_search_index
            ],
-           type: :ordered_set do
+           type: :ordered_set,
+           copying: [memory: NodesService.get_nodes()] do
     @type t :: %ProgramRecord{
             id: integer,
             program_id: integer,
@@ -61,7 +65,9 @@ defdatabase DomainModel do
           }
   end
 
-  deftable Region, [:id, :name, :status, :subnet_ids, :server_group_ids], type: :ordered_set do
+  deftable Region, [:id, :name, :status, :subnet_ids, :server_group_ids],
+    type: :ordered_set,
+    copying: [memory: NodesService.get_nodes()] do
     @type t :: %Region{
             id: integer,
             name: String.t(),
@@ -72,7 +78,8 @@ defdatabase DomainModel do
   end
 
   deftable ServerGroup, [:id, :name, :status, :server_ids, :region_ids, :linear_channel_ids],
-    type: :ordered_set do
+    type: :ordered_set,
+    copying: [memory: NodesService.get_nodes()] do
     @type t :: %ServerGroup{
             id: integer,
             name: String.t(),
@@ -97,7 +104,8 @@ defdatabase DomainModel do
              :server_group_ids,
              :program_record_ids
            ],
-           type: :ordered_set do
+           type: :ordered_set,
+           copying: [memory: NodesService.get_nodes()] do
     @type t :: %Server{
             id: integer,
             type: String.t(),
@@ -123,7 +131,8 @@ defdatabase DomainModel do
              :last_number_ip,
              :name
            ],
-           type: :ordered_set do
+           type: :ordered_set,
+           copying: [memory: NodesService.get_nodes()] do
     @type t :: %Subnet{
             id: integer,
             region_id: integer,
@@ -145,7 +154,8 @@ defdatabase DomainModel do
              :linear_channel_id,
              :complex_search_index
            ],
-           type: :ordered_set do
+           type: :ordered_set,
+           copying: [memory: NodesService.get_nodes()] do
     @type t :: %TvStream{
             id: integer,
             stream_path: String.t(),

@@ -28,7 +28,7 @@ defmodule CtiKaltura.Seed do
 
     {:ok, region_names} =
       YamlElixir.read_from_file(
-        "/home/admintv/cti_kaltura_build/builds/priv/repo/seed_data/region_names.yml"
+        "/home/app/cti_kaltura_build/builds/priv/repo/seed_data/region_names.yml"
       )
 
     region_ids =
@@ -39,7 +39,7 @@ defmodule CtiKaltura.Seed do
 
     {:ok, subnet_cidrs} =
       YamlElixir.read_from_file(
-        "/home/admintv/cti_kaltura_build/builds/priv/repo/seed_data/subnet_cidrs.yml"
+        "/home/app/cti_kaltura_build/builds/priv/repo/seed_data/subnet_cidrs.yml"
       )
 
     subnet_cidrs
@@ -53,7 +53,7 @@ defmodule CtiKaltura.Seed do
 
     {:ok, server_domains} =
       YamlElixir.read_from_file(
-        "/home/admintv/cti_kaltura_build/builds/priv/repo/seed_data/server_domains.yml"
+        "/home/app/cti_kaltura_build/builds/priv/repo/seed_data/server_domains.yml"
       )
 
     dvr_servers_count = 4
@@ -119,7 +119,7 @@ defmodule CtiKaltura.Seed do
 
     {:ok, tv_stream_data} =
       YamlElixir.read_from_file(
-        "/home/admintv/cti_kaltura_build/builds/priv/repo/seed_data/tv_stream_data.yml"
+        "/home/app/cti_kaltura_build/builds/priv/repo/seed_data/tv_stream_data.yml"
       )
 
     linear_channel_ids =
@@ -152,7 +152,7 @@ defmodule CtiKaltura.Seed do
 
     {:ok, program_names} =
       YamlElixir.read_from_file(
-        "/home/admintv/cti_kaltura_build/builds/priv/repo/seed_data/program_names.yml"
+        "/home/app/cti_kaltura_build/builds/priv/repo/seed_data/program_names.yml"
       )
 
     program_ids =

@@ -34,18 +34,32 @@ environment :dev do
   set cookie: :"mzX,kJx|3$)TeK{W]T7RMl*X=ctB94&_r>Z4;TIw*X}zgYD4<<d%a9%=5^*e@k{1"
 end
 
-environment :prod do
+environment :prod1 do
   set include_erts: true
   set include_src: false
   set cookie: :"uEvwJO3y~*lOps4aOT{bPQ1m.(N3h!ThQXEO$j(=Ij&.cUSR8r/^%38Ou}]Ty7?^"
-  set vm_args: "rel/vm.args"
+  set vm_args: "rel/prod1_vm.args"
 end
 
-environment :stage do
+environment :prod2 do
+  set include_erts: true
+  set include_src: false
+  set cookie: :"uEvwJO3y~*lOps4aOT{bPQ1m.(N3h!ThQXEO$j(=Ij&.cUSR8r/^%38Ou}]Ty7?^"
+  set vm_args: "rel/prod2_vm.args"
+end
+
+environment :stage1 do
   set include_erts: true
   set include_src: false
   set cookie: :"urkib1+"
-  set vm_args: "rel/vm.args"
+  set vm_args: "rel/stage1_vm.args"
+end
+
+environment :stage2 do
+  set include_erts: true
+  set include_src: false
+  set cookie: :"urkib1+"
+  set vm_args: "rel/stage2_vm.args"
 end
 
 # You may define one or more releases in this file.
@@ -59,5 +73,12 @@ release :cti_kaltura do
         :runtime_tools,
         :cti_kaltura
       ]
+
+  set(
+    commands: [
+      migrate: "rel/commands/migrate.sh",
+      make_mnesia_cluster_again: "rel/commands/make_mnesia_cluster_again.sh"
+    ]
+  )
 end
 

@@ -5,11 +5,12 @@ defmodule CtiKaltura do
 
   alias CtiKaltura.Endpoint
   alias CtiKaltura.RequestProcessing.MainRouter
-  alias CtiKaltura.Workers.AfterStartCallback
+  alias CtiKaltura.Workers.ReleaseTasksWorker
   alias Plug.Cowboy
 
   def start(_type, _args) do
     children = [
+      {Cluster.Supervisor, [get_topologies(), [name: CtiKaltura.ClusterSupervisor]]},
       CtiKaltura.Repo,
       CtiKaltura.Endpoint,
       Cowboy.child_spec(
@@ -17,19 +18,14 @@ defmodule CtiKaltura do
         plug: MainRouter,
         options: [port: http_main_router_port()]
       ),
-      {
-        AfterStartCallback,
-        {AfterStartCallback, :start_link, []},
-        :transient,
-        5000,
-        :worker,
-        [AfterStartCallback]
-      }
+      {Individual, ReleaseTasksWorker}
     ]
 
     opts = [strategy: :one_for_one, name: CtiKaltura.Supervisor]
     Supervisor.start_link(children, opts)
   end
+
+  defp get_topologies, do: Application.get_env(:libcluster, :topologies, [])
 
   defp router_config, do: Application.get_env(:cti_kaltura, MainRouter)
 

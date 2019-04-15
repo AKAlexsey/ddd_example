@@ -5,41 +5,37 @@ defmodule CtiKaltura.ReleaseTasks do
   2. Создание схемы для Mnesia
   3. Перенос БД в Mnesia
   """
-  alias CtiKaltura.Seed
+  alias CtiKaltura.{NodesService, Seed}
   alias Ecto.Migrator
 
   @otp_app :cti_kaltura
   @kaltura_admin_public_api Application.get_env(:cti_kaltura, :public_api)[:module]
+  @prod_env_regex ~r/prod/
 
+  @doc """
+  Perform migrations.
+  """
   def migrate_repo do
     puts_message("# ReleaseTasks run_migrations")
     run_in_not_test_env(fn -> run_migrations_for(@otp_app) end)
   end
 
-  def create_mnesia_schema do
-    puts_message("# ReleaseTasks create_mnesia_schema")
-    create_schema()
-    initialize_tables()
-  end
-
+  @doc """
+  Cache all necessary records to provide api request processing.
+  """
   def cache_domain_model do
     puts_message("# ReleaseTasks cache_domain_model")
     run_in_not_test_env(fn -> @kaltura_admin_public_api.cache_domain_model_at_server() end)
   end
 
-  defp create_schema do
-    :mnesia.stop()
-    Amnesia.Schema.create()
-  end
-
-  defp initialize_tables do
-    :mnesia.start()
-    DomainModel.create(memory: [Node.self()])
-    DomainModel.add_indexes()
-  end
-
+  @doc """
+  Fill in database with seed data. ! USE CAREFULLY ! Don't use in production.
+  """
   def seed do
-    Seed.perform()
+    puts_message("# ReleaseTasks cache_domain_model")
+    if is_nil(Regex.run(@prod_env_regex, current_env())) do
+      Seed.perform()
+    end
   end
 
   defp run_migrations_for(app) do
@@ -69,6 +65,79 @@ defmodule CtiKaltura.ReleaseTasks do
   defp run_in_not_test_env(fun) do
     if Application.get_env(:cti_kaltura, :env)[:current] != :test do
       fun.()
+    end
+  end
+
+  @doc"""
+  Perform manipulations to achieve mnesia clustering
+  """
+  def make_mnesia_cluster_again do
+    puts_message("# ReleaseTasks make_mnesia_cluster_again")
+    nodes = NodesService.get_nodes()
+    if length(nodes) > 1 do
+      puts_message("# Stopping mnesia")
+      run_on_each_node(nodes, fn ->
+        :mnesia.stop()
+        file_path = "#{File.cwd!()}/Mnesia.#{Node.self()}}"
+        System.cmd("rm", ["-rf", file_path])
+      end)
+
+      puts_message("# Creating schema")
+      Amnesia.Schema.create(nodes)
+
+      puts_message("# Starting mnesia again")
+      run_on_each_node(nodes, fn ->
+        :mnesia.start()
+      end)
+      :timer.sleep(500)
+
+      puts_message("# Initializing DomainModel")
+      DomainModel.create(memory: nodes)
+      DomainModel.add_indexes()
+
+      cache_domain_model()
+    else
+      puts_message("# Error during making clusters. Not all clusters are running")
+    end
+  end
+
+  defp current_env do
+    Application.get_env(:cti_kaltura, :env)[:current]
+  end
+
+  defp run_on_each_node(nodes, fun) do
+    nodes
+    |> Enum.each(fn node ->
+      Node.spawn(node, fun)
+    end)
+  end
+
+  @doc """
+  Reset mnesia database if it's run on single node.
+  """
+  def reset_single_mnesia do
+    puts_message("# ReleaseTasks reset_single_mnesia")
+    nodes = NodesService.get_nodes()
+    if length(nodes) > 1 do
+      puts_message("# Can't reset mnesia. There is cluster")
+    else
+      puts_message("# Stopping mnesia")
+      :mnesia.stop()
+      file_path = "#{File.cwd!()}/Mnesia.#{Node.self()}}"
+      System.cmd("rm", ["-rf", file_path])
+
+      puts_message("# Creating schema")
+      Amnesia.Schema.create()
+
+      puts_message("# Starting mnesia again")
+      :mnesia.start()
+      :timer.sleep(500)
+
+      puts_message("# Initializing DomainModel")
+      DomainModel.create(memory: [Node.self()])
+      DomainModel.add_indexes()
+
+      cache_domain_model()
     end
   end
 end
