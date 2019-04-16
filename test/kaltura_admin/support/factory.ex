@@ -101,4 +101,47 @@ defmodule CtiKaltura.Factory do
   defp insert_implementation(:subnet, attrs) do
     SubnetFactory.insert(attrs)
   end
+
+  @spec insert_and_notify(atom, map()) :: {:ok, any()} | {:error, any()}
+  def insert_and_notify(model, attrs \\ %{}), do: insert_and_notify_implementation(model, attrs)
+
+  defp insert_and_notify_implementation(:admin, attrs) do
+    UserFactory.insert_and_notify_admin(attrs)
+  end
+
+  defp insert_and_notify_implementation(:user, attrs) do
+    UserFactory.insert_and_notify(attrs)
+  end
+
+  defp insert_and_notify_implementation(:linear_channel, attrs) do
+    LinearChannelFactory.insert_and_notify(attrs)
+  end
+
+  defp insert_and_notify_implementation(:tv_stream, attrs) do
+    TvStreamFactory.insert_and_notify(attrs)
+  end
+
+  defp insert_and_notify_implementation(:program, attrs) do
+    ProgramFactory.insert_and_notify(attrs)
+  end
+
+  defp insert_and_notify_implementation(:program_record, attrs) do
+    ProgramRecordFactory.insert_and_notify(attrs)
+  end
+
+  defp insert_and_notify_implementation(:server, attrs) do
+    ServerFactory.insert_and_notify(attrs)
+  end
+
+  defp insert_and_notify_implementation(:server_group, attrs) do
+    ServerGroupFactory.insert_and_notify(attrs)
+  end
+
+  defp insert_and_notify_implementation(:region, attrs) do
+    RegionFactory.insert_and_notify(attrs)
+  end
+
+  defp insert_and_notify_implementation(:subnet, attrs) do
+    SubnetFactory.insert_and_notify(attrs)
+  end
 end

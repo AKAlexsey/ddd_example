@@ -31,12 +31,12 @@ defmodule CtiKaltura.RequestProcessing.CatchupResponser do
       nil ->
         {conn, data}
 
-      approp_rec ->
+      program_record ->
         {conn,
          data
          |> Map.merge(%{
-           record_path: approp_rec.path,
-           dvr_server_prefix: approp_rec.prefix
+           record_path: program_record.path,
+           dvr_server_prefix: program_record.prefix
          })}
     end
   end

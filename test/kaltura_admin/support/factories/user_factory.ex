@@ -35,9 +35,21 @@ defmodule CtiKaltura.UserFactory do
     |> Repo.insert()
   end
 
+  def insert_and_notify_admin(attrs) do
+    attrs
+    |> build()
+    |> Repo.insert_and_notify()
+  end
+
   def insert(attrs) do
     attrs
     |> build()
     |> Repo.insert()
+  end
+
+  def insert_and_notify(attrs) do
+    attrs
+    |> build()
+    |> Repo.insert_and_notify()
   end
 end

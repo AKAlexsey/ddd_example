@@ -1,4 +1,4 @@
-defmodule CtiKaltura.DomainModelHandlers.AbstractHandlerTest do
+defmodule CtiKaltura.DomainModelHandlers.DomainModelHandlerTest do
   use ExUnit.Case
 
   import Mock
