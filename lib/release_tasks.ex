@@ -33,6 +33,7 @@ defmodule CtiKaltura.ReleaseTasks do
   """
   def seed do
     puts_message("# ReleaseTasks cache_domain_model")
+
     if is_nil(Regex.run(@prod_env_regex, current_env())) do
       Seed.perform()
     end
@@ -68,14 +69,16 @@ defmodule CtiKaltura.ReleaseTasks do
     end
   end
 
-  @doc"""
+  @doc """
   Perform manipulations to achieve mnesia clustering
   """
   def make_mnesia_cluster_again do
     puts_message("# ReleaseTasks make_mnesia_cluster_again")
     nodes = NodesService.get_nodes()
+
     if length(nodes) > 1 do
       puts_message("# Stopping mnesia")
+
       run_on_each_node(nodes, fn ->
         :mnesia.stop()
         file_path = "#{File.cwd!()}/Mnesia.#{Node.self()}}"
@@ -86,9 +89,11 @@ defmodule CtiKaltura.ReleaseTasks do
       Amnesia.Schema.create(nodes)
 
       puts_message("# Starting mnesia again")
+
       run_on_each_node(nodes, fn ->
         :mnesia.start()
       end)
+
       :timer.sleep(500)
 
       puts_message("# Initializing DomainModel")
@@ -118,6 +123,7 @@ defmodule CtiKaltura.ReleaseTasks do
   def reset_single_mnesia do
     puts_message("# ReleaseTasks reset_single_mnesia")
     nodes = NodesService.get_nodes()
+
     if length(nodes) > 1 do
       puts_message("# Can't reset mnesia. There is cluster")
     else

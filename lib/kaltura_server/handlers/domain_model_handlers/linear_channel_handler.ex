@@ -9,5 +9,8 @@ defmodule CtiKaltura.DomainModelHandlers.LinearChannelHandler do
       server_group_id: "ServerGroup",
       program_ids: "Program",
       tv_stream_ids: "TvStream"
+    ],
+    models_with_injected_attribute: [
+      {:epg_id, "TvStream", :tv_stream_ids}
     ]
 end

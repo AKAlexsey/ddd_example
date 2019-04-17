@@ -27,4 +27,10 @@ defmodule CtiKaltura.ServerGroupFactory do
     |> build()
     |> Repo.insert()
   end
+
+  def insert_and_notify(attrs) do
+    attrs
+    |> build()
+    |> Repo.insert_and_notify()
+  end
 end

@@ -6,6 +6,7 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
   defmacro __using__(opts) do
     table = Keyword.get(opts, :table)
     joined_attributes_and_models = Keyword.get(opts, :joined_attributes_and_models, [])
+    models_with_injected_attribute = Keyword.get(opts, :models_with_injected_attribute, [])
 
     quote do
       require Amnesia
@@ -13,11 +14,22 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
 
       @table unquote(table)
       @joined_attributes_and_models unquote(joined_attributes_and_models)
+      @models_with_injected_attribute unquote(models_with_injected_attribute)
       @cti_kaltura_public_api Application.get_env(:cti_kaltura, :public_api)[:module]
 
-      def handle(action, attrs) when action in [:insert, :update] do
+      def handle(:insert, attrs) do
         Amnesia.transaction do
-          refresh_linked_tables_if_necessary(attrs)
+          refresh_associated_records_if_necessary(attrs)
+          write_to_table(attrs)
+        end
+
+        :ok
+      end
+
+      def handle(:update, attrs) do
+        Amnesia.transaction do
+          refresh_associated_records_if_necessary(attrs)
+          refresh_models_with_injected_attribute(attrs)
           write_to_table(attrs)
         end
 
@@ -35,7 +47,7 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
       def handle(:delete, %{id: id} = attrs) do
         Amnesia.transaction do
           delete_from_table(id)
-          refresh_linked_tables_if_necessary(attrs)
+          refresh_associated_records_if_necessary(attrs)
         end
 
         :ok
@@ -66,28 +78,22 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
         @table.delete(id)
       end
 
-      defp refresh_linked_tables_if_necessary(%{id: id} = attrs) do
+      defp refresh_associated_records_if_necessary(%{id: id} = attrs) do
         id
         |> @table.read()
-        |> check_record_attributes(attrs)
+        |> check_associated_records_attributes(attrs)
       end
 
-      defp check_record_attributes(nil, attrs) do
-        iterate_through_record_attributes(fn {attribute, model_name} ->
-          case Map.get(attrs, attribute) do
-            array_ids when is_list(array_ids) ->
-              Enum.each(array_ids, &notify(model_name, &1))
-
-            id ->
-              notify(model_name, id)
-          end
+      defp check_associated_records_attributes(nil, attrs) do
+        iterate_through_record_attributes(fn {joined_records_attribute, model_name} ->
+          update_all_joined_records(attrs, joined_records_attribute, model_name)
         end)
       end
 
-      defp check_record_attributes(record, attrs) do
-        iterate_through_record_attributes(fn {attribute, model_name} ->
-          current_value = Map.get(record, attribute)
-          new_value = Map.get(attrs, attribute)
+      defp check_associated_records_attributes(record, attrs) do
+        iterate_through_record_attributes(fn {joined_records_attribute, model_name} ->
+          current_value = Map.get(record, joined_records_attribute)
+          new_value = Map.get(attrs, joined_records_attribute)
 
           compare_values_and_refresh(current_value, new_value, model_name)
         end)
@@ -96,6 +102,33 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
       defp iterate_through_record_attributes(callback) do
         @joined_attributes_and_models
         |> Enum.each(&callback.(&1))
+      end
+
+      defp refresh_models_with_injected_attribute(%{id: id} = attrs) do
+        id
+        |> @table.read()
+        |> check_injected_attribute_joined_records(attrs)
+      end
+
+      defp check_injected_attribute_joined_records(record, attrs) do
+        @models_with_injected_attribute
+        |> Enum.each(fn {injected_attribute, model_name, joined_records_attribute} ->
+          if Map.get(record, injected_attribute) != Map.get(attrs, injected_attribute) do
+            update_all_joined_records(attrs, joined_records_attribute, model_name)
+          else
+            :ok
+          end
+        end)
+      end
+
+      defp update_all_joined_records(attrs, joined_records_attribute, model_name) do
+        case Map.get(attrs, joined_records_attribute) do
+          array_ids when is_list(array_ids) ->
+            Enum.each(array_ids, &notify(model_name, &1))
+
+          id ->
+            notify(model_name, id)
+        end
       end
 
       defp compare_values_and_refresh(current_value, new_value, model_name)
