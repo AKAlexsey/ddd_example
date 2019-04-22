@@ -1,7 +1,8 @@
 defmodule CtiKaltura.ContentTest do
   use CtiKaltura.DataCase
 
-  alias CtiKaltura.Content
+  alias CtiKaltura.{Content, Repo}
+  alias CtiKaltura.Content.Program
   alias CtiKaltura.Servers.ServerGroup
   import Mock
   @domain_model_handler_module Application.get_env(:cti_kaltura, :domain_model_handler)
@@ -45,6 +46,16 @@ defmodule CtiKaltura.ContentTest do
     test "get_linear_channel!/1 returns the linear_channel with given id" do
       linear_channel = linear_channel_fixture()
       assert Content.get_linear_channel!(linear_channel.id).id == linear_channel.id
+    end
+
+    test "#get_linear_channel_by_epg/1 returns LinearChannel with given epg_id or nil" do
+      {:ok, %{id: linear_channel_id, epg_id: epg_id}} = Factory.insert(:linear_channel)
+
+      result = Content.get_linear_channel_by_epg(epg_id)
+
+      assert result.id == linear_channel_id
+
+      assert is_nil(Content.get_linear_channel_by_epg("#{epg_id}_other_wrong"))
     end
 
     test "create_linear_channel/1 with valid data creates a linear_channel" do
@@ -371,9 +382,59 @@ defmodule CtiKaltura.ContentTest do
       end
     end
 
-    test "change_program/1 returns a program changeset" do
+    test "#change_program returns a program changeset" do
       program = program_fixture()
       assert %Ecto.Changeset{} = Content.change_program(program)
+    end
+
+    test "#delete_programs_from_interval" do
+      time = NaiveDateTime.utc_now()
+
+      {:ok, linear_channel1} = Factory.insert(:linear_channel)
+
+      {:ok, linear_channel2} = Factory.insert(:linear_channel)
+
+      start_datetime1 = NaiveDateTime.add(time, 120)
+      start_datetime2 = NaiveDateTime.add(time, 520)
+      start_datetime3 = NaiveDateTime.add(time, 521)
+
+      {:ok, program11} =
+        Factory.insert(:program, %{
+          start_datetime: start_datetime1,
+          linear_channel_id: linear_channel1.id
+        })
+
+      {:ok, program12} =
+        Factory.insert(:program, %{
+          start_datetime: start_datetime2,
+          linear_channel_id: linear_channel1.id
+        })
+
+      {:ok, program13} =
+        Factory.insert(:program, %{
+          start_datetime: start_datetime3,
+          linear_channel_id: linear_channel1.id
+        })
+
+      {:ok, program21} =
+        Factory.insert(:program, %{
+          start_datetime: start_datetime1,
+          linear_channel_id: linear_channel2.id
+        })
+
+      assert {2, nil} ==
+               Content.delete_programs_from_interval(
+                 start_datetime1,
+                 start_datetime2,
+                 linear_channel1.id
+               )
+
+      get_program = fn program_id -> Repo.get(Program, program_id) end
+
+      assert is_nil(get_program.(program11.id))
+      assert is_nil(get_program.(program12.id))
+      refute is_nil(get_program.(program13.id))
+      refute is_nil(get_program.(program21.id))
     end
   end
 

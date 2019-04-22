@@ -71,6 +71,8 @@ defmodule CtiKaltura.MixProject do
       {:phoenix_html, "~> 2.12.0"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
+      {:sweet_xml, "~> 0.6"},
+      {:gen_stage, "~> 0.14"},
       # Testing
       {:mock, "~> 0.3.0", only: :test},
       # Deployment

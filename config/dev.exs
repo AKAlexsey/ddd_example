@@ -56,27 +56,39 @@ config :cti_kaltura, CtiKaltura.Repo,
   pool_size: 40
 
 config :libcluster,
-       debug: true,
-       topologies: [
-         cti_kaltura: [
-           # The selected clustering strategy. Required.
-           strategy: Cluster.Strategy.Epmd,
-           # Configuration for the provided strategy. Optional.
-           config: [hosts: [:"first@127.0.0.1", :"second@127.0.0.1"]],
-           # The function to use for connecting nodes. The node
-           # name will be appended to the argument list. Optional
-           connect: {:net_kernel, :connect, []},
-           # The function to use for disconnecting nodes. The node
-           # name will be appended to the argument list. Optional
-           disconnect: {:net_kernel, :disconnect, []},
-           # The function to use for listing nodes.
-           # This function must return a list of node names. Optional
-           list_nodes: {:erlang, :nodes, [:connected]},
-           # A list of options for the supervisor child spec
-           # of the selected strategy. Optional
-           child_spec: [restart: :transient]
-         ]
-       ]
+  debug: true,
+  topologies: [
+    cti_kaltura: [
+      # The selected clustering strategy. Required.
+      strategy: Cluster.Strategy.Epmd,
+      # Configuration for the provided strategy. Optional.
+      config: [hosts: [:"first@127.0.0.1", :"second@127.0.0.1"]],
+      # The function to use for connecting nodes. The node
+      # name will be appended to the argument list. Optional
+      connect: {:net_kernel, :connect, []},
+      # The function to use for disconnecting nodes. The node
+      # name will be appended to the argument list. Optional
+      disconnect: {:net_kernel, :disconnect, []},
+      # The function to use for listing nodes.
+      # This function must return a list of node names. Optional
+      list_nodes: {:erlang, :nodes, [:connected]},
+      # A list of options for the supervisor child spec
+      # of the selected strategy. Optional
+      child_spec: [restart: :transient]
+    ]
+  ]
+
+config :cti_kaltura, :epg_file_parser,
+  # Опция включения или выключения стейджа, осуществляющего парсинг EPG XML файлов.
+  enabled: true,
+  # Интервал проверки папки с EPG файлами
+  scan_file_directory_interval: 5000,
+  # Интервал обаботки файлов
+  process_file_interval: 500,
+  # Путь до папки где должны лежать валидные XML файлы
+  files_directory: "#{File.cwd!()}/ftp_files",
+  # Путь до папки куда будут складываться отработанные файлы
+  processed_files_directory: "#{File.cwd!()}/ftp_files/processed"
 
 if File.exists?("config/dev.custom.exs") do
   import_config("dev.custom.exs")
