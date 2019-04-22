@@ -44,6 +44,15 @@ defmodule CtiKaltura.Content do
   end
 
   @doc """
+  Возвращает LinearChannel по epg_id
+  """
+  @spec get_linear_channel_by_epg(binary | integer) :: LinearChannel.t() | nil
+  def get_linear_channel_by_epg(epg_id) do
+    from(lc in LinearChannel, where: lc.epg_id == ^epg_id)
+    |> Repo.one()
+  end
+
+  @doc """
   Creates a linear_channel.
 
   ## Examples
@@ -223,6 +232,21 @@ defmodule CtiKaltura.Content do
   """
   def change_program(%Program{} = program) do
     Program.changeset(program, %{})
+  end
+
+  @doc """
+  Возвращает программы, которые должны начаться в заданный интервал времени
+  """
+  @spec delete_programs_from_interval(NaiveDateTime.t(), NaiveDateTime.t(), integer) ::
+          {:ok, integer}
+  def delete_programs_from_interval(start_datetime, end_datetime, linear_channel_id) do
+    from(
+      p in Program,
+      where:
+        p.start_datetime >= ^start_datetime and p.start_datetime <= ^end_datetime and
+          p.linear_channel_id == ^linear_channel_id
+    )
+    |> Repo.delete_all()
   end
 
   alias CtiKaltura.Content.ProgramRecord

@@ -39,3 +39,5 @@ erl_crash.dump
 
 # Delivery artifacts
 /.deliver/releases/
+
+/ftp_files

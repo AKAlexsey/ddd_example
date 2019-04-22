@@ -4,9 +4,12 @@ defmodule CtiKaltura do
   use Application
 
   alias CtiKaltura.Endpoint
+  alias CtiKaltura.ProgramScheduling.{CreateProgramsStage, ParseFileStage}
   alias CtiKaltura.RequestProcessing.MainRouter
   alias CtiKaltura.Workers.ReleaseTasksWorker
   alias Plug.Cowboy
+
+  import Supervisor.Spec, warn: false
 
   def start(_type, _args) do
     children = [
@@ -18,7 +21,9 @@ defmodule CtiKaltura do
         plug: MainRouter,
         options: [port: http_main_router_port()]
       ),
-      {Individual, ReleaseTasksWorker}
+      {Individual, ReleaseTasksWorker},
+      {Individual, ParseFileStage},
+      {Individual, CreateProgramsStage}
     ]
 
     opts = [strategy: :one_for_one, name: CtiKaltura.Supervisor]

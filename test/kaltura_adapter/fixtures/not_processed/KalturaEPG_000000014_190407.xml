@@ -1,0 +1,3048 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<EpgChannels group-id="3057" main-lang="kaz" parent-group-id="3056" updater-id="0" xmlns:veon="http://www.example.org/veon-xmltv" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/veon-xmltv KalturaXMLTV-strict.xsd">
+	<channel id="000000014">
+		<display-name lang="kaz">BBC World News</display-name>
+	</channel>
+	<programme channel="000000014" external_id="30190407003000" start="20190407003000" stop="20190407010000">
+		<title lang="kaz">TBA</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/564588.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233594.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979014</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979014</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407010000" start="20190407010000" stop="20190407011000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407011000" start="20190407011000" stop="20190407013000">
+		<title lang="kaz">World Features</title>
+		<desc lang="kaz">The show features the biggest entertainment and world news of the week. The news programme for audiences who want more depth to their daily coverage</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737651.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233610.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1039750</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1039750</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407013000" start="20190407013000" stop="20190407020000">
+		<title lang="kaz">Dateline London</title>
+		<desc lang="kaz">A look at national events that are taking place in UK. They report all the issues from around the globe. Each week, a panel of four leading journalists, lecturers, and commentators, discuss top news stories from an international perspective</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737612.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233607.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">1996</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979052</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Репортаж</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979052</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407020000" start="20190407020000" stop="20190407021000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407021000" start="20190407021000" stop="20190407030000">
+		<title lang="kaz">TBA</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/564588.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233594.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979014</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979014</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407030000" start="20190407030000" stop="20190407033000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407033000" start="20190407033000" stop="20190407040000">
+		<title lang="kaz">Click</title>
+		<desc lang="kaz">As part of BBC World News' State of America season, Click looks to the future as they go behind the scenes at the world's first Virtual Reality Amusement park in Salt Lake City</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737596.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233605.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2000</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979049</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Наука</TagValues>
+			<TagValues lang="kaz">Репортаж</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979049</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407040000" start="20190407040000" stop="20190407043000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407043000" start="20190407043000" stop="20190407050000">
+		<title lang="kaz">TBA</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/564588.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233594.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979014</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979014</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407050000" start="20190407050000" stop="20190407053000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407053000" start="20190407053000" stop="20190407060000">
+		<title lang="kaz">In Business Africa</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1424480.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1424481.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1602344</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Экономика</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1602344</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407060000" start="20190407060000" stop="20190407063000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407063000" start="20190407063000" stop="20190407070000">
+		<title lang="kaz">The Travel Show</title>
+		<desc lang="kaz">As part of BBC World News' State of America season, Rajan Datar travels by train along America's southern border to investigate the country's long and complex history with Mexic</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/738051.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233638.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2017</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1093368</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Путешествия</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1093368</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407070000" start="20190407070000" stop="20190407071000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407071000" start="20190407071000" stop="20190407073000">
+		<title lang="kaz">World Features</title>
+		<desc lang="kaz">The show features the biggest entertainment and world news of the week. The news programme for audiences who want more depth to their daily coverage</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737651.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233610.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1039750</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1039750</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407073000" start="20190407073000" stop="20190407080000">
+		<title lang="kaz">TBA</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/564588.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233594.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979014</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979014</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407080000" start="20190407080000" stop="20190407081000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407081000" start="20190407081000" stop="20190407083000">
+		<title lang="kaz">World Features</title>
+		<desc lang="kaz">The show features the biggest entertainment and world news of the week. The news programme for audiences who want more depth to their daily coverage</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737651.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233610.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1039750</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1039750</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407083000" start="20190407083000" stop="20190407090000">
+		<title lang="kaz">Dateline London</title>
+		<desc lang="kaz">A look at national events that are taking place in UK. They report all the issues from around the globe. Each week, a panel of four leading journalists, lecturers, and commentators, discuss top news stories from an international perspective</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737612.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233607.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">1996</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979052</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Репортаж</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979052</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407090000" start="20190407090000" stop="20190407091000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407091000" start="20190407091000" stop="20190407100000">
+		<title lang="kaz">An Art Lovers' Guide</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1532566.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1532567.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="SubTitleType">
+			<MetaType>sub_title</MetaType>
+			<MetaValues lang="kaz">Barcelona</MetaValues>
+		</metas>
+		<metas xsi:type="SeriesIdType">
+			<MetaType>series_id</MetaType>
+			<MetaValues lang="kaz">1582559</MetaValues>
+		</metas>
+		<metas xsi:type="SeriesNameType">
+			<MetaType>series_name</MetaType>
+			<MetaValues lang="kaz">Barcelona</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1632857_1582559</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Путешествия</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1632857_1582559</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407100000" start="20190407100000" stop="20190407101000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407101000" start="20190407101000" stop="20190407103000">
+		<title lang="kaz">World Features</title>
+		<desc lang="kaz">The show features the biggest entertainment and world news of the week. The news programme for audiences who want more depth to their daily coverage</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737651.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233610.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1039750</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1039750</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407103000" start="20190407103000" stop="20190407110000">
+		<title lang="kaz">TBA</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/564588.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233594.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979014</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979014</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407110000" start="20190407110000" stop="20190407111000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407111000" start="20190407111000" stop="20190407113000">
+		<title lang="kaz">World Features</title>
+		<desc lang="kaz">The show features the biggest entertainment and world news of the week. The news programme for audiences who want more depth to their daily coverage</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737651.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233610.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1039750</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1039750</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407113000" start="20190407113000" stop="20190407120000">
+		<title lang="kaz">Newsnight</title>
+		<desc lang="kaz">A weekly round up of news and current affairs hosted by Evan Davis. A programme which specialises in analysis and often robust cross-examination of senior politicians</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737787.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233628.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2017</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1049711</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Репортаж</TagValues>
+			<TagValues lang="kaz">Информация</TagValues>
+			<TagValues lang="kaz">Политика</TagValues>
+			<TagValues lang="kaz">Общество</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1049711</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407120000" start="20190407120000" stop="20190407123000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407123000" start="20190407123000" stop="20190407130000">
+		<title lang="kaz">The Travel Show</title>
+		<desc lang="kaz">As part of BBC World News' State of America season, Rajan Datar travels by train along America's southern border to investigate the country's long and complex history with Mexic</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/738051.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233638.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2017</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1093368</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Путешествия</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1093368</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407130000" start="20190407130000" stop="20190407131500">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407131500" start="20190407131500" stop="20190407133000">
+		<title lang="kaz">Sport Today</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737901.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233632.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2003</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">978726</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Спорт</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>978726</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407133000" start="20190407133000" stop="20190407140000">
+		<title lang="kaz">Click</title>
+		<desc lang="kaz">As part of BBC World News' State of America season, Click looks to the future as they go behind the scenes at the world's first Virtual Reality Amusement park in Salt Lake City</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737596.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233605.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2000</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979049</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Наука</TagValues>
+			<TagValues lang="kaz">Репортаж</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979049</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407140000" start="20190407140000" stop="20190407143000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407143000" start="20190407143000" stop="20190407150000">
+		<title lang="kaz">TBA</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/564588.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233594.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979014</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979014</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407150000" start="20190407150000" stop="20190407151000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407151000" start="20190407151000" stop="20190407160000">
+		<title lang="kaz">TBA</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/564588.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233594.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979014</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979014</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407160000" start="20190407160000" stop="20190407163000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407163000" start="20190407163000" stop="20190407170000">
+		<title lang="kaz">Newsnight</title>
+		<desc lang="kaz">A weekly round up of news and current affairs hosted by Evan Davis. A programme which specialises in analysis and often robust cross-examination of senior politicians</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737787.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233628.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2017</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1049711</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Репортаж</TagValues>
+			<TagValues lang="kaz">Информация</TagValues>
+			<TagValues lang="kaz">Политика</TagValues>
+			<TagValues lang="kaz">Общество</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1049711</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407170000" start="20190407170000" stop="20190407173000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407173000" start="20190407173000" stop="20190407180000">
+		<title lang="kaz">Witness History</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1522075.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1522072.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1630266</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Общество</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1630266</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407180000" start="20190407180000" stop="20190407181500">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407181500" start="20190407181500" stop="20190407183000">
+		<title lang="kaz">Sport Today</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737901.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233632.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2003</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">978726</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Спорт</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>978726</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407183000" start="20190407183000" stop="20190407190000">
+		<title lang="kaz">In Business Africa</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1424480.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1424481.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1602344</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Экономика</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1602344</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407190000" start="20190407190000" stop="20190407191000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407191000" start="20190407191000" stop="20190407193000">
+		<title lang="kaz">World Features</title>
+		<desc lang="kaz">The show features the biggest entertainment and world news of the week. The news programme for audiences who want more depth to their daily coverage</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737651.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233610.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1039750</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1039750</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407193000" start="20190407193000" stop="20190407200000">
+		<title lang="kaz">TBA</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/564588.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233594.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979014</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979014</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407200000" start="20190407200000" stop="20190407203000">
+		<title lang="kaz">World News Today</title>
+		<desc lang="kaz">The news programme for audiences who want more depth to their daily coverage. The show features the biggest entertainment and world news of the week</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/394718.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233609.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1131624</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1131624</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407203000" start="20190407203000" stop="20190407210000">
+		<title lang="kaz">TBA</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/564588.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233594.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">979014</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>979014</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407210000" start="20190407210000" stop="20190407211000">
+		<title lang="kaz">BBC News Special</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737702.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233612.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584752</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584752</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407211000" start="20190407211000" stop="20190407220000">
+		<title lang="kaz">An Art Lovers' Guide</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1532566.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1532567.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">12</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="SubTitleType">
+			<MetaType>sub_title</MetaType>
+			<MetaValues lang="kaz">Barcelona</MetaValues>
+		</metas>
+		<metas xsi:type="SeriesIdType">
+			<MetaType>series_id</MetaType>
+			<MetaValues lang="kaz">1582559</MetaValues>
+		</metas>
+		<metas xsi:type="SeriesNameType">
+			<MetaType>series_name</MetaType>
+			<MetaValues lang="kaz">Barcelona</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1632857_1582559</MetaValues>
+		</metas>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Путешествия</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1632857_1582559</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407220000" start="20190407220000" stop="20190407223000">
+		<title lang="kaz">Newsday</title>
+		<desc lang="kaz">The programme features split presentation, with a presenter in London and a presenter in Singapore each introducing reports and interviewing occasional guests in-studio</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737769.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233619.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2011</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584807</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584807</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407223000" start="20190407223000" stop="20190407224500">
+		<title lang="kaz">Asia Business Report</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737499.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233598.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1104009</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1104009</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407224500" start="20190407224500" stop="20190407230000">
+		<title lang="kaz">Sport Today</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737901.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233632.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2003</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">978726</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Спорт</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>978726</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407230000" start="20190407230000" stop="20190407233000">
+		<title lang="kaz">Newsday</title>
+		<desc lang="kaz">The programme features split presentation, with a presenter in London and a presenter in Singapore each introducing reports and interviewing occasional guests in-studio</desc>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737769.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233619.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">16</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2011</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">584807</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>584807</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407233000" start="20190407233000" stop="20190407234500">
+		<title lang="kaz">Asia Business Report</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737499.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233598.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">1104009</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Информация</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>1104009</crid>
+	</programme>
+	<programme channel="000000014" external_id="30190407234500" start="20190407234500" stop="20190408003000">
+		<title lang="kaz">Sport Today</title>
+		<icon ratio="Poster" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/737901.jpg"/>
+		<icon ratio="BoxCover" src="http://xml-epgservice.cdnvideo.ru/EPGService/hs/xmldata/beelinetvkz/pic/1233632.jpg?wh=2:3"/>
+		<metas>
+			<MetaType>present_as_catchup</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="RatingType">
+			<MetaType>rating</MetaType>
+			<MetaValues lang="kaz" xsi:type="MetaValuesPrRatingType">6</MetaValues>
+		</metas>
+		<metas xsi:type="EnableTimeshiftingType">
+			<MetaType>enable_timeshifting</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="enableStartOverType">
+			<MetaType>enable_startover</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="AdultType">
+			<MetaType>adult</MetaType>
+			<MetaValues lang="kaz">false</MetaValues>
+		</metas>
+		<metas xsi:type="YearType">
+			<MetaType>year</MetaType>
+			<MetaValues lang="kaz">2003</MetaValues>
+		</metas>
+		<metas xsi:type="ContentReferenceIdType">
+			<MetaType>content_reference_id</MetaType>
+			<MetaValues lang="kaz">978726</MetaValues>
+		</metas>
+		<tags xsi:type="CountryType">
+			<TagType>country</TagType>
+			<TagValues lang="kaz">Великобритания</TagValues>
+		</tags>
+		<tags xsi:type="CategoryType">
+			<TagType>category</TagType>
+			<TagValues lang="kaz">tv program</TagValues>
+		</tags>
+		<tags xsi:type="SubtitleLanguageType">
+			<TagType>subtitle_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<tags xsi:type="GenreType">
+			<TagType>genre</TagType>
+			<TagValues lang="kaz">Спорт</TagValues>
+		</tags>
+		<tags xsi:type="AudioLanguageType">
+			<TagType>audio_language</TagType>
+			<TagValues lang="kaz">русский</TagValues>
+		</tags>
+		<enable-cdvr>false</enable-cdvr>
+		<enable-catch-up>false</enable-catch-up>
+		<enable-start-over>false</enable-start-over>
+		<crid>978726</crid>
+	</programme>
+</EpgChannels>
