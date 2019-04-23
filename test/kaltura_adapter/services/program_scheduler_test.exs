@@ -94,6 +94,20 @@ defmodule CtiKaltura.ProgramScheduling.ProgramSchedulerTest do
                )
     end
 
+    test "Does not create programs if given params contains empty list", %{
+      linear_channel: linear_channel
+    } do
+      before_program_count = Repo.aggregate(Program, :count, :id)
+
+      assert :ok ==
+               ProgramScheduler.perform(%{
+                 linear_channel: %{epg_id: linear_channel.epg_id},
+                 programs: []
+               })
+
+      assert before_program_count == Repo.aggregate(Program, :count, :id)
+    end
+
     test "Remove old programs if their time cross given programs time", %{
       program_data: program_data,
       linear_channel: linear_channel,

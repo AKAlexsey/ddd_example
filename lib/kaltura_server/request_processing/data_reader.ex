@@ -3,6 +3,8 @@ defmodule CtiKaltura.RequestProcessing.DataReader do
   Read data from the request and pass it to `assigns` attribute of the Plug connection.
   """
 
+  use CtiKaltura.KalturaLogger, metadata: [domain: :request]
+
   import Plug.Conn
 
   @request_type_regex "(catchup|live)\/"
@@ -39,7 +41,8 @@ defmodule CtiKaltura.RequestProcessing.DataReader do
     |> assign(:vod_path, vod_path)
   end
 
-  defp assign_request_data(%Plug.Conn{request_path: _} = conn) do
+  defp assign_request_data(%Plug.Conn{request_path: request_path} = conn) do
+    log_debug("Wrong request path #{request_path}")
     conn
   end
 

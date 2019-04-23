@@ -117,7 +117,7 @@ defmodule CtiKaltura.ServerControllerTest do
   end
 
   defp create_server(_) do
-    {:ok, server} = Factory.insert(:server)
+    {:ok, server} = Factory.insert_and_notify(:server)
     {:ok, server: server}
   end
 end

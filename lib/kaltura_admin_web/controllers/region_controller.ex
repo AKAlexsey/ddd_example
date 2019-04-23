@@ -1,7 +1,7 @@
 defmodule CtiKaltura.RegionController do
   use CtiKalturaWeb, :controller
 
-  alias CtiKaltura.Area
+  alias CtiKaltura.{Area, ErrorHelpers}
   alias CtiKaltura.Area.Region
 
   def index(conn, _params) do
@@ -74,10 +74,17 @@ defmodule CtiKaltura.RegionController do
 
   def delete(conn, %{"id" => id}) do
     region = Area.get_region!(id)
-    {:ok, _region} = Area.delete_region(region)
 
-    conn
-    |> put_flash(:info, "Region deleted successfully.")
-    |> redirect(to: region_path(conn, :index))
+    case Area.delete_region(region) do
+      {:ok, _region} ->
+        conn
+        |> put_flash(:info, "Region deleted successfully.")
+        |> redirect(to: region_path(conn, :index))
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, ErrorHelpers.prepare_error_message(changeset))
+        |> redirect(to: region_path(conn, :index))
+    end
   end
 end

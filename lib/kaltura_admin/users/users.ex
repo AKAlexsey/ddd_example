@@ -74,14 +74,14 @@ defmodule CtiKaltura.Users do
           {:error, :forbidden}
 
         !role_was_changed ->
-          Repo.update(changeset)
+          Repo.update_and_notify(changeset)
 
         can_change_role ->
-          Repo.update(changeset)
+          Repo.update_and_notify(changeset)
 
         !can_change_role ->
           Ecto.Changeset.add_error(changeset, :role, "You cannot change role!")
-          |> Repo.update()
+          |> Repo.update_and_notify()
       end
     end
   end
@@ -113,7 +113,7 @@ defmodule CtiKaltura.Users do
           {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()} | {:error, :forbidden}
   def create_with_permissions_check(logged_user, user_params) do
     if has_permissions_to_create?(logged_user) do
-      Repo.insert(changeset(user_params))
+      Repo.insert_and_notify(changeset(user_params))
     else
       {:error, :forbidden}
     end
@@ -127,7 +127,7 @@ defmodule CtiKaltura.Users do
   def delete_with_permissions_check(logged_user, id) do
     if has_permissions_to_delete?(logged_user, id) do
       user = Repo.get!(User, id)
-      {:ok, Repo.delete!(user)}
+      Repo.delete_and_notify(user)
     else
       {:error, :forbidden}
     end

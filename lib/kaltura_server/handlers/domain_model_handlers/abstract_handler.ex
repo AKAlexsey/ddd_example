@@ -11,6 +11,7 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
     quote do
       require Amnesia
       require Amnesia.Helper
+      use CtiKaltura.KalturaLogger, metadata: [domain: :caching_system]
 
       @table unquote(table)
       @joined_attributes_and_models unquote(joined_attributes_and_models)
@@ -18,6 +19,8 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
       @cti_kaltura_public_api Application.get_env(:cti_kaltura, :public_api)[:module]
 
       def handle(:insert, attrs) do
+        log_info("Insert #{inspect(attrs)}")
+
         Amnesia.transaction do
           refresh_associated_records_if_necessary(attrs)
           write_to_table(attrs)
@@ -27,6 +30,8 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
       end
 
       def handle(:update, attrs) do
+        log_info("Update #{inspect(attrs)}")
+
         Amnesia.transaction do
           refresh_associated_records_if_necessary(attrs)
           refresh_models_with_injected_attribute(attrs)
@@ -37,6 +42,8 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
       end
 
       def handle(:refresh_by_request, attrs) do
+        log_info("Refresh by request #{inspect(attrs)}")
+
         Amnesia.transaction do
           write_to_table(attrs)
         end
@@ -45,6 +52,8 @@ defmodule CtiKaltura.DomainModelHandlers.AbstractHandler do
       end
 
       def handle(:delete, %{id: id} = attrs) do
+        log_info("Delete #{inspect(attrs)}")
+
         Amnesia.transaction do
           delete_from_table(id)
           refresh_associated_records_if_necessary(attrs)

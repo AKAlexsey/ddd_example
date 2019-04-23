@@ -1,7 +1,7 @@
 defmodule CtiKaltura.ServerController do
   use CtiKalturaWeb, :controller
 
-  alias CtiKaltura.{ErrorHelpers, Repo, Servers}
+  alias CtiKaltura.{ErrorHelpers, Servers}
   alias CtiKaltura.Servers.Server
 
   def index(conn, _params) do
@@ -33,19 +33,13 @@ defmodule CtiKaltura.ServerController do
   end
 
   def show(conn, %{"id" => id}) do
-    server =
-      id
-      |> Servers.get_server!()
-      |> Repo.preload([:server_groups])
+    server = Servers.get_server!(id, [:server_groups])
 
     render(conn, "show.html", server: server, current_user: load_user(conn))
   end
 
   def edit(conn, %{"id" => id}) do
-    server =
-      id
-      |> Servers.get_server!()
-      |> Repo.preload([:server_groups])
+    server = Servers.get_server!(id, [:server_groups])
 
     changeset = Servers.change_server(server)
 

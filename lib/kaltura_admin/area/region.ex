@@ -5,9 +5,9 @@ defmodule CtiKaltura.Area.Region do
   import Ecto.Changeset
   alias CtiKaltura.{Area, Repo}
   alias CtiKaltura.Area.{RegionServerGroup, Subnet}
-  alias CtiKaltura.Observers.{DomainModelNotifier, DomainModelObserver}
+  alias CtiKaltura.Observers.{CrudActionsLogger, DomainModelNotifier, DomainModelObserver}
   alias CtiKaltura.Servers.ServerGroup
-  use DomainModelNotifier, observers: [DomainModelObserver]
+  use DomainModelNotifier, observers: [CrudActionsLogger, DomainModelObserver]
 
   @cast_fields [:name, :description, :status]
   @required_fields [:name, :status]
@@ -26,7 +26,7 @@ defmodule CtiKaltura.Area.Region do
 
     many_to_many(:server_groups, ServerGroup, join_through: RegionServerGroup)
 
-    has_many(:subnets, Subnet, foreign_key: :region_id, on_delete: :delete_all)
+    has_many(:subnets, Subnet, foreign_key: :region_id)
 
     timestamps()
   end

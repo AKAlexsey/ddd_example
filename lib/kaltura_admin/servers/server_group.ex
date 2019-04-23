@@ -6,9 +6,9 @@ defmodule CtiKaltura.Servers.ServerGroup do
   alias CtiKaltura.{Repo, Servers}
   alias CtiKaltura.Area.{Region, RegionServerGroup}
   alias CtiKaltura.Content.LinearChannel
-  alias CtiKaltura.Observers.{DomainModelNotifier, DomainModelObserver}
+  alias CtiKaltura.Observers.{CrudActionsLogger, DomainModelNotifier, DomainModelObserver}
   alias CtiKaltura.Servers.{Server, ServerGroupServer}
-  use DomainModelNotifier, observers: [DomainModelObserver]
+  use DomainModelNotifier, observers: [CrudActionsLogger, DomainModelObserver]
 
   @cast_fields [:name, :description, :status]
   @required_fields [:name, :status]

@@ -3,6 +3,8 @@ defmodule CtiKaltura.RequestProcessing.VodResponser do
   Contains logic for processing VOD request.
   """
 
+  use CtiKaltura.KalturaLogger, metadata: [domain: :request]
+
   import Plug.Conn
   alias CtiKaltura.ClosestEdgeServerService
 
@@ -42,7 +44,13 @@ defmodule CtiKaltura.RequestProcessing.VodResponser do
     }
   end
 
-  defp vod_response({conn, _data}) do
+  defp vod_response({%Plug.Conn{assigns: assigns, request_path: request_path} = conn, data}) do
+    log_error(
+      "Can't process request.\nConn assigns: #{inspect(assigns)}\nData: #{inspect(data)}\nRequest path: #{
+        request_path
+      }"
+    )
+
     {conn, 404, "Server not found"}
   end
 

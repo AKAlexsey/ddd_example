@@ -40,4 +40,8 @@ erl_crash.dump
 # Delivery artifacts
 /.deliver/releases/
 
+# Directory for EPG XML files
 /ftp_files
+
+# Directory for storing logs
+/log

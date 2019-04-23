@@ -5,8 +5,8 @@ defmodule CtiKaltura.Area.Subnet do
   use Observable, :notifier
   import Ecto.Changeset
   alias CtiKaltura.Area.Region
-  alias CtiKaltura.Observers.{DomainModelNotifier, DomainModelObserver}
-  use DomainModelNotifier, observers: [DomainModelObserver]
+  alias CtiKaltura.Observers.{CrudActionsLogger, DomainModelNotifier, DomainModelObserver}
+  use DomainModelNotifier, observers: [CrudActionsLogger, DomainModelObserver]
 
   @cast_fields [:cidr, :region_id, :name]
   @required_fields [:cidr, :region_id, :name]
