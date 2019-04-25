@@ -93,7 +93,7 @@ defmodule CtiKalturaWeb.ProgramControllerTest do
   end
 
   defp create_program(_) do
-    {:ok, program} = Factory.insert(:program, @create_attrs)
+    {:ok, program} = Factory.insert_and_notify(:program, @create_attrs)
     {:ok, program: program}
   end
 end

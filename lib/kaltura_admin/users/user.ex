@@ -2,6 +2,8 @@ defmodule CtiKaltura.User do
   @moduledoc false
 
   use CtiKalturaWeb, :model
+  alias CtiKaltura.Observers.{CrudActionsLogger, DomainModelNotifier}
+  use DomainModelNotifier, observers: [CrudActionsLogger]
 
   alias Comeonin.Argon2
 

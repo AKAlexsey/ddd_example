@@ -104,7 +104,14 @@ defmodule CtiKaltura.Area do
 
   """
   def delete_region(%Region{} = region) do
-    Repo.delete_and_notify(region)
+    region
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.foreign_key_constraint(
+      :subnets,
+      name: :subnets_region_id_fkey,
+      message: "There are Subnets for Region. Remove related Subnets and than try again."
+    )
+    |> Repo.delete_and_notify()
   end
 
   @doc """

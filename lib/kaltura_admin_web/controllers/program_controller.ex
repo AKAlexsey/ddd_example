@@ -1,7 +1,7 @@
 defmodule CtiKaltura.ProgramController do
   use CtiKalturaWeb, :controller
 
-  alias CtiKaltura.Content
+  alias CtiKaltura.{Content, ErrorHelpers}
   alias CtiKaltura.Content.Program
 
   def index(conn, _params) do
@@ -66,10 +66,17 @@ defmodule CtiKaltura.ProgramController do
 
   def delete(conn, %{"id" => id}) do
     program = Content.get_program!(id)
-    {:ok, _program} = Content.delete_program(program)
 
-    conn
-    |> put_flash(:info, "Program deleted successfully.")
-    |> redirect(to: program_path(conn, :index))
+    case Content.delete_program(program) do
+      {:ok, _program} ->
+        conn
+        |> put_flash(:info, "Program deleted successfully.")
+        |> redirect(to: program_path(conn, :index))
+
+      {:error, changeset} ->
+        conn
+        |> put_flash(:error, ErrorHelpers.prepare_error_message(changeset))
+        |> redirect(to: program_path(conn, :index))
+    end
   end
 end

@@ -4,6 +4,7 @@ defmodule CtiKaltura.ProgramScheduling.CreateProgramsStage do
   """
 
   use GenStage
+  use CtiKaltura.KalturaLogger, metadata: [domain: :program_scheduling]
 
   alias CtiKaltura.ProgramScheduling.{ParseFileStage, ProgramScheduler}
 
@@ -12,21 +13,28 @@ defmodule CtiKaltura.ProgramScheduling.CreateProgramsStage do
   end
 
   def init(state) do
+    log_info("Starting")
     {:consumer, state, subscribe_to: [via_tuple(ParseFileStage)]}
   end
 
   defp via_tuple(name) do
-    {:via, :global, name}
+    {:global, name}
   end
 
   def handle_events(program_schedule_data, _from, state) do
+    log_info("Event received program_schedule_data_length #{length(program_schedule_data)}")
+
     for data <- program_schedule_data do
       case ProgramScheduler.perform(data) do
         :ok ->
-          "Successful branch log when logging system will be performed"
+          log_info(
+            "Programs for #{inspect(data.linear_channel)} has been created. Programs count #{
+              length(data.programs)
+            }."
+          )
 
         {:error, :linear_channel_does_not_exist} ->
-          "Fail branch. Log fail when logging system will be performed"
+          log_error("Linear channel does not exist #{inspect(data.linear_channel)}.")
       end
     end
 

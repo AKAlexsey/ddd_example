@@ -3,6 +3,8 @@ defmodule CtiKaltura.Services.DomainModelCache do
   Содержит логику подгрузки моделей данных из базы.
   """
 
+  use CtiKaltura.KalturaLogger, metadata: [domain: :caching_system]
+
   alias CtiKaltura.Protocols.NotifyServerAttrs
   alias CtiKaltura.Repo
 
@@ -39,10 +41,10 @@ defmodule CtiKaltura.Services.DomainModelCache do
       cache_record(record, :refresh_by_request)
     else
       {:error, :no_module} ->
-        raise "DomainModelCache unknown model name #{inspect(model_name)}"
+        log_error("Unknown model name #{inspect(model_name)} with id #{id}")
 
       {:error, :not_found} ->
-        raise "No record for #{model_name} with id #{id}"
+        log_error("No record for #{model_name} with id #{id}")
     end
   end
 

@@ -106,7 +106,13 @@ defmodule CtiKaltura.Content do
     |> Ecto.Changeset.foreign_key_constraint(
       :programs,
       name: :programs_linear_channel_id_fkey,
-      message: "There are programs for current channel. Remove related programs and try again"
+      message: "There are programs for LinearChannel. Remove related programs and try again"
+    )
+    |> Ecto.Changeset.foreign_key_constraint(
+      :tv_streams,
+      name: :tv_streams_linear_channel_id_fkey,
+      message:
+        "There are TvStreams for LinearChannel. Remove related TvStreams and than try again."
     )
     |> Repo.delete_and_notify()
   end
@@ -246,7 +252,8 @@ defmodule CtiKaltura.Content do
         p.start_datetime >= ^start_datetime and p.start_datetime <= ^end_datetime and
           p.linear_channel_id == ^linear_channel_id
     )
-    |> Repo.delete_all()
+    |> Repo.all()
+    |> Enum.each(fn program -> delete_program(program) end)
   end
 
   alias CtiKaltura.Content.ProgramRecord

@@ -13,6 +13,10 @@ defmodule CtiKaltura.Workers.ReleaseTasksWorker do
     GenServer.start_link(__MODULE__, [], name: via_tuple(__MODULE__))
   end
 
+  def migrate_repo do
+    GenServer.cast(via_tuple(__MODULE__), :migrate_repo)
+  end
+
   def make_mnesia_cluster_again do
     GenServer.cast(via_tuple(__MODULE__), :make_mnesia_cluster_again)
   end
@@ -28,6 +32,10 @@ defmodule CtiKaltura.Workers.ReleaseTasksWorker do
 
   def handle_info(:after_start_callback, state) do
     ReleaseTasks.cache_domain_model()
+    {:noreply, state}
+  end
+
+  def handle_cast(:migrate_repo, state) do
     ReleaseTasks.migrate_repo()
     {:noreply, state}
   end
@@ -42,5 +50,5 @@ defmodule CtiKaltura.Workers.ReleaseTasksWorker do
     {:noreply, state}
   end
 
-  defp via_tuple(name), do: {:via, :global, name}
+  defp via_tuple(name), do: {:global, name}
 end

@@ -4,9 +4,9 @@ defmodule CtiKaltura.Content.ProgramRecord do
   use Ecto.Schema
   import Ecto.Changeset
   alias CtiKaltura.Content.Program
-  alias CtiKaltura.Observers.{DomainModelNotifier, DomainModelObserver}
+  alias CtiKaltura.Observers.{CrudActionsLogger, DomainModelNotifier, DomainModelObserver}
   alias CtiKaltura.Servers.Server
-  use DomainModelNotifier, observers: [DomainModelObserver]
+  use DomainModelNotifier, observers: [CrudActionsLogger, DomainModelObserver]
 
   @cast_fields [:status, :protocol, :encryption, :path, :server_id, :program_id]
   @required_fields [:status, :protocol, :encryption, :path, :server_id, :program_id]

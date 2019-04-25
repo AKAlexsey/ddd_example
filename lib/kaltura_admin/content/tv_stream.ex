@@ -4,8 +4,8 @@ defmodule CtiKaltura.Content.TvStream do
   use Ecto.Schema
   import Ecto.Changeset
   alias CtiKaltura.Content.LinearChannel
-  alias CtiKaltura.Observers.{DomainModelNotifier, DomainModelObserver}
-  use DomainModelNotifier, observers: [DomainModelObserver]
+  alias CtiKaltura.Observers.{CrudActionsLogger, DomainModelNotifier, DomainModelObserver}
+  use DomainModelNotifier, observers: [CrudActionsLogger, DomainModelObserver]
 
   @cast_fields [
     :stream_path,

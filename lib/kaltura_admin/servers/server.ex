@@ -5,9 +5,9 @@ defmodule CtiKaltura.Servers.Server do
   import Ecto.Changeset
   alias CtiKaltura.Content.ProgramRecord
   alias CtiKaltura.{Repo, Servers}
-  alias CtiKaltura.Observers.{DomainModelNotifier, DomainModelObserver}
+  alias CtiKaltura.Observers.{CrudActionsLogger, DomainModelNotifier, DomainModelObserver}
   alias CtiKaltura.Servers.{ServerGroup, ServerGroupServer}
-  use DomainModelNotifier, observers: [DomainModelObserver]
+  use DomainModelNotifier, observers: [CrudActionsLogger, DomainModelObserver]
 
   @cast_fields [
     :type,

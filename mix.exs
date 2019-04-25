@@ -65,6 +65,8 @@ defmodule CtiKaltura.MixProject do
       {:comeonin, "~> 4.0"},
       {:argon2_elixir, "~> 1.2"},
       {:guardian, "~> 1.0"},
+      # Logging
+      {:logger_file_backend, "~> 0.0.10"},
       # Tools
       {:cidr, ">= 1.1.0"},
       {:yaml_elixir, "~> 2.1"},

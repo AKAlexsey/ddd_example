@@ -79,7 +79,7 @@ config :libcluster,
   ]
 
 config :cti_kaltura, :epg_file_parser,
-  # Опция включения или выключения стейджа, осуществляющего парсинг EPG XML файлов.
+  # Опция включения или выключения GenStage, осуществляющего парсинг EPG XML файлов.
   enabled: true,
   # Интервал проверки папки с EPG файлами
   scan_file_directory_interval: 5000,

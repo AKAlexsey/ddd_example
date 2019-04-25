@@ -22,7 +22,7 @@ config :cti_kaltura, CtiKaltura.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :cti_kaltura, :epg_file_parser,
-  # Опция включения или выключения стейджа, осуществляющего парсинг EPG XML файлов.
+  # Опция включения или выключения GenStage, осуществляющего парсинг EPG XML файлов.
   enabled: false,
   # Интервал проверки папки с EPG файлами
   scan_file_directory_interval: 5000,
@@ -32,3 +32,5 @@ config :cti_kaltura, :epg_file_parser,
   files_directory: "#{File.cwd!()}/test/kaltura_adapter/fixtures/not_processed",
   # Путь до папки куда будут складываться отработанные файлы
   processed_files_directory: "#{File.cwd!()}/test/kaltura_adapter/fixtures"
+
+config :logger, backends: []

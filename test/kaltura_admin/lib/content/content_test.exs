@@ -422,7 +422,7 @@ defmodule CtiKaltura.ContentTest do
           linear_channel_id: linear_channel2.id
         })
 
-      assert {2, nil} ==
+      assert :ok ==
                Content.delete_programs_from_interval(
                  start_datetime1,
                  start_datetime2,

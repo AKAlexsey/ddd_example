@@ -40,11 +40,11 @@ defmodule CtiKaltura.ProgramScheduling.EpgFileParser do
     end
   catch
     :exit, _ ->
-      files_dir
-      |> get_first_file()
-      |> move_file_to_processed(processed_files_directory)
+      invalid_file = get_first_file(files_dir)
+      move_file_to_processed(invalid_file, processed_files_directory)
+      new_invalid_file_name = "#{processed_files_directory}/#{Path.basename(invalid_file)}"
 
-      {:error, :file_invalid}
+      {:error, {:file_invalid, new_invalid_file_name}}
   end
 
   @doc """

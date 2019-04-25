@@ -49,7 +49,11 @@ defmodule CtiKaltura.Servers do
       ** (Ecto.NoResultsError)
 
   """
-  def get_server!(id), do: Repo.get!(Server, id)
+  def get_server!(id, preload \\ []) do
+    Server
+    |> Repo.get!(id)
+    |> Repo.preload(preload)
+  end
 
   @doc """
   Creates a server.

@@ -117,7 +117,7 @@ defmodule CtiKalturaWeb.LinearChannelControllerTest do
   end
 
   defp create_linear_channel(_) do
-    {:ok, linear_channel} = Factory.insert(:linear_channel)
+    {:ok, linear_channel} = Factory.insert_and_notify(:linear_channel)
     {:ok, linear_channel: linear_channel}
   end
 end

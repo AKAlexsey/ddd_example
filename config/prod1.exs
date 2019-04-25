@@ -42,7 +42,7 @@ config :cti_kaltura, CtiKaltura.Repo,
   pool_size: 80
 
 config :cti_kaltura, :epg_file_parser,
-  # Опция включения или выключения стейджа, осуществляющего парсинг EPG XML файлов.
+  # Опция включения или выключения GenStage, осуществляющего парсинг EPG XML файлов.
   enabled: true,
   # Интервал проверки папки с EPG файлами
   scan_file_directory_interval: 5000,
@@ -52,6 +52,8 @@ config :cti_kaltura, :epg_file_parser,
   files_directory: "/home/admintv/cti_kaltura/ftp_files",
   # Путь до папки куда будут складываться отработанные файлы
   processed_files_directory: "/home/admintv/cti_kaltura/ftp_files/processed"
+
+config :logger, compile_time_purge_level: :info
 
 if File.exists?("config/prod.secret.exs") do
   import_config("prod.secret.exs")

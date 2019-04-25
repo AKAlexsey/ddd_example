@@ -3,6 +3,8 @@ defmodule CtiKaltura.RequestProcessing.CatchupResponser do
   Contains logic for processing CATCHUP request.
   """
 
+  use CtiKaltura.KalturaLogger, metadata: [domain: :request]
+
   import Plug.Conn
   alias CtiKaltura.ClosestEdgeServerService
   alias CtiKaltura.DomainModelContext, as: Context
@@ -64,7 +66,13 @@ defmodule CtiKaltura.RequestProcessing.CatchupResponser do
     }
   end
 
-  defp catchup_response({conn, _data}) do
+  defp catchup_response({%Plug.Conn{assigns: assigns, request_path: request_path} = conn, data}) do
+    log_error(
+      "Can't process request.\nConn assigns: #{inspect(assigns)}\nData: #{inspect(data)}\nRequest path: #{
+        request_path
+      }"
+    )
+
     {conn, 404, "Server not found"}
   end
 

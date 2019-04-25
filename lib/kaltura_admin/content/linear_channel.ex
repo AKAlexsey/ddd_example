@@ -5,9 +5,9 @@ defmodule CtiKaltura.Content.LinearChannel do
   import Ecto.Changeset
   alias CtiKaltura.Repo
   alias CtiKaltura.Content.{Program, TvStream}
-  alias CtiKaltura.Observers.{DomainModelNotifier, DomainModelObserver}
+  alias CtiKaltura.Observers.{CrudActionsLogger, DomainModelNotifier, DomainModelObserver}
   alias CtiKaltura.Servers.ServerGroup
-  use DomainModelNotifier, observers: [DomainModelObserver]
+  use DomainModelNotifier, observers: [CrudActionsLogger, DomainModelObserver]
 
   @cast_fields [
     :name,

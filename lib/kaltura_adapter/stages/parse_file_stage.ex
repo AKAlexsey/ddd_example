@@ -5,6 +5,7 @@ defmodule CtiKaltura.ProgramScheduling.ParseFileStage do
   """
 
   use GenStage
+  use CtiKaltura.KalturaLogger, metadata: [domain: :program_scheduling]
 
   alias CtiKaltura.ProgramScheduling.EpgFileParser
 
@@ -13,6 +14,7 @@ defmodule CtiKaltura.ProgramScheduling.ParseFileStage do
   end
 
   def init(:ok) do
+    log_info("Staring with interval #{scanning_interval()}")
     schedule_periodical_job(scanning_interval())
     {:producer, nil}
   end
@@ -23,7 +25,7 @@ defmodule CtiKaltura.ProgramScheduling.ParseFileStage do
     end
   end
 
-  defp via_tuple(name), do: {:via, :global, name}
+  defp via_tuple(name), do: {:global, name}
 
   def handle_info(:get_one_file, _state) do
     scan_directory_time = NaiveDateTime.utc_now()
@@ -36,13 +38,20 @@ defmodule CtiKaltura.ProgramScheduling.ParseFileStage do
         {:noreply, [], scan_directory_time}
 
       {:ok, %{linear_channel: linear_channel, programs: programs_list}} ->
+        log_info(
+          "Start scheduling programs for LinearChannel #{inspect(linear_channel)}.\nPrograms: #{
+            inspect(Enum.take(programs_list, 3))
+          } ..."
+        )
+
         schedule_periodical_job(processing_interval())
 
         {:noreply, [%{linear_channel: linear_channel, programs: programs_list}],
          scan_directory_time}
 
-      {:error, _reason} ->
-        # Код, обрабатывающий ситуацию, когда файл невалиден
+      {:error, reason} ->
+        log_info("Error during processing file reason: #{inspect(reason)}")
+
         schedule_periodical_job(scanning_interval())
         {:noreply, [], scan_directory_time}
     end

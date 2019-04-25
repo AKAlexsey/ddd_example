@@ -53,6 +53,53 @@ config :plug, validate_header_keys_during_test: false
 
 config :cti_kaltura, :env, current: Mix.env()
 
+config :logger,
+  backends: [
+    :console,
+    {LoggerFileBackend, :request_log},
+    {LoggerFileBackend, :program_scheduling_log},
+    {LoggerFileBackend, :release_tasks_log},
+    {LoggerFileBackend, :caching_system_log},
+    {LoggerFileBackend, :sessions_log},
+    {LoggerFileBackend, :database_log}
+  ]
+
+config :logger, :request_log,
+  path: "log/request.log",
+  metadata_filter: [domain: :request],
+  level: :debug,
+  format: "\n$date $time $metadata[$level] $message\n"
+
+config :logger, :program_scheduling_log,
+  path: "log/program_scheduling.log",
+  metadata_filter: [domain: :program_scheduling],
+  level: :debug,
+  format: "\n$date $time $metadata[$level] $message\n"
+
+config :logger, :release_tasks_log,
+  path: "log/release_tasks.log",
+  metadata_filter: [domain: :release_tasks],
+  level: :debug,
+  format: "\n$date $time $metadata[$level] $message\n"
+
+config :logger, :caching_system_log,
+  path: "log/caching_system.log",
+  metadata_filter: [domain: :caching_system],
+  level: :debug,
+  format: "\n$date $time $metadata[$level] $message\n"
+
+config :logger, :sessions_log,
+  path: "log/sessions.log",
+  metadata_filter: [domain: :sessions],
+  level: :debug,
+  format: "\n$date $time $metadata[$level] $message\n"
+
+config :logger, :database_log,
+  path: "log/database.log",
+  metadata_filter: [domain: :database],
+  level: :debug,
+  format: "\n$date $time $metadata[$level] $message\n"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
