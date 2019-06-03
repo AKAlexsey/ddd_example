@@ -8,6 +8,10 @@ defmodule CtiKaltura.Content do
 
   alias CtiKaltura.Content.LinearChannel
 
+  @tv_stream_active_status "ACTIVE"
+  @soon_program_record_statuses ["NEW", "PLANNED"]
+  @finished_program_record_statuses ["COMPLETED", "ERROR"]
+
   @doc """
   Returns the list of linear_channels.
 
@@ -256,7 +260,69 @@ defmodule CtiKaltura.Content do
     |> Enum.each(fn program -> delete_program(program) end)
   end
 
+  @doc """
+  Возвращает Program у которых start_datetime меньше переданного значения.
+  """
+  @spec obsolete_programs(NaiveDateTime.t()) :: list(map())
+  def obsolete_programs(hours_ago) do
+    from(p in Program, where: p.start_datetime < ^hours_ago)
+    |> Repo.all()
+  end
+
+  @doc """
+  Выбирает Program у которого start_datetime находится в интервале start_interval, end_interval, для которых
+  LinearChannels dvr_enabled == true.
+  И для LinearChannel есть связанные TvStream status == "ACTIVE".
+  И нет ни одной ProgramRecord.
+  """
+  @spec coming_soon_programs(NaiveDateTime.t(), NaiveDateTime.t()) :: list(map())
+  def coming_soon_programs(start_interval, end_interval) do
+    from(
+      p in Program,
+      left_join: lc in assoc(p, :linear_channel),
+      left_join: sg in assoc(lc, :server_group),
+      left_join: ss in assoc(sg, :servers),
+      left_join: ts in assoc(lc, :tv_streams),
+      left_join: pr in assoc(p, :program_records),
+      where: p.start_datetime >= ^start_interval and p.start_datetime <= ^end_interval,
+      where: ts.status == @tv_stream_active_status and lc.dvr_enabled == true and is_nil(pr.id),
+      preload: [linear_channel: [:tv_streams, server_group: :servers]],
+      distinct: true,
+      order_by: p.inserted_at
+    )
+    |> Repo.all()
+  end
+
   alias CtiKaltura.Content.ProgramRecord
+
+  @doc """
+  Возвращает ProgramRecord для которых выполняется одно из 2х условий:
+  1. program_record.status IN ["PLANNED", "NEW"]
+     AND program_record.program.start_datetime <= NaiveDateTime.utc_now()
+     AND program_record.program.end_datetime >= NaiveDateTime.utc_now()
+  2. program_record.status NOT IN ["COMPLETED", "ERROR"]
+     AND program_record.program.end_datetime <= NaiveDateTime.utc_now()
+  """
+  @spec current_program_records :: list(map())
+  def current_program_records do
+    now = NaiveDateTime.utc_now()
+
+    query =
+      from(
+        pr in ProgramRecord,
+        join: p in assoc(pr, :program),
+        where: not (pr.status in ^@finished_program_record_statuses),
+        where: p.end_datetime <= ^now,
+        or_where:
+          pr.status in ^@soon_program_record_statuses and p.start_datetime <= ^now and
+            p.end_datetime >= ^now,
+        preload: [:program],
+        order_by: pr.inserted_at
+      )
+
+    query
+    |> Repo.all()
+  end
 
   @doc """
   Returns the list of program_records.
@@ -358,6 +424,19 @@ defmodule CtiKaltura.Content do
   """
   def change_program_record(%ProgramRecord{} = program_record) do
     ProgramRecord.changeset(program_record, %{})
+  end
+
+  @doc """
+  Возвращает ProgramRecord у Program которых start_datetime меньше переданного значения.
+  """
+  @spec obsolete_program_records(NaiveDateTime.t()) :: list(map())
+  def obsolete_program_records(hours_ago) do
+    from(
+      pr in ProgramRecord,
+      join: p in assoc(pr, :program),
+      where: p.start_datetime < ^hours_ago
+    )
+    |> Repo.all()
   end
 
   alias CtiKaltura.Content.TvStream

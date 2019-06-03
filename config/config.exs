@@ -30,7 +30,7 @@ config :cti_kaltura, :public_api, module: CtiKaltura.PublicApi
 
 config :cti_kaltura, domain_model_handler: CtiKaltura.Handlers.DomainModelHandler
 
-# Timeout in milliseconds
+# Таймаут запуска колбеков (миллисекунды)
 config :cti_kaltura, after_start_callback_timeout: 3000
 
 config :cti_kaltura, CtiKaltura.RequestProcessing.MainRouter,
@@ -99,6 +99,50 @@ config :logger, :database_log,
   metadata_filter: [domain: :database],
   level: :debug,
   format: "\n$date $time $metadata[$level] $message\n"
+
+config :soap, :globals, version: "1.1"
+
+config :cti_kaltura, :program_records_scheduler,
+  # Включение и отключение планирование статуса записей
+  enabled: true,
+  # Интервал с которым будет производиться планирование записей (миллисекунды)
+  run_interval: 5000,
+  # Время, через которое должны начинаться программы, для которых будет осуществляться планирование записей(секунды)
+  seconds_after: 1200
+
+config :cti_kaltura, :program_records_status,
+  # актуализации статуса записей
+  enabled: true,
+  # Интервал с которым будет производиться проверка состояния записей (миллисекунды)
+  run_interval: 5000
+
+config :cti_kaltura, :program_records_cleaner,
+  # Включение и отключение функции очистки устареших записей программ из БД и с DVR сервера
+  enabled: true,
+  # Интервал с которым будет осуществляться очистка устаревших записей и программ (миллисекунды)
+  run_interval: 5000,
+  # Время хранения записей программы (часы)
+  storing_hours: 72
+
+config :cti_kaltura, :programs_cleaner,
+  # Включение и отключение функции очистки устареших программ из БД и с DVR сервера
+  enabled: true,
+  # Интервал с которым будет осуществляться очистка устаревших записей и программ (миллисекунды)
+  run_interval: 5000,
+  # Время хранения программы (часы)
+  storing_hours: 72
+
+config :cti_kaltura, :dvr_soap_requests,
+  # Включение и отключение отправки SOAP запросов на DVR
+  enabled: true,
+  # Интервал с которым будет происходить запрос WSDL (миллисекунды)
+  run_interval: 5000,
+  # Путь до WSDL XML файла
+  wsdl_file_path: "#{File.cwd!()}/priv/wsdl.xml",
+  # SOAP пользователь для Basic ваторизации
+  soap_user: "usercti",
+  # SOAP пользователь для Basic ваторизации
+  soap_password: "passcti"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

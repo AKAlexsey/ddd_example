@@ -28,7 +28,8 @@ defmodule CtiKaltura.MixProject do
         :runtime_tools,
         :plug_cowboy,
         :phoenix_ecto,
-        :edeliver
+        :edeliver,
+        :soap
       ]
     ]
   end
@@ -74,7 +75,8 @@ defmodule CtiKaltura.MixProject do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:sweet_xml, "~> 0.6"},
-      {:gen_stage, "~> 0.14"},
+      # {:soap, "~> 1.0"},
+      {:soap, git: "https://github.com/CarefreeSlacker/soap.git", branch: "add-nested-types"},
       # Testing
       {:mock, "~> 0.3.0", only: :test},
       # Deployment

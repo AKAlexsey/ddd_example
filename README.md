@@ -246,7 +246,7 @@ ssl_certificate_key /path/to/certificate/file.key;
 ## Планирование программы передач по XML файлам скачанным с FTP
 
 Проект осуществляет планирование программы передач с помощью данных указанных в EPG XML файлах.   
-Для этого в системе есть ParseFileStage, CreateProgramsStage - GenStage осуществляющие парсинг файлов и
+Для этого в системе есть ParseFileWorker, CreateProgramsWorker - GenServer осуществляющие парсинг файлов и
 формирование программы передач на ближайшие дни с помощью данных, извлеченных из XML файлов.    
 В конфигурациях необходимо указать пути до папок где лежат EPG XML файлы и куда складывать отработанные файлы.
 С помощью конфигураций `cti_kaltura->epg_file_parser->files_directory` и `cti_kaltura->epg_file_parser->processed_files_directory` соответственно.     
@@ -262,7 +262,7 @@ ssl_certificate_key /path/to/certificate/file.key;
 Необходимо создать папку `/ftp_files` в корне проекта и внутри неё `/processed`     
 Скачать примеры EPG файлов можно с помощью `wget -m --user=beelinetvkz --password=lQklCn8T ftp://ftp.epgservice.ru/4cti/`
 
-### Забор данных с FTP
+### Скачивание файлов с FTP
 
 Всё, что касается скачивания файлов с FTP и удаления отработанных необходимо реализовать с помошью средств операционной системы.
 Тут необходимо реализовать 3 момента:
@@ -276,6 +276,67 @@ ssl_certificate_key /path/to/certificate/file.key;
 3. Необходимо реализовать очистку или архивацию отработанных файлов.  
 Запуск скрипта по крону.
 
+## Отправка SOAP запросов
+
+Отправка SOAP осуществляется с помошью библиотеки SOAP.     
+Отправка запросов осуществуляется по схеме описанной в `WSDL` файле, который находится в папке `/cti_kaltura/priv/wsdl.xml`.     
+После старта приложения запускается `DvrSoapRequestsWorker`, который загружает в память схему, описанную в файле `wsdl.xml`.    
+Настройки для него оисанны в конфигурации, в разделе `:dvr_soap_requests`.     
+API для отправки запросов реализовано в модуле `SoapRequests` функциями `get_*`.
+Все запросы, для управления записью, требуют Basic авторизации.
+Для этого необходимо добавить заголовок `Authorization`, со значением, описанным в `SoapRequests.authorization_header/2`.
+Каждый запрос отправляется на DVR сервер, которому принадлежит ProgramRecord или LinearChannel. Если их несколько, то выбирается случайный.
+
+### Обновление WSDL файла
+Если в будущем `WSDL` изменится, его можно загрузить с помощью `SoapRequests.get_wsdl_file/3`.
+После скачивания, запишите в XML файл.
+Библиотека не читает корректно из файла, необходимо произвести некоторые манипуляции:
+1. Заменить в `definitions` `xmlns:xsd="http://www.w3.org/2001/XMLSchema` на `xmlns:xs="http://www.w3.org/2001/XMLSchema`
+2. Внутри каждого `complexType`, заменить `xs` на `xsd`. Например:
+
+```
+<xs:complexType name="cancelRecording">
+  <xs:sequence>
+    <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+```
+
+на
+
+```
+<xs:complexType name="cancelRecording">
+  <xsd:sequence>
+    <xsd:element minOccurs="0" name="arg0" type="xs:string"/>
+  </xsd:sequence>
+</xs:complexType>
+```
+
+## Планирование ProgramRecord
+
+### Осуществление планирования
+
+Планирование осуществляет `ProgramRecordsSchedulerWorker`. Конфигурации описанны в `:program_records_scheduler`.
+С интервалом заданным в конфигурации с разеле `:run_interval` (по умолчанию 5 секунд) воркер делает запрос 
+на Program.start_datetime, которые начинаются через `:seconds_after` у которых LinearChannel.dvr_enabled == true, нет записей программ
+и есть хотя бы один TvStream.status == "ACTIVE и для каждого TvStream осуществляет планирование ProgramRecord.
+Результат логируется.
+
+*(!)* В БД в Program.start_datetime, Program.end_datetime содержится UTC+0 время, запрос на поиск соовтетственно делается так же в нулевой таймзоне. 
+
+### Отслеживание статуса ProgramRecord
+
+Отслеживание статуса осуществляется с помошью `ProgramRecordsStatusWorker` который периодически отправляет запрос на DVR сервер 
+для всех программ, которые сейчас идут или уже закончились, но не находятся в состоянии `["COMPLETED", "ERROR"]`.
+Конфигурации расположены в разделе `:program_records_status`.
+
+*(!)* В БД в Program.start_datetime, Program.end_datetime содержится UTC+0 время, запрос на поиск соовтетственно делается так же в нулевой таймзоне. 
+
+## Удаление устаревших Program и ProgramRecord
+
+Удаление осуществляют `ProgramsCleanerWorker` и `ProgramRecordsCleanerWorker`.
+Конфигурации расположены соответственно в `:program_records_cleaner` и `:programs_cleaner`.
+Удаляются Program и ProgramRecord, время начала которых больше чем `:storing_hours` часов назад.
 
 ## Логирование
 

@@ -50,5 +50,16 @@ defmodule CtiKaltura.TvStreamTest do
       changeset = TvStream.changeset(tv_stream, %{stream_path: other_server.stream_path})
       assert {:error, %{valid?: false, errors: [stream_path: _]}} = Repo.update(changeset)
     end
+
+    test "Validate :stream_path format #1", %{tv_stream: tv_stream} do
+      changeset = TvStream.changeset(tv_stream, %{stream_path: "path/stream"})
+      assert {:error, %{valid?: false, errors: [stream_path: _]}} = Repo.update(changeset)
+    end
+
+    test "Validate :stream_path format #2", %{tv_stream: tv_stream} do
+      valid_path = "/path/stream"
+      changeset = TvStream.changeset(tv_stream, %{stream_path: valid_path})
+      assert {:ok, %TvStream{stream_path: ^valid_path}} = Repo.update(changeset)
+    end
   end
 end

@@ -34,12 +34,10 @@ config :libcluster,
   ]
 
 config :cti_kaltura, :epg_file_parser,
-  # Опция включения или выключения GenStage, осуществляющего парсинг EPG XML файлов.
+  # Опция включения или выключения GenServer, осуществляющего парсинг EPG XML файлов.
   enabled: true,
-  # Интервал проверки папки с EPG файлами
-  scan_file_directory_interval: 5000,
-  # Интервал обаботки файлов
-  process_file_interval: 500,
+  # Интервал проверки папки с EPG файлами (миллисекунды)
+  run_interval: 500,
   # Путь до папки где должны лежать валидные XML файлы
   files_directory: "/home/admintv/cti_kaltura/ftp_files",
   # Путь до папки куда будут складываться отработанные файлы

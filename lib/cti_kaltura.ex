@@ -4,7 +4,17 @@ defmodule CtiKaltura do
   use Application
 
   alias CtiKaltura.Endpoint
-  alias CtiKaltura.ProgramScheduling.{CreateProgramsStage, ParseFileStage}
+
+  alias CtiKaltura.ProgramScheduling.{
+    CreateProgramsWorker,
+    DvrSoapRequestsWorker,
+    ParseFileWorker,
+    ProgramRecordsCleanerWorker,
+    ProgramRecordsSchedulerWorker,
+    ProgramRecordsStatusWorker,
+    ProgramsCleanerWorker
+  }
+
   alias CtiKaltura.RequestProcessing.MainRouter
   alias CtiKaltura.Workers.ReleaseTasksWorker
   alias Plug.Cowboy
@@ -21,9 +31,14 @@ defmodule CtiKaltura do
         plug: MainRouter,
         options: [port: http_main_router_port()]
       ),
-      {Individual, ReleaseTasksWorker},
-      {Individual, ParseFileStage},
-      {Individual, CreateProgramsStage}
+      {Individual, CreateProgramsWorker},
+      {Individual, DvrSoapRequestsWorker},
+      {Individual, ParseFileWorker},
+      {Individual, ProgramRecordsCleanerWorker},
+      {Individual, ProgramRecordsSchedulerWorker},
+      {Individual, ProgramRecordsStatusWorker},
+      {Individual, ProgramsCleanerWorker},
+      {Individual, ReleaseTasksWorker}
     ]
 
     opts = [strategy: :one_for_one, name: CtiKaltura.Supervisor]
