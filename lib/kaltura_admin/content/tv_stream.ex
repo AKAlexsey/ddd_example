@@ -21,6 +21,8 @@ defmodule CtiKaltura.Content.TvStream do
     :encryption
   ]
 
+  @stream_path_format ~r/^\/.+/
+
   @type t :: %__MODULE__{}
 
   schema "tv_streams" do
@@ -41,6 +43,7 @@ defmodule CtiKaltura.Content.TvStream do
     |> validate_required(@required_fields)
     |> validate_linear_channel_present()
     |> validate_stream_path_uniq()
+    |> validate_stream_path_format()
   end
 
   defp validate_linear_channel_present(changeset) do
@@ -51,5 +54,10 @@ defmodule CtiKaltura.Content.TvStream do
   defp validate_stream_path_uniq(changeset) do
     changeset
     |> unique_constraint(:stream_path)
+  end
+
+  def validate_stream_path_format(changeset) do
+    changeset
+    |> validate_format(:stream_path, @stream_path_format)
   end
 end

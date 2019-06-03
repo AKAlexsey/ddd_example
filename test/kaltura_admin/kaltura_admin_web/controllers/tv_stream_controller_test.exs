@@ -8,7 +8,7 @@ defmodule CtiKalturaWeb.TvStreamControllerTest do
     encryption: "some encryption",
     protocol: "some protocol",
     status: "some status",
-    stream_path: "some stream_path"
+    stream_path: "/some/stream/path"
   }
   # @update_attrs %{encryption: "some updated encryption", protocol: "some updated protocol",
   # status: "some updated status", stream_path: "some updated stream_path"}

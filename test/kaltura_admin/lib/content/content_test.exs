@@ -3,6 +3,7 @@ defmodule CtiKaltura.ContentTest do
 
   alias CtiKaltura.{Content, Repo}
   alias CtiKaltura.Content.Program
+  alias CtiKaltura.ProgramScheduling.Time
   alias CtiKaltura.Servers.ServerGroup
   import Mock
   @domain_model_handler_module Application.get_env(:cti_kaltura, :domain_model_handler)
@@ -436,6 +437,105 @@ defmodule CtiKaltura.ContentTest do
       refute is_nil(get_program.(program13.id))
       refute is_nil(get_program.(program21.id))
     end
+
+    test "#obsolete_programs" do
+      time_limit = NaiveDateTime.add(NaiveDateTime.utc_now(), -1200, :seconds)
+
+      {:ok, program1} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(time_limit, -1, :seconds)})
+
+      {:ok, program2} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(time_limit, -10, :seconds)})
+
+      Factory.insert(:program, %{start_datetime: NaiveDateTime.add(time_limit, 1, :seconds)})
+      Factory.insert(:program, %{start_datetime: NaiveDateTime.add(time_limit, 10, :seconds)})
+      Factory.insert(:program, %{start_datetime: NaiveDateTime.add(time_limit, 200, :seconds)})
+
+      standard = Enum.sort([program1.id, program2.id])
+
+      result =
+        Enum.map(Content.obsolete_programs(time_limit), & &1.id)
+        |> Enum.sort()
+
+      assert standard == result
+    end
+
+    test "#coming_soon_programs" do
+      {:ok, server_group} = Factory.insert(:server_group)
+
+      {:ok, linear_channel1} =
+        Factory.insert(:linear_channel, %{dvr_enabled: true, server_group_id: server_group.id})
+
+      {:ok, linear_channel2} =
+        Factory.insert(:linear_channel, %{dvr_enabled: true, server_group_id: server_group.id})
+
+      {:ok, linear_channel3} = Factory.insert(:linear_channel, %{dvr_enabled: false})
+
+      Factory.insert(:tv_stream, %{linear_channel_id: linear_channel1.id, status: "ACTIVE"})
+      Factory.insert(:tv_stream, %{linear_channel_id: linear_channel2.id, status: "INACTIVE"})
+      Factory.insert(:tv_stream, %{linear_channel_id: linear_channel3.id, status: "ACTIVE"})
+
+      now = NaiveDateTime.utc_now()
+
+      Factory.insert(:program, %{
+        linear_channel_id: linear_channel1.id,
+        start_datetime: Time.seconds_after(-20, now)
+      })
+
+      {:ok, program2} =
+        Factory.insert(:program, %{
+          linear_channel_id: linear_channel1.id,
+          start_datetime: Time.seconds_after(10, now)
+        })
+
+      {:ok, program3} =
+        Factory.insert(:program, %{
+          linear_channel_id: linear_channel1.id,
+          start_datetime: Time.seconds_after(20, now)
+        })
+
+      {:ok, program4} =
+        Factory.insert(:program, %{
+          linear_channel_id: linear_channel1.id,
+          start_datetime: Time.seconds_after(30, now)
+        })
+
+      {:ok, program5} =
+        Factory.insert(:program, %{
+          linear_channel_id: linear_channel1.id,
+          start_datetime: Time.seconds_after(40, now)
+        })
+
+      Factory.insert(:program, %{
+        linear_channel_id: linear_channel1.id,
+        start_datetime: Time.seconds_after(50)
+      })
+
+      Factory.insert(:program, %{
+        linear_channel_id: linear_channel2.id,
+        start_datetime: Time.seconds_after(10, now)
+      })
+
+      Factory.insert(:program, %{
+        linear_channel_id: linear_channel3.id,
+        start_datetime: Time.seconds_after(10, now)
+      })
+
+      Factory.insert(:program_record, %{program_id: program2.id})
+      Factory.insert(:program_record, %{program_id: program3.id})
+
+      result_ids =
+        Content.coming_soon_programs(now, Time.seconds_after(45, now))
+        |> Enum.map(& &1.id)
+        |> Enum.sort()
+
+      standard_ids =
+        [program4, program5]
+        |> Enum.map(& &1.id)
+        |> Enum.sort()
+
+      assert result_ids == standard_ids
+    end
   end
 
   describe "program_records" do
@@ -454,6 +554,137 @@ defmodule CtiKaltura.ContentTest do
       {:ok, program_record} = Factory.insert(:program_record, Enum.into(attrs, @valid_attrs))
 
       program_record
+    end
+
+    test "#current_program_records" do
+      now = NaiveDateTime.utc_now()
+
+      {:ok, program1} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -10, :seconds),
+          end_datetime: NaiveDateTime.add(now, 10, :seconds)
+        })
+
+      {:ok, program_record1} =
+        Factory.insert(:program_record, %{status: "NEW", program_id: program1.id})
+
+      {:ok, program2} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -5, :seconds),
+          end_datetime: NaiveDateTime.add(now, 5, :seconds)
+        })
+
+      {:ok, program_record2} =
+        Factory.insert(:program_record, %{
+          status: "PLANNED",
+          program_id: program2.id
+        })
+
+      {:ok, program3} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -5, :seconds),
+          end_datetime: NaiveDateTime.add(now, 5, :seconds)
+        })
+
+      Factory.insert(:program_record, %{
+        status: "RUNNING",
+        program_id: program3.id
+      })
+
+      {:ok, program4} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -5, :seconds),
+          end_datetime: NaiveDateTime.add(now, 5, :seconds)
+        })
+
+      Factory.insert(:program_record, %{
+        status: "ERROR",
+        program_id: program4.id
+      })
+
+      {:ok, program5} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -5, :seconds),
+          end_datetime: NaiveDateTime.add(now, 5, :seconds)
+        })
+
+      Factory.insert(:program_record, %{
+        status: "COMPLETED",
+        program_id: program5.id
+      })
+
+      {:ok, program6} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -20, :seconds),
+          end_datetime: NaiveDateTime.add(now, -5, :seconds)
+        })
+
+      {:ok, program_record3} =
+        Factory.insert(:program_record, %{
+          status: "NEW",
+          program_id: program6.id
+        })
+
+      {:ok, program7} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -20, :seconds),
+          end_datetime: NaiveDateTime.add(now, -5, :seconds)
+        })
+
+      {:ok, program_record4} =
+        Factory.insert(:program_record, %{
+          status: "PLANNED",
+          program_id: program7.id
+        })
+
+      {:ok, program8} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -20, :seconds),
+          end_datetime: NaiveDateTime.add(now, -5, :seconds)
+        })
+
+      {:ok, program_record5} =
+        Factory.insert(:program_record, %{
+          status: "RUNNING",
+          program_id: program8.id
+        })
+
+      {:ok, program9} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -20, :seconds),
+          end_datetime: NaiveDateTime.add(now, -10, :seconds)
+        })
+
+      Factory.insert(:program_record, %{
+        status: "ERROR",
+        program_id: program9.id
+      })
+
+      {:ok, program10} =
+        Factory.insert(:program, %{
+          start_datetime: NaiveDateTime.add(now, -20, :seconds),
+          end_datetime: NaiveDateTime.add(now, -5, :seconds)
+        })
+
+      Factory.insert(:program_record, %{
+        status: "COMPLETED",
+        program_id: program10.id
+      })
+
+      standard =
+        Enum.sort([
+          program_record1.id,
+          program_record2.id,
+          program_record3.id,
+          program_record4.id,
+          program_record5.id
+        ])
+
+      result =
+        Enum.map(Content.current_program_records(), & &1.id)
+        |> Enum.sort()
+
+      assert standard == result
     end
 
     test "list_program_records/0 returns all program_records" do
@@ -532,6 +763,42 @@ defmodule CtiKaltura.ContentTest do
       program_record = program_record_fixture()
       assert %Ecto.Changeset{} = Content.change_program_record(program_record)
     end
+
+    test "#obsolete_program_record" do
+      time_limit = NaiveDateTime.add(NaiveDateTime.utc_now(), -300, :seconds)
+
+      {:ok, program1} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(time_limit, -3600, :seconds)})
+
+      {:ok, program_record1} = Factory.insert(:program_record, %{program_id: program1.id})
+
+      {:ok, program2} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(time_limit, -10, :seconds)})
+
+      {:ok, program_record2} = Factory.insert(:program_record, %{program_id: program2.id})
+
+      {:ok, program3} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(time_limit, 1, :seconds)})
+
+      Factory.insert(:program_record, %{program_id: program3.id})
+
+      {:ok, program4} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(time_limit, 20, :seconds)})
+
+      Factory.insert(:program_record, %{program_id: program4.id})
+
+      standard =
+        Enum.sort([
+          program_record1.id,
+          program_record2.id
+        ])
+
+      result =
+        Enum.map(Content.obsolete_program_records(time_limit), & &1.id)
+        |> Enum.sort()
+
+      assert standard == result
+    end
   end
 
   describe "tv_streams" do
@@ -541,13 +808,13 @@ defmodule CtiKaltura.ContentTest do
       encryption: "some encryption",
       protocol: "some protocol",
       status: "some status",
-      stream_path: "some stream_path"
+      stream_path: "/some/stream/path"
     }
     @update_attrs %{
       encryption: "some updated encryption",
       protocol: "some updated protocol",
       status: "some updated status",
-      stream_path: "some updated stream_path"
+      stream_path: "/some/updated/stream/path"
     }
     @invalid_attrs %{encryption: nil, protocol: nil, status: nil, stream_path: nil}
 
@@ -578,7 +845,7 @@ defmodule CtiKaltura.ContentTest do
         assert tv_stream.encryption == "some encryption"
         assert tv_stream.protocol == "some protocol"
         assert tv_stream.status == "some status"
-        assert tv_stream.stream_path == "some stream_path"
+        assert tv_stream.stream_path == "/some/stream/path"
 
         assert_called(@domain_model_handler_module.handle(:insert, %{model_name: "TvStream"}))
       end
@@ -601,7 +868,7 @@ defmodule CtiKaltura.ContentTest do
         assert tv_stream.encryption == "some updated encryption"
         assert tv_stream.protocol == "some updated protocol"
         assert tv_stream.status == "some updated status"
-        assert tv_stream.stream_path == "some updated stream_path"
+        assert tv_stream.stream_path == "/some/updated/stream/path"
 
         assert_called(@domain_model_handler_module.handle(:update, %{model_name: "TvStream"}))
       end
@@ -610,7 +877,7 @@ defmodule CtiKaltura.ContentTest do
     test "udpate_tv_stream/1 validate stream_path uniques" do
       {:ok, %TvStream{}} = Content.create_tv_stream(valid_attrs())
 
-      valid_attrs_2 = Map.merge(valid_attrs(), %{stream_path: "#{Faker.Lorem.word()}"})
+      valid_attrs_2 = Map.merge(valid_attrs(), %{stream_path: "/#{Faker.Lorem.word()}"})
       {:ok, %TvStream{} = tv_stream} = Content.create_tv_stream(valid_attrs_2)
 
       assert {:error, %Ecto.Changeset{}} =

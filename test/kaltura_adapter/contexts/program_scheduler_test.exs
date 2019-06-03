@@ -3,39 +3,7 @@ defmodule CtiKaltura.ProgramScheduling.ProgramSchedulerTest do
 
   alias CtiKaltura.{Content, Repo}
   alias CtiKaltura.Content.Program
-  alias CtiKaltura.ProgramScheduling.ProgramScheduler
-
-  describe "#time_to_utc" do
-    test "Return right datetime #1" do
-      year = 2019
-      month = 11
-      day = 14
-      hours = 12
-      minutes = 12
-      seconds = 12
-
-      {:ok, standard} = NaiveDateTime.from_erl({{year, month, day}, {hours, minutes, seconds}})
-
-      assert standard ==
-               ProgramScheduler.time_to_utc("#{year}#{month}#{day}#{hours}#{minutes}#{seconds}")
-    end
-
-    test "Return right datetime #2" do
-      year = 2008
-      month = 4
-      day = 14
-      hours = 9
-      minutes = 9
-      seconds = 9
-
-      {:ok, standard} = NaiveDateTime.from_erl({{year, month, day}, {hours, minutes, seconds}})
-
-      assert standard ==
-               ProgramScheduler.time_to_utc(
-                 "#{year}0#{month}#{day}0#{hours}0#{minutes}0#{seconds}"
-               )
-    end
-  end
+  alias CtiKaltura.ProgramScheduling.{ProgramScheduler, Time}
 
   describe "#perform" do
     setup do
@@ -115,24 +83,24 @@ defmodule CtiKaltura.ProgramScheduling.ProgramSchedulerTest do
     } do
       {:ok, program1} =
         Factory.insert(:program, %{
-          start_datetime: ProgramScheduler.time_to_utc("20190406003000"),
-          end_datetime: ProgramScheduler.time_to_utc("20190406010000"),
+          start_datetime: Time.time_to_utc("20190406003000"),
+          end_datetime: Time.time_to_utc("20190406010000"),
           name: "Click Old",
           linear_channel_id: linear_channel.id
         })
 
       {:ok, program2} =
         Factory.insert(:program, %{
-          start_datetime: ProgramScheduler.time_to_utc("20190406010000"),
-          end_datetime: ProgramScheduler.time_to_utc("20190406013000"),
+          start_datetime: Time.time_to_utc("20190406010000"),
+          end_datetime: Time.time_to_utc("20190406013000"),
           name: "BBC News Special Old",
           linear_channel_id: linear_channel.id
         })
 
       {:ok, program3} =
         Factory.insert(:program, %{
-          start_datetime: ProgramScheduler.time_to_utc("20190406013000"),
-          end_datetime: ProgramScheduler.time_to_utc("20190406020000"),
+          start_datetime: Time.time_to_utc("20190406013000"),
+          end_datetime: Time.time_to_utc("20190406020000"),
           name: "TBA Old",
           linear_channel_id: linear_channel.id
         })
@@ -167,4 +135,35 @@ defmodule CtiKaltura.ProgramScheduling.ProgramSchedulerTest do
       assert {:error, :linear_channel_does_not_exist} == ProgramScheduler.perform(program_data)
     end
   end
+
+  describe "#clean_obsolete" do
+    test "Remove obsolete Programs" do
+      now = NaiveDateTime.utc_now()
+
+      Factory.insert(:program, %{start_datetime: NaiveDateTime.add(now, -3500, :seconds)})
+
+      {:ok, program1} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(now, -3700, :seconds)})
+
+      {:ok, program2} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(now, -7_300, :seconds)})
+
+      {:ok, program3} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(now, -11_900, :seconds)})
+
+      {:ok, program4} =
+        Factory.insert(:program, %{start_datetime: NaiveDateTime.add(now, -14_500, :seconds)})
+
+      assert [program4.id] == get_ids(ProgramScheduler.clean_obsolete(4))
+      assert [program3.id] == get_ids(ProgramScheduler.clean_obsolete(3))
+      assert [program2.id] == get_ids(ProgramScheduler.clean_obsolete(2))
+      assert [program1.id] == get_ids(ProgramScheduler.clean_obsolete(1))
+    end
+
+    test "Return {:ok, :no_programs} if there are no obsolete programs" do
+      assert {:ok, :no_programs} = ProgramScheduler.clean_obsolete(1)
+    end
+  end
+
+  def get_ids({:ok, %{removed_ids: collection}}), do: Enum.sort(collection)
 end
