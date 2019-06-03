@@ -76,8 +76,7 @@ release :cti_kaltura do
 
   set(
     commands: [
-      migrate: "rel/commands/migrate.sh",
-      make_mnesia_cluster_again: "rel/commands/make_mnesia_cluster_again.sh"
+      migrate: "rel/commands/migrate.sh"
     ]
   )
 end

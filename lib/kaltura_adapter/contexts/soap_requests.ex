@@ -102,20 +102,24 @@ defmodule CtiKaltura.ProgramScheduling.SoapRequests do
           encryption: encryption
         }
       }) do
-    edge_server_doman = SoapServersService.edge_server_domain(linear_channel)
+    case SoapServersService.edge_server_domain(linear_channel) do
+      nil ->
+        {:error, :no_edge_server}
 
-    request_params = %{
-      plannedStartTime: Time.soap_datetime(start_datetime),
-      plannedEndTime: Time.soap_datetime(end_datetime),
-      assetToCapture: "#{edge_server_doman}#{stream_path}",
-      placement: "#{code_name}/#{protocol}/#{encryption}/#{epg_id}",
-      params:
-        "format=#{String.downcase(protocol)};encryption=#{String.downcase(encryption)};channel=#{
-          code_name
-        }"
-    }
+      edge_server_doman ->
+        request_params = %{
+          plannedStartTime: Time.soap_datetime(start_datetime),
+          plannedEndTime: Time.soap_datetime(end_datetime),
+          assetToCapture: "#{edge_server_doman}#{stream_path}",
+          placement: "#{code_name}/#{protocol}/#{encryption}/#{epg_id}",
+          params:
+            "format=#{String.downcase(protocol)};encryption=#{String.downcase(encryption)};channel=#{
+              code_name
+            }"
+        }
 
-    {:ok, %{arg0: request_params}}
+        {:ok, %{arg0: request_params}}
+    end
   end
 
   def get_params("getRecording", %{path: path}) do

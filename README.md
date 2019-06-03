@@ -35,10 +35,17 @@ mix amnesia.create_indexes
 
 ### Что делать в продакшн режиме или на стейдже при изменении атрибутов одной из таблиц
 
-Была добавлена команда: `make_mnesia_cluster_again`    
-Нужно зайти по ssh на сервер и выполнить `~/cti_kaltura/bin/cti_kaltura make_mnesia_cluster_again`
-Исходя из названия, скрипт делает Mnesia кластерной, но скрипт так же может работать и на единичном ядре.
-Если приложение должно работать в кластере, то оба ядра должны быть запущены.    
+1. Зайти по SSH на один из узлом
+2. Необходимо чтобы одновременно оба узла были запущены.
+3. Зайти в удалённую консоль на один из узлов `./cti_kaltura remote_console`
+4. Выполнить следующий код:
+
+```
+alias CtiKaltura.ReleaseTasks
+ReleaseTasks.make_mnesia_cluster_again()
+```
+
+5. Дождаться завершения работы скрипта.  
 
 # Нагрузочное тестирование
 
@@ -99,6 +106,24 @@ mix amnesia.create_indexes
 2. Установить git;
 3. Для пользователя `admintv` установить на стейдж сервер соответствующие версии Elixir и Elrang. 
 Указанные в файле `.tool-versions`. На момент написания документации: Elixir - 1.6.3, Erlang - 20.2.2.
+
+*(!)* На серверах стоит старая версия CentOS. Её не удаётся установить с помощью ASDF. 
+Необходимо установить уже готовую версию. Для этого:
+* Установите необходимые библиотеки
+
+```
+sudo yum install g++ openssl-devel unixodbc-devel autoconf ncurses-devel
+```
+
+* Скачайте и установите подходящую для вашей операционной системы версию https://www.erlang-solutions.com/resources/download.html 
+
+```
+$ wget https://packages.erlang-solutions.com/erlang/rpm/centos/6/x86_64/esl-erlang_20.2.2-1~centos~6_amd64.rpm
+
+$ sudo rpm -Uvh esl-erlang_20.2.2-1~centos~6_amd64.rpm
+```
+
+* Ответ взят с https://stackoverflow.com/questions/38554378/centos-how-do-i-install-a-specific-version-of-erlang
 
 4. Установить или использовать имеющуюся Postgres. Добавить необходимую базу данных, которая будет 
 использоваться в проекте. Необходимо добавить разрешение на авторизацию в pg_hba.conf:   
@@ -236,12 +261,6 @@ ssl_certificate_key /path/to/certificate/file.key;
 2. CtiKaltura.Workers.ReleaseTasksWorker.reset_single_mnesia() - для не кластерной реализации (локально мы работаем в кластере).
 
 Они отрабатывают или выводят сообщение в консоль об ошибке. Их надо запускать из консоли запущенного проекта.
-
-Для стейджа и продакшн режима были написанны команды:
-
-1. `~/cti_kaltura/bin/cti_kaltura make_mnesia_cluster_again` - аналогичный скрипт для запуске на кластере.
-После его запуска на каждом из стейджей, в корне проекта обновится папка `Mnesia.<node_name>@<ip_address>`
-2. `~/cti_kaltura/bin/cti_kaltura make_single_mnesia_node` - аналогично но для одного ядра.
 
 ## Планирование программы передач по XML файлам скачанным с FTP
 

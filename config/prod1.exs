@@ -17,7 +17,7 @@ config :libcluster,
       strategy: Cluster.Strategy.Epmd,
       # Configuration for the provided strategy. Optional.
       # when second core will be initialized, add its ip :"second@<second_ip>"
-      config: [hosts: [:"first@10.15.2.20"]],
+      config: [hosts: [:"first@10.15.2.20", :"second@10.15.2.25"]],
       # The function to use for connecting nodes. The node
       # name will be appended to the argument list. Optional
       connect: {:net_kernel, :connect, []},
@@ -39,7 +39,7 @@ config :cti_kaltura, CtiKaltura.Repo,
   password: "cti",
   database: "cti_cdn",
   hostname: "10.15.7.46",
-  pool_size: 80
+  pool_size: 40
 
 config :cti_kaltura, :epg_file_parser,
   # Опция включения или выключения GenServer, осуществляющего парсинг EPG XML файлов.
