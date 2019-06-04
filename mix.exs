@@ -81,7 +81,8 @@ defmodule CtiKaltura.MixProject do
       {:mock, "~> 0.3.0", only: :test},
       # Deployment
       {:edeliver, "~> 1.5.2"},
-      {:distillery, "~> 1.5.2", runtime: false}
+      {:distillery, "~> 1.5.2", runtime: false},
+      {:httpoison, "~> 1.4"}
     ]
   end
 

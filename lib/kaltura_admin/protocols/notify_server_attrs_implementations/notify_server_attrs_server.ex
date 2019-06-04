@@ -14,9 +14,11 @@ defimpl NotifyServerAttrs, for: Server do
     :ip,
     :port,
     :status,
+    :availability,
     :weight,
     :prefix,
-    :healthcheck_enabled
+    :healthcheck_enabled,
+    :healthcheck_path
   ]
 
   def get(%Server{} = record) do

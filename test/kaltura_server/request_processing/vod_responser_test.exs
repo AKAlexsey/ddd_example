@@ -31,6 +31,7 @@ defmodule CtiKaltura.RequestProcessing.VodResponserTest do
           server_group_ids: [server_group_id],
           port: 80,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
@@ -42,6 +43,7 @@ defmodule CtiKaltura.RequestProcessing.VodResponserTest do
           server_group_ids: [server_group_id],
           port: 96,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
@@ -130,6 +132,7 @@ defmodule CtiKaltura.RequestProcessing.VodResponserTest do
           server_group_ids: [server_group_id],
           port: 443,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
@@ -141,6 +144,7 @@ defmodule CtiKaltura.RequestProcessing.VodResponserTest do
           server_group_ids: [server_group_id],
           port: 96,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 30

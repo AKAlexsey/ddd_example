@@ -62,13 +62,6 @@ defmodule CtiKaltura.ServerTest do
       assert %{valid?: false, errors: [status: _]} = changeset
     end
 
-    test "Validate :prefix presence", %{server: server} do
-      refute is_nil(server.prefix)
-      changeset = Server.changeset(server, %{prefix: nil})
-
-      assert %{valid?: false, errors: [prefix: _]} = changeset
-    end
-
     test "Validate : [domain_name:type] is unique", %{server: server} do
       {:ok, other_server} = Factory.insert(:server)
 

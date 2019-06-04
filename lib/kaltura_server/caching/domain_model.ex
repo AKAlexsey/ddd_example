@@ -98,9 +98,11 @@ defdatabase DomainModel do
              :ip,
              :port,
              :status,
+             :availability,
              :weight,
              :prefix,
              :healthcheck_enabled,
+             :healthcheck_path,
              :server_group_ids,
              :program_record_ids
            ],
@@ -113,9 +115,11 @@ defdatabase DomainModel do
             ip: String.t(),
             port: integer,
             status: String.t(),
+            availability: boolean,
             weight: integer,
             prefix: String.t(),
             healthcheck_enabled: true,
+            healthcheck_path: String.t(),
             server_group_ids: list(integer),
             program_record_ids: list(integer)
           }
@@ -183,7 +187,7 @@ defdatabase DomainModel do
     Amnesia.Table.add_index(DomainModel.Subnet, :last_number_ip)
     Amnesia.Table.add_index(DomainModel.Server, :type)
     Amnesia.Table.add_index(DomainModel.Server, :status)
-    Amnesia.Table.add_index(DomainModel.Server, :healthcheck_enabled)
+    Amnesia.Table.add_index(DomainModel.Server, :availability)
     Amnesia.Table.add_index(DomainModel.LinearChannel, :epg_id)
     Amnesia.Table.add_index(DomainModel.TvStream, :complex_search_index)
     Amnesia.Table.add_index(DomainModel.ProgramRecord, :complex_search_index)

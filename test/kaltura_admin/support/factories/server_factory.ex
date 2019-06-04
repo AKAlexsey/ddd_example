@@ -20,6 +20,7 @@ defmodule CtiKaltura.ServerFactory do
       port: 80,
       prefix: "edge#{:rand.uniform(10000)}#{:rand.uniform(10000)}",
       status: "ACTIVE",
+      availability: true,
       type: "EDGE",
       weight: 5
     }

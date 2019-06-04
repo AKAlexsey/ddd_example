@@ -59,6 +59,7 @@ defmodule CtiKaltura.ClosestEdgeServerServiceTest do
         id: s_id1,
         server_group_ids: [server_group_id],
         status: "INACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: true
       })
@@ -67,6 +68,7 @@ defmodule CtiKaltura.ClosestEdgeServerServiceTest do
         id: s_id2,
         server_group_ids: [server_group_id],
         status: "ACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: true
       })
@@ -75,6 +77,7 @@ defmodule CtiKaltura.ClosestEdgeServerServiceTest do
         id: s_id3,
         server_group_ids: [server_group_id],
         status: "ACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: false
       })
@@ -83,6 +86,7 @@ defmodule CtiKaltura.ClosestEdgeServerServiceTest do
         id: s_id4,
         server_group_ids: [server_group_id],
         status: "ACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: true,
         weight: 10
@@ -92,6 +96,7 @@ defmodule CtiKaltura.ClosestEdgeServerServiceTest do
         id: s_id5,
         server_group_ids: [server_group_id],
         status: "ACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: true,
         weight: 20

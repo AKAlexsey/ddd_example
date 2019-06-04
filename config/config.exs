@@ -32,6 +32,7 @@ config :cti_kaltura, domain_model_handler: CtiKaltura.Handlers.DomainModelHandle
 
 # Таймаут запуска колбеков (миллисекунды)
 config :cti_kaltura, after_start_callback_timeout: 3000
+config :cti_kaltura, servers_activity_checking_timeout: 10000
 
 config :cti_kaltura, CtiKaltura.RequestProcessing.MainRouter,
   http_port: [
@@ -61,7 +62,8 @@ config :logger,
     {LoggerFileBackend, :release_tasks_log},
     {LoggerFileBackend, :caching_system_log},
     {LoggerFileBackend, :sessions_log},
-    {LoggerFileBackend, :database_log}
+    {LoggerFileBackend, :database_log},
+    {LoggerFileBackend, :servers_activity_log}
   ]
 
 config :logger, :request_log,
@@ -99,6 +101,12 @@ config :logger, :database_log,
   metadata_filter: [domain: :database],
   level: :debug,
   format: "\n$date $time $metadata[$level] $message\n"
+
+config :logger, :servers_activity_log,
+  path: "log/servers_activity.log",
+  metadata_filter: [domain: :servers_activity],
+  level: :debug,
+  format: "\n$date $time [$level] - $message"
 
 config :soap, :globals, version: "1.1"
 

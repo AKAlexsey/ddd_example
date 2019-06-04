@@ -9,6 +9,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponser do
   alias CtiKaltura.ClosestEdgeServerService
   alias CtiKaltura.DomainModelContext, as: Context
   alias CtiKaltura.RequestProcessing.RequestHelper
+  alias CtiKaltura.Util.ServerUtil
 
   @spec make_response(Plug.Conn.t()) :: {Plug.Conn.t(), integer, binary}
   def make_response(%Plug.Conn{} = conn) do
@@ -69,11 +70,6 @@ defmodule CtiKaltura.RequestProcessing.LiveResponser do
          port: port,
          stream_path: stream_path
        }) do
-    {application_layer_protocol, server_port} = get_server_port(port)
-    "#{application_layer_protocol}://#{domain_name}#{server_port}/#{stream_path}"
+    ServerUtil.prepare_url(domain_name, port, stream_path)
   end
-
-  defp get_server_port(80), do: {"http", ""}
-  defp get_server_port(443), do: {"https", ""}
-  defp get_server_port(port), do: {"http", ":#{port}"}
 end

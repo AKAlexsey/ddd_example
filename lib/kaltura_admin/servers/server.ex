@@ -17,19 +17,20 @@ defmodule CtiKaltura.Servers.Server do
     :manage_ip,
     :manage_port,
     :status,
+    :availability,
     :weight,
     :prefix,
     :healthcheck_enabled,
     :healthcheck_path
   ]
-  @required_fields [:type, :domain_name, :ip, :port, :status, :weight, :prefix]
+  @required_fields [:type, :domain_name, :ip, :port, :status, :weight]
 
   @weight_range 1..100
   @port_permitted_values [80, 443]
   @manage_port_range 0..65_535
   @domain_name_format ~r/^[a-z\d\-\.]+\.[a-z\d\-\.]+$/
   @prefix_format ~r/^[\w\-]+$/
-  @healthcheck_path_format ~r/^\/[\w\-\/]+$/
+  @healthcheck_path_format ~r/^\/.+$/
   @ip_format ~r/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}+$/
 
   schema "servers" do
@@ -42,6 +43,7 @@ defmodule CtiKaltura.Servers.Server do
     field(:port, :integer)
     field(:prefix, :string)
     field(:status, :string)
+    field(:availability, :boolean, default: true)
     field(:type, :string)
     field(:weight, :integer)
 
