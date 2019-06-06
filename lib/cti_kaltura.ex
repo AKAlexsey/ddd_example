@@ -4,7 +4,7 @@ defmodule CtiKaltura do
   use Application
 
   alias CtiKaltura.Endpoint
-  alias CtiKaltura.Executors.ServersActivityCheckExecutor
+  alias CtiKaltura.Executors.ServersActivityCheckWorker
 
   alias CtiKaltura.ProgramScheduling.{
     CreateProgramsWorker,
@@ -41,7 +41,7 @@ defmodule CtiKaltura do
       {Individual, ProgramRecordsStatusWorker},
       {Individual, ProgramsCleanerWorker},
       {Individual, ReleaseTasksWorker},
-      {Individual, ServersActivityCheckExecutor}
+      {Individual, ServersActivityCheckWorker}
     ]
 
     opts = [

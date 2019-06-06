@@ -1,4 +1,4 @@
-defmodule CtiKaltura.Executors.ServersActivityCheckExecutor do
+defmodule CtiKaltura.Executors.ServersActivityCheckWorker do
   @moduledoc """
   Executor for periodical running of the servers activity checking.
   Period is parameter 'servers_activity_checking_timeout' from config.exs

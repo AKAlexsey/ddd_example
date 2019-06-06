@@ -38,7 +38,7 @@ defmodule CtiKaltura.Util.ServerUtil do
   def normalize_path(path) do
     path
     |> remove_unnecessary_slashes()
-    |> add_slash_at_start_if_needed()
+    |> add_slash_at_start_if_necessary()
   end
 
   defp remove_unnecessary_slashes(path) do
@@ -49,7 +49,7 @@ defmodule CtiKaltura.Util.ServerUtil do
     end
   end
 
-  defp add_slash_at_start_if_needed(path) do
+  defp add_slash_at_start_if_necessary(path) do
     if String.starts_with?(path, "/") do
       path
     else
