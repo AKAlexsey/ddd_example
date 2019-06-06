@@ -11,6 +11,7 @@ defmodule CtiKaltura.ServerControllerTest do
     port: 80,
     prefix: "some-prefix",
     status: "ACTIVE",
+    availability: true,
     type: "EDGE",
     weight: 42
   }
@@ -23,6 +24,7 @@ defmodule CtiKaltura.ServerControllerTest do
     manage_port: 43,
     port: 443,
     status: "ACTIVE",
+    availability: true,
     type: "EDGE",
     weight: 43
   }

@@ -92,6 +92,12 @@ defmodule CtiKaltura.ServerView do
         :mode => [:table, :show, :edit, :create]
       },
       %{
+        :header => "AVAILABILITY",
+        :type => :boolean,
+        :field => :availability,
+        :mode => [:table, :show]
+      },
+      %{
         :header => "Healthcheck path",
         :type => :string,
         :field => :healthcheck_path,

@@ -35,6 +35,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 80,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
@@ -46,6 +47,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 96,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
@@ -149,6 +151,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 443,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
@@ -160,6 +163,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 96,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
@@ -261,6 +265,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 80,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
@@ -272,6 +277,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 96,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
@@ -281,6 +287,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
           status: "ACTIVE",
+          availability: true,
           type: "DVR",
           healthcheck_enabled: true
         })
@@ -289,6 +296,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
           status: "ACTIVE",
+          availability: true,
           type: "DVR",
           healthcheck_enabled: true
         })
@@ -478,6 +486,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 443,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
@@ -489,6 +498,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 96,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
@@ -498,6 +508,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
           status: "ACTIVE",
+          availability: true,
           type: "DVR",
           healthcheck_enabled: true
         })
@@ -506,6 +517,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
         Factory.insert(:server, %{
           server_group_ids: [server_group_id],
           status: "ACTIVE",
+          availability: true,
           type: "DVR",
           healthcheck_enabled: true
         })
@@ -627,6 +639,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 80,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
@@ -638,6 +651,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 96,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 30
@@ -731,6 +745,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 443,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 25
@@ -742,6 +757,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           server_group_ids: [server_group_id],
           port: 96,
           status: "ACTIVE",
+          availability: true,
           type: "EDGE",
           healthcheck_enabled: true,
           weight: 30

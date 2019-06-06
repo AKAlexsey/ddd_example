@@ -214,6 +214,7 @@ defmodule CtiKaltura.DomainModelContextTest do
         id: s_id1,
         server_group_ids: [server_group_id],
         status: "INACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: true
       })
@@ -222,6 +223,7 @@ defmodule CtiKaltura.DomainModelContextTest do
         id: s_id2,
         server_group_ids: [server_group_id],
         status: "ACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: true
       })
@@ -230,6 +232,7 @@ defmodule CtiKaltura.DomainModelContextTest do
         id: s_id3,
         server_group_ids: [server_group_id],
         status: "ACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: false
       })
@@ -238,6 +241,7 @@ defmodule CtiKaltura.DomainModelContextTest do
         id: s_id4,
         server_group_ids: [server_group_id],
         status: "ACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: true,
         weight: 10
@@ -247,6 +251,7 @@ defmodule CtiKaltura.DomainModelContextTest do
         id: s_id5,
         server_group_ids: [server_group_id],
         status: "ACTIVE",
+        availability: true,
         type: "EDGE",
         healthcheck_enabled: true,
         weight: 20
@@ -298,7 +303,7 @@ defmodule CtiKaltura.DomainModelContextTest do
       assert DomainModelContext.get_subnet_appropriate_servers(subnet) == []
     end
 
-    test "Return empty list if all Servers inactive", %{
+    test "Return empty list if all Servers INACTIVE", %{
       subnet: subnet,
       server_ids: server_ids
     } do
@@ -308,6 +313,23 @@ defmodule CtiKaltura.DomainModelContextTest do
           server_id
           |> DomainModel.Server.read()
           |> Map.put(:status, "INACTIVE")
+          |> DomainModel.Server.write()
+        end)
+      end)
+
+      assert DomainModelContext.get_subnet_appropriate_servers(subnet) == []
+    end
+
+    test "Return empty list if all Servers are unavailable", %{
+      subnet: subnet,
+      server_ids: server_ids
+    } do
+      Amnesia.transaction(fn ->
+        server_ids
+        |> Enum.each(fn server_id ->
+          server_id
+          |> DomainModel.Server.read()
+          |> Map.put(:availability, false)
           |> DomainModel.Server.write()
         end)
       end)

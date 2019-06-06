@@ -44,9 +44,11 @@ defmodule CtiKaltura.Protocols.NotifyServerAttrsTest do
                :ip,
                :port,
                :status,
+               :availability,
                :weight,
                :prefix,
                :healthcheck_enabled,
+               :healthcheck_path,
                :server_group_ids,
                :program_record_ids
              ])

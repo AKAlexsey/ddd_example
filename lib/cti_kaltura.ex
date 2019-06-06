@@ -4,6 +4,7 @@ defmodule CtiKaltura do
   use Application
 
   alias CtiKaltura.Endpoint
+  alias CtiKaltura.Executors.ServersActivityCheckWorker
 
   alias CtiKaltura.ProgramScheduling.{
     CreateProgramsWorker,
@@ -17,6 +18,7 @@ defmodule CtiKaltura do
 
   alias CtiKaltura.RequestProcessing.MainRouter
   alias CtiKaltura.Workers.ReleaseTasksWorker
+
   alias Plug.Cowboy
 
   import Supervisor.Spec, warn: false
@@ -38,7 +40,8 @@ defmodule CtiKaltura do
       {Individual, ProgramRecordsSchedulerWorker},
       {Individual, ProgramRecordsStatusWorker},
       {Individual, ProgramsCleanerWorker},
-      {Individual, ReleaseTasksWorker}
+      {Individual, ReleaseTasksWorker},
+      {Individual, ServersActivityCheckWorker}
     ]
 
     opts = [

@@ -60,6 +60,28 @@ defmodule CtiKaltura.DomainModelContext do
   end
 
   @doc """
+  Returns all ACTIVE servers
+  """
+  @spec get_active_servers :: list(map())
+  def get_active_servers do
+    Amnesia.transaction(fn ->
+      :mnesia.select(DomainModel.Server, [
+        {
+          {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$11",
+           :"$12", :"$13"},
+          [
+            make_and_mnesia_clause([
+              {:==, :"$6", "ACTIVE"}
+            ])
+          ],
+          [:"$$"]
+        }
+      ])
+    end)
+    |> make_domain_model_table_records()
+  end
+
+  @doc """
   Request entities chain Region -> ServerGroup -> Server one after another.
   And return all Servers.
 
@@ -75,7 +97,7 @@ defmodule CtiKaltura.DomainModelContext do
   * :id that in all :server_ids of all ServerGroup, selected on previous step;
   * :type == "EDGE";
   * :status == "ACTIVE";
-  * :healthcheck_enabled == true.
+  * :availability == true.
 
   If any step does not find any entities function will return [].
   Otherwise function will return list of Server.
@@ -90,7 +112,7 @@ defmodule CtiKaltura.DomainModelContext do
       |> get_active_server_group__server_ids()
       |> List.flatten()
       |> Enum.uniq()
-      |> get_active_servers()
+      |> get_active_available_edge_servers()
     end)
     |> make_domain_model_table_records()
   end
@@ -127,17 +149,18 @@ defmodule CtiKaltura.DomainModelContext do
     ])
   end
 
-  defp get_active_servers([]), do: []
+  defp get_active_available_edge_servers([]), do: []
 
-  defp get_active_servers(server_ids) do
+  defp get_active_available_edge_servers(server_ids) do
     :mnesia.select(DomainModel.Server, [
       {
-        {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$12"},
+        {:"$0", :"$1", :"$2", :"$3", :"$4", :"$5", :"$6", :"$7", :"$8", :"$9", :"$10", :"$11",
+         :"$12", :"$13"},
         [
           make_and_mnesia_clause([
             {:==, :"$2", "EDGE"},
             {:==, :"$6", "ACTIVE"},
-            {:==, :"$9", true},
+            {:==, :"$7", true},
             make_in_mnesia_clause(server_ids, :"$1")
           ])
         ],

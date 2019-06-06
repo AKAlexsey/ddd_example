@@ -18,9 +18,26 @@ defmodule CtiKaltura.ServersTest do
       port: 80,
       prefix: "some-prefix",
       status: "ACTIVE",
+      availability: true,
       type: "EDGE",
       weight: 42
     }
+
+    @inactive_server_attrs %{
+      domain_name: "some-domain2.name",
+      healthcheck_enabled: true,
+      healthcheck_path: "/some-healthcheck-path",
+      ip: "123.123.123.124",
+      manage_ip: "123.123.123.124",
+      manage_port: 40,
+      port: 80,
+      prefix: "some-prefix-2",
+      status: "INACTIVE",
+      availability: true,
+      type: "EDGE",
+      weight: 50
+    }
+
     @update_attrs %{
       domain_name: "some-updated-domain.name",
       healthcheck_enabled: false,
@@ -31,6 +48,7 @@ defmodule CtiKaltura.ServersTest do
       port: 443,
       prefix: "some-updated-prefix",
       status: "INACTIVE",
+      availability: true,
       type: "EDGE",
       weight: 43
     }
@@ -57,6 +75,13 @@ defmodule CtiKaltura.ServersTest do
     test "list_servers/0 returns all servers" do
       server = server_fixture()
       assert Enum.map(Servers.list_servers(), & &1.id) == [server.id]
+    end
+
+    test "list_active_servers/0 returns all ACTIVE servers" do
+      active_server = server_fixture()
+      Factory.insert(:server, @inactive_server_attrs)
+      assert length(Servers.list_servers()) == 2
+      assert Enum.map(Servers.list_active_servers(), & &1.id) == [active_server.id]
     end
 
     test "get_server!/1 returns the server with given id" do
