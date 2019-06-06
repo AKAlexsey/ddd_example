@@ -419,14 +419,18 @@ defmodule CtiKaltura.ProgramScheduling.SoapServersServiceTest do
   end
 
   describe "#edge_server_domain params if ProgramRecord" do
-    test "return DVR server domain if it exist" do
+    test "return EDGE server domain if it exist" do
       {:ok, server_group} = Factory.insert(:server_group)
 
       {:ok, %{domain_name: domain_name1}} =
         Factory.insert(:server, %{status: "ACTIVE", server_group_ids: [server_group.id]})
 
       {:ok, %{domain_name: domain_name2}} =
-        Factory.insert(:server, %{status: "ACTIVE", server_group_ids: [server_group.id]})
+        Factory.insert(:server, %{
+          port: 443,
+          status: "ACTIVE",
+          server_group_ids: [server_group.id]
+        })
 
       Factory.insert(:server, %{status: "INACTIVE", server_group_ids: [server_group.id]})
 
@@ -436,7 +440,7 @@ defmodule CtiKaltura.ProgramScheduling.SoapServersServiceTest do
       {:ok, program} = Factory.insert(:program, %{linear_channel_id: linear_channel.id})
       {:ok, program_record} = Factory.insert(:program_record, %{program_id: program.id})
 
-      standard = ["http://#{domain_name1}", "http://#{domain_name2}"]
+      standard = ["http://#{domain_name1}", "https://#{domain_name2}"]
       result = SoapServersService.edge_server_domain(program_record)
 
       assert result in standard

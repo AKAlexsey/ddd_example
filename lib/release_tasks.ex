@@ -85,7 +85,7 @@ defmodule CtiKaltura.ReleaseTasks do
 
       run_on_each_node(nodes, fn ->
         :mnesia.stop()
-        file_path = "#{File.cwd!()}/Mnesia.#{Node.self()}}"
+        file_path = "#{File.cwd!()}/Mnesia.#{Node.self()}"
         System.cmd("rm", ["-rf", file_path])
       end)
 
@@ -133,7 +133,7 @@ defmodule CtiKaltura.ReleaseTasks do
     else
       puts_message("Stopping mnesia")
       :mnesia.stop()
-      file_path = "#{File.cwd!()}/Mnesia.#{Node.self()}}"
+      file_path = "#{File.cwd!()}/Mnesia.#{Node.self()}"
       System.cmd("rm", ["-rf", file_path])
 
       puts_message("Creating schema")

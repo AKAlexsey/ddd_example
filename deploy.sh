@@ -12,29 +12,19 @@ fi
 if [ "$ENV" == "stage1" ]; then
   SERVER_IP=172.16.2.143
   DEPLOY_ENVIRONMENT=staging
-  # LINK_VM_ARGS=/home/app/cti_kaltura_build/vm.args
   BUILD_USER="app"
-  #ENV=stage
 elif [ "$ENV" == "stage2" ]; then
   SERVER_IP=172.16.2.6
   DEPLOY_ENVIRONMENT=staging
-  # LINK_VM_ARGS=/home/app/cti_kaltura_build/vm.args
   BUILD_USER="app"
-  #ENV=stage
 elif [ "$ENV" == "prod1" ]; then
   SERVER_IP=10.15.2.20
   DEPLOY_ENVIRONMENT=production
-  # LINK_VM_ARGS=/home/admintv/cti_kaltura_build/vm.args
   BUILD_USER="admintv"
-  #ENV=prod
 elif [ "$ENV" == "prod2" ]; then
-  echo -e "${BOLD}${RED}implement config for production core2"
-  exit 1
-#  SERVER_IP=10.15.2.20
-#  DEPLOY_ENVIRONMENT=production
-#  LINK_VM_ARGS=/home/admintv/cti_kaltura_build/vm.args
-#  BUILD_USER="admintv"
-#  ENV=prod
+  SERVER_IP=10.15.2.25
+  DEPLOY_ENVIRONMENT=production
+  BUILD_USER="admintv"
 elif true; then
   echo -e "${BOLD}${RED}UNKNOWN ENVIRONMENT ${ENV} DEVELOPMENT INTERRUPTED"
   exit 1

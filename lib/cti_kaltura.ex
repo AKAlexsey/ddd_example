@@ -41,7 +41,13 @@ defmodule CtiKaltura do
       {Individual, ReleaseTasksWorker}
     ]
 
-    opts = [strategy: :one_for_one, name: CtiKaltura.Supervisor]
+    opts = [
+      strategy: :one_for_one,
+      name: CtiKaltura.Supervisor,
+      max_restarts: 20,
+      max_seconds: 20
+    ]
+
     Supervisor.start_link(children, opts)
   end
 

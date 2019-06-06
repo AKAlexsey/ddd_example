@@ -78,7 +78,7 @@ defmodule CtiKaltura.ProgramScheduling.SoapServersService do
     |> select_edge_server()
     |> case do
       nil -> nil
-      %{domain_name: domain_name} -> "http:\/\/#{domain_name}"
+      %{domain_name: domain_name, port: port} -> "#{protocol(port)}:\/\/#{domain_name}"
     end
   end
 
@@ -88,6 +88,9 @@ defmodule CtiKaltura.ProgramScheduling.SoapServersService do
     random_number = :rand.uniform(ClosestEdgeServerService.sum_weights(servers))
     ClosestEdgeServerService.choose_server(servers, random_number)
   end
+
+  defp protocol(443), do: "https"
+  defp protocol(_), do: "http"
 
   defp select_all_servers_by_type(collection, type) when is_list(collection) do
     collection

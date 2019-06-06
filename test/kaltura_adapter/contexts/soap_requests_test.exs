@@ -412,6 +412,30 @@ defmodule CtiKaltura.ProgramScheduling.SoapRequestsTest do
                SoapRequests.get_params("scheduleRecording", {program, linear_channel, tv_stream})
     end
 
+    test "scheduleRecording request return error if no active edge server" do
+      {:ok, server_group} = Factory.insert(:server_group)
+
+      Factory.insert(:server, %{
+        type: "DVR",
+        status: "ACTIVE",
+        server_group_ids: [server_group.id]
+      })
+
+      Factory.insert(:server, %{status: "INACTIVE", server_group_ids: [server_group.id]})
+
+      {:ok, linear_channel} =
+        Factory.insert(:linear_channel, %{dvr_enabled: true, server_group_id: server_group.id})
+
+      {:ok, tv_stream} = Factory.insert(:tv_stream, %{linear_channel_id: linear_channel.id})
+
+      {:ok, program} = Factory.insert(:program, %{linear_channel_id: linear_channel.id})
+
+      Factory.insert(:program_record, %{program_id: program.id})
+
+      assert {:error, :no_edge_server} ==
+               SoapRequests.get_params("scheduleRecording", {program, linear_channel, tv_stream})
+    end
+
     test "getRecording request" do
       {:ok, %{path: path} = program_record} = Factory.insert(:program_record)
       assert {:ok, %{arg0: path}} == SoapRequests.get_params("getRecording", program_record)
