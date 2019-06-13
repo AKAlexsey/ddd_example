@@ -51,6 +51,10 @@ config :cti_kaltura, :epg_file_parser,
   # Путь до папки куда будут складываться отработанные файлы
   processed_files_directory: "/home/admintv/cti_kaltura/ftp_files/processed"
 
+config :cti_kaltura, :epg_files_downloading,
+  enabled: true,
+  delete_downloaded_files: true
+
 config :logger, compile_time_purge_level: :info
 
 if File.exists?("config/prod.secret.exs") do

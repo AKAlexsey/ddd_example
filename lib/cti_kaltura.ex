@@ -8,6 +8,7 @@ defmodule CtiKaltura do
 
   alias CtiKaltura.ProgramScheduling.{
     CreateProgramsWorker,
+    DownloadEpgFilesWorker,
     DvrSoapRequestsWorker,
     ParseFileWorker,
     ProgramRecordsCleanerWorker,
@@ -34,6 +35,7 @@ defmodule CtiKaltura do
         options: [port: http_main_router_port()]
       ),
       {Individual, CreateProgramsWorker},
+      {Individual, DownloadEpgFilesWorker},
       {Individual, DvrSoapRequestsWorker},
       {Individual, ParseFileWorker},
       {Individual, ProgramRecordsCleanerWorker},

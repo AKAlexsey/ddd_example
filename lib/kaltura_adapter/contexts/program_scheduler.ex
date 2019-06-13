@@ -11,12 +11,18 @@ defmodule CtiKaltura.ProgramScheduling.ProgramScheduler do
   По данным из EPG файла осущетсвляет инициализацию ProgramRecord для созданного в базе канала.
   Если канала с заданным EPG не существует, возаращет соответствующую ошибку.
   """
-  @spec perform(map()) :: :ok | {:error, :linear_channel_does_not_exist}
+  @spec perform(map()) ::
+          :ok
+          | {:error, :linear_channel_does_not_exist}
+          | {:error, :linear_channel_dvr_does_not_enabled}
   def perform(%{linear_channel: %{epg_id: epg_id}, programs: programs}) do
     case Content.get_linear_channel_by_epg(epg_id) do
-      %{id: linear_channel_id} ->
+      %{id: linear_channel_id, dvr_enabled: true} ->
         create_programs(programs, linear_channel_id)
         :ok
+
+      %{dvr_enabled: false} ->
+        {:error, :linear_channel_dvr_does_not_enabled}
 
       nil ->
         {:error, :linear_channel_does_not_exist}
