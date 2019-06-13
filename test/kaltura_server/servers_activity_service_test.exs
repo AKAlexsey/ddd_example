@@ -1,4 +1,4 @@
-defmoёёdule CtiKaltura.ServersActivityServiceTest do
+defmodule CtiKaltura.ServersActivityServiceTest do
   use CtiKaltura.MnesiaTestCase
   use CtiKaltura.DataCase
 

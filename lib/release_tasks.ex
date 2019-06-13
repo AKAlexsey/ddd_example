@@ -67,6 +67,11 @@ defmodule CtiKaltura.ReleaseTasks do
     run_in_not_test_env(fn -> IO.puts("# #{message}") end)
   end
 
+  defp puts_error_message(message) do
+    log_error(message)
+    run_in_not_test_env(fn -> IO.puts("# #{message}") end)
+  end
+
   defp run_in_not_test_env(fun) do
     if Application.get_env(:cti_kaltura, :env)[:current] != :test do
       fun.()
@@ -90,21 +95,26 @@ defmodule CtiKaltura.ReleaseTasks do
       end)
 
       puts_message("Creating schema")
-      Amnesia.Schema.create(nodes)
 
-      puts_message("Starting mnesia again")
+      case Amnesia.Schema.create(nodes) do
+        :ok ->
+          puts_message("Starting mnesia again")
 
-      run_on_each_node(nodes, fn ->
-        :mnesia.start()
-      end)
+          run_on_each_node(nodes, fn ->
+            :mnesia.start()
+          end)
 
-      :timer.sleep(500)
+          :timer.sleep(500)
 
-      puts_message("Initializing DomainModel")
-      DomainModel.create(memory: nodes)
-      DomainModel.add_indexes()
+          puts_message("Initializing DomainModel")
+          DomainModel.create(memory: nodes)
+          DomainModel.add_indexes()
 
-      cache_domain_model()
+          cache_domain_model()
+
+        error ->
+          puts_error_message("Error during resetting mnesia: #{inspect(error)}")
+      end
     else
       puts_message("Error during making clusters. Not all clusters are running")
     end
@@ -137,17 +147,22 @@ defmodule CtiKaltura.ReleaseTasks do
       System.cmd("rm", ["-rf", file_path])
 
       puts_message("Creating schema")
-      Amnesia.Schema.create()
 
-      puts_message("Starting mnesia again")
-      :mnesia.start()
-      :timer.sleep(500)
+      case Amnesia.Schema.create() do
+        :ok ->
+          puts_message("Starting mnesia again")
+          :mnesia.start()
+          :timer.sleep(500)
 
-      puts_message("Initializing DomainModel")
-      DomainModel.create(memory: [Node.self()])
-      DomainModel.add_indexes()
+          puts_message("Initializing DomainModel")
+          DomainModel.create(memory: [Node.self()])
+          DomainModel.add_indexes()
 
-      cache_domain_model()
+          cache_domain_model()
+
+        error ->
+          puts_error_message("Error during resetting mnesia: #{inspect(error)}")
+      end
     end
   end
 end

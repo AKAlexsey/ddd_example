@@ -42,3 +42,5 @@ config :cti_kaltura, :program_records_cleaner, enabled: false
 config :cti_kaltura, :programs_cleaner, enabled: false
 
 config :cti_kaltura, :dvr_soap_requests, enabled: false
+
+config :cti_kaltura, :epg_files_downloading, enabled: false

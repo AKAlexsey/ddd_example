@@ -1,6 +1,6 @@
 defmodule CtiKaltura.ProgramScheduling.CreateProgramsWorker do
   @moduledoc """
-  Stage для формирования программы передач по данным из EPG файла.
+  Worker для формирования программы передач по данным из EPG файла.
   """
 
   use GenServer
@@ -39,6 +39,11 @@ defmodule CtiKaltura.ProgramScheduling.CreateProgramsWorker do
       {:error, :linear_channel_does_not_exist} ->
         log_error(
           "Linear channel does not exist #{inspect(program_schedule_data.linear_channel)}."
+        )
+
+      {:error, :linear_channel_dvr_does_not_enabled} ->
+        log_error(
+          "Linear channel dvr does not enabled #{inspect(program_schedule_data.linear_channel)}."
         )
     end
 

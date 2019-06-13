@@ -1,11 +1,11 @@
 defmodule CtiKaltura.ProgramScheduling.ParseFileWorker do
   @moduledoc """
   GenServer. Скачивает EPG файл, парсит, берёт из него данные по LinearChannel и Program,
-  затем отправляет в следующий Stage.
+  затем отправляет в CreateProgramsWorker.
   """
 
   use CtiKaltura.ProgramScheduling.IntervalWorker,
-    logging_domain: :program_scheduling,
+    logging_domain: :epg_files,
     configuration_alias: :epg_file_parser
 
   alias CtiKaltura.ProgramScheduling.{CreateProgramsWorker, EpgFileParser}

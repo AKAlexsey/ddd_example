@@ -57,13 +57,14 @@ config :cti_kaltura, :env, current: Mix.env()
 config :logger,
   backends: [
     :console,
-    {LoggerFileBackend, :request_log},
+    {LoggerFileBackend, :caching_system_log},
+    {LoggerFileBackend, :database_log},
+    {LoggerFileBackend, :epg_files_log},
     {LoggerFileBackend, :program_scheduling_log},
     {LoggerFileBackend, :release_tasks_log},
-    {LoggerFileBackend, :caching_system_log},
-    {LoggerFileBackend, :sessions_log},
-    {LoggerFileBackend, :database_log},
-    {LoggerFileBackend, :servers_activity_log}
+    {LoggerFileBackend, :request_log},
+    {LoggerFileBackend, :servers_activity_log},
+    {LoggerFileBackend, :sessions_log}
   ]
 
 config :logger, :request_log,
@@ -108,6 +109,12 @@ config :logger, :servers_activity_log,
   level: :debug,
   format: "\n$date $time [$level] - $message"
 
+config :logger, :epg_files_log,
+  path: "log/epg_files.log",
+  metadata_filter: [domain: :epg_files],
+  level: :debug,
+  format: "\n$date $time [$level] - $message"
+
 config :soap, :globals, version: "1.1"
 
 config :cti_kaltura, :program_records_scheduler,
@@ -130,7 +137,7 @@ config :cti_kaltura, :program_records_cleaner,
   # Интервал с которым будет осуществляться очистка устаревших записей и программ (миллисекунды)
   run_interval: 30000,
   # Время хранения записей программы (часы)
-  storing_hours: 72
+  storing_hours: 48
 
 config :cti_kaltura, :programs_cleaner,
   # Включение и отключение функции очистки устареших программ из БД и с DVR сервера
@@ -138,7 +145,7 @@ config :cti_kaltura, :programs_cleaner,
   # Интервал с которым будет осуществляться очистка устаревших записей и программ (миллисекунды)
   run_interval: 30000,
   # Время хранения программы (часы)
-  storing_hours: 72
+  storing_hours: 48
 
 config :cti_kaltura, :dvr_soap_requests,
   # Включение и отключение отправки SOAP запросов на DVR
@@ -146,11 +153,31 @@ config :cti_kaltura, :dvr_soap_requests,
   # Интервал с которым будет происходить запрос WSDL (миллисекунды)
   run_interval: 5000,
   # Путь до WSDL XML файла
-  wsdl_file_path: "#{File.cwd!()}/priv/wsdl.xml",
+  wsdl_file_path: "#{File.cwd!()}/priv/program_scheduling/wsdl.xml",
   # SOAP пользователь для Basic ваторизации
   soap_user: "usercti",
   # SOAP пользователь для Basic ваторизации
   soap_password: "passcti"
+
+# https://stackoverflow.com/questions/29889881/an-example-ftp-session-using-elixir Answer for downloading
+config :cti_kaltura, :epg_files_downloading,
+  # Включение и отключение функции автоматического скачивания EPG файлов
+  enabled: false,
+  # Интервал с которым будет происходить проверка FTP папки
+  run_interval: 30000,
+  # Количество файлов, скачиваемых за одну итерацию
+  batch_size: 10,
+  # Хост FTP. Должен быть именно в одинарных кавычках.
+  ftp_host: 'ftp.epgservice.ru',
+  # Папка, в которой лежат файлы на FTP серере. Должен быть именно в одинарных кавычках.
+  ftp_folder: '4cti',
+  # Пользователь для доступа по FTP. Должен быть именно в одинарных кавычках.
+  ftp_user: 'beelinetvkz',
+  # Пароль для доступа по FTP. Должен быть именно в одинарных кавычках.
+  ftp_password: 'lQklCn8T',
+  # Настройка сделана для удобства. Чтобы можно было отлаживать программу
+  # и при этом не трогать файлы на FTP сервере.
+  delete_downloaded_files: false
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

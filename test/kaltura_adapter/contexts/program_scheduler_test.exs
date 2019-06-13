@@ -2,14 +2,21 @@ defmodule CtiKaltura.ProgramScheduling.ProgramSchedulerTest do
   use CtiKaltura.ModelCase, async: false
 
   alias CtiKaltura.{Content, Repo}
-  alias CtiKaltura.Content.Program
+  alias CtiKaltura.Content.{LinearChannel, Program}
   alias CtiKaltura.ProgramScheduling.{ProgramScheduler, Time}
 
   describe "#perform" do
     setup do
       epg_id = "000000014"
 
-      {:ok, linear_channel} = Factory.insert(:linear_channel, %{epg_id: epg_id})
+      {:ok, server_group} = Factory.insert(:server_group)
+
+      {:ok, linear_channel} =
+        Factory.insert(:linear_channel, %{
+          epg_id: epg_id,
+          dvr_enabled: true,
+          server_group_id: server_group.id
+        })
 
       program_data = %{
         linear_channel: %{epg_id: epg_id},
@@ -133,6 +140,18 @@ defmodule CtiKaltura.ProgramScheduling.ProgramSchedulerTest do
       Content.delete_linear_channel(linear_channel)
 
       assert {:error, :linear_channel_does_not_exist} == ProgramScheduler.perform(program_data)
+    end
+
+    test "Return error if LinearChannel dvr_enabled if false", %{
+      program_data: program_data,
+      linear_channel: linear_channel
+    } do
+      linear_channel
+      |> LinearChannel.changeset(%{dvr_enabled: false})
+      |> Repo.update!()
+
+      assert {:error, :linear_channel_dvr_does_not_enabled} ==
+               ProgramScheduler.perform(program_data)
     end
   end
 
