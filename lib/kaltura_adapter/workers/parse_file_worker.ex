@@ -8,7 +8,7 @@ defmodule CtiKaltura.ProgramScheduling.ParseFileWorker do
     logging_domain: :epg_files,
     configuration_alias: :epg_file_parser
 
-  alias CtiKaltura.ProgramScheduling.{CreateProgramsWorker, EpgFileParser}
+  alias CtiKaltura.ProgramScheduling.{CreateProgramsWorker, DownloadEpgFilesWorker, EpgFileParser}
 
   def useful_job do
     files_directory()
@@ -17,7 +17,7 @@ defmodule CtiKaltura.ProgramScheduling.ParseFileWorker do
       {:ok, :no_file} ->
         :ok
 
-      {:ok, %{linear_channel: linear_channel, programs: programs_list}} ->
+      {:ok, %{linear_channel: linear_channel, programs: programs_list, file_path: file_path}} ->
         log_info(
           "Start scheduling programs for LinearChannel #{inspect(linear_channel)}.\nPrograms ids: #{
             inspect(Enum.map(programs_list, & &1.epg_id))
@@ -28,6 +28,11 @@ defmodule CtiKaltura.ProgramScheduling.ParseFileWorker do
           linear_channel: linear_channel,
           programs: programs_list
         })
+
+        file_path
+        |> Path.basename()
+        |> String.to_charlist()
+        |> DownloadEpgFilesWorker.delete_file_from_ftp_host()
 
         :ok
 

@@ -22,33 +22,31 @@ defmodule CtiKaltura.ProgramScheduling.EpgFileParserTest do
       assert :no_file == EpgFileParser.get_first_file(processed_files_dir)
       assert moving_file_name_standard == Path.basename(EpgFileParser.get_first_file(files_dir))
 
-      standard =
-        {:ok,
-         %{
-           linear_channel: %{epg_id: "000000014"},
-           programs: [
-             %{
-               end_datetime: "20190406010000",
-               epg_id: "30190406003000",
-               name: "Click",
-               start_datetime: "20190406003000"
-             },
-             %{
-               end_datetime: "20190406013000",
-               epg_id: "30190406010000",
-               name: "BBC News Special",
-               start_datetime: "20190406010000"
-             },
-             %{
-               end_datetime: "20190406020000",
-               epg_id: "30190406013000",
-               name: "TBA",
-               start_datetime: "20190406013000"
-             }
-           ]
-         }}
-
-      assert standard == EpgFileParser.one_file_data(files_dir, processed_files_dir)
+      assert {:ok,
+              %{
+                linear_channel: %{epg_id: "000000014"},
+                programs: [
+                  %{
+                    end_datetime: "20190406010000",
+                    epg_id: "30190406003000",
+                    name: "Click",
+                    start_datetime: "20190406003000"
+                  },
+                  %{
+                    end_datetime: "20190406013000",
+                    epg_id: "30190406010000",
+                    name: "BBC News Special",
+                    start_datetime: "20190406010000"
+                  },
+                  %{
+                    end_datetime: "20190406020000",
+                    epg_id: "30190406013000",
+                    name: "TBA",
+                    start_datetime: "20190406013000"
+                  }
+                ],
+                file_path: _
+              }} = EpgFileParser.one_file_data(files_dir, processed_files_dir)
 
       assert moving_file_name_standard ==
                Path.basename(EpgFileParser.get_first_file(processed_files_dir))

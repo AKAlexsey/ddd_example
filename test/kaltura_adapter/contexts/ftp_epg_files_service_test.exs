@@ -113,7 +113,7 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesServiceTest do
 
       with_mocks([
         {:ftp, [],
-         ls: fn _ -> {:ok, remote_ls_query_response} end,
+         nlist: fn _ -> {:ok, remote_ls_query_response} end,
          recv: fn
            ^pid, 'file1.xml' -> :ok
            ^pid, 'file2.xml' -> {:error, :epath}
@@ -132,7 +132,7 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesServiceTest do
 
       with_mocks([
         {:ftp, [],
-         ls: fn _ -> {:ok, remote_ls_query_response} end, recv: fn ^pid, 'file1.xml' -> :ok end}
+         nlist: fn _ -> {:ok, remote_ls_query_response} end, recv: fn ^pid, 'file1.xml' -> :ok end}
       ]) do
         assert {:ok, {['file1.xml'], []}} == FtpEpgFilesService.query_ftp_files_batch(pid, 10)
       end
@@ -146,7 +146,7 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesServiceTest do
         {
           :ftp,
           [],
-          ls: fn _ -> {:ok, remote_ls_query_response} end
+          nlist: fn _ -> {:ok, remote_ls_query_response} end
         }
       ]) do
         assert {:ok, :no_files} == FtpEpgFilesService.query_ftp_files_batch(pid, 10)
@@ -158,7 +158,7 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesServiceTest do
         {
           :ftp,
           [],
-          ls: fn _ -> {:error, :econn} end
+          nlist: fn _ -> {:error, :econn} end
         }
       ]) do
         assert {:error, {:error, :econn}} == FtpEpgFilesService.query_ftp_files_batch(pid, 10)
@@ -166,28 +166,43 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesServiceTest do
     end
   end
 
-  describe "#delete_ftp_files" do
-    test "Remove each given file and return result in specific way" do
+  describe "#delete_ftp_file" do
+    test "Remove given file in given folder if they exist" do
       with_mocks([
         {
           :ftp,
           [],
           delete: fn
             :pid, 'file1.xml' -> :ok
-            :pid, 'file2.xml' -> {:error, :epath}
-            :pid, 'file3.xml' -> {:error, :econn}
-          end
+          end,
+          cd: fn :pid, _ -> :ok end
         }
       ]) do
-        files = ['file1.xml', 'file2.xml', 'file3.xml']
+        assert :ok == FtpEpgFilesService.delete_ftp_file(:pid, '4cti', 'file1.xml')
+      end
+    end
 
-        standard = [
-          {'file1.xml', :ok},
-          {'file2.xml', {:error, :epath}},
-          {'file3.xml', {:error, :econn}}
-        ]
+    test "Return error if remote folder does not exist" do
+      with_mocks([
+        {
+          :ftp,
+          [],
+          cd: fn :pid, '4cti' -> {:error, :epath} end
+        }
+      ]) do
+        assert {:error, :epath} == FtpEpgFilesService.delete_ftp_file(:pid, '4cti', 'file1.xml')
+      end
+    end
 
-        assert standard == FtpEpgFilesService.delete_ftp_files(:pid, files)
+    test "Return error if file does not exist" do
+      with_mocks([
+        {
+          :ftp,
+          [],
+          cd: fn :pid, _ -> :ok end, delete: fn :pid, 'file1.xml' -> {:error, :epath} end
+        }
+      ]) do
+        assert {:error, :epath} == FtpEpgFilesService.delete_ftp_file(:pid, '4cti', 'file1.xml')
       end
     end
   end
