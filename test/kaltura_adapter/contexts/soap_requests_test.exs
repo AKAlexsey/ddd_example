@@ -375,7 +375,7 @@ defmodule CtiKaltura.ProgramScheduling.SoapRequestsTest do
   end
 
   describe "#get_params" do
-    test "scheduleRecording request" do
+    test "scheduleRecording request if LinearChannel does not have :storage_id" do
       {:ok, server_group} = Factory.insert(:server_group)
 
       {:ok, %{domain_name: domain_name}} =
@@ -405,6 +405,48 @@ defmodule CtiKaltura.ProgramScheduling.SoapRequestsTest do
                "format=#{String.downcase(protocol)};encryption=#{String.downcase(encryption)};channel=#{
                  code_name
                }"
+           }
+         }}
+
+      assert standard ==
+               SoapRequests.get_params("scheduleRecording", {program, linear_channel, tv_stream})
+    end
+
+    test "scheduleRecording request if LinearChannel have :storage_id" do
+      storage_id = 4
+      {:ok, server_group} = Factory.insert(:server_group)
+
+      {:ok, %{domain_name: domain_name}} =
+        Factory.insert(:server, %{status: "ACTIVE", server_group_ids: [server_group.id]})
+
+      {:ok, %{code_name: code_name} = linear_channel} =
+        Factory.insert(:linear_channel, %{
+          storage_id: storage_id,
+          dvr_enabled: true,
+          server_group_id: server_group.id
+        })
+
+      {:ok, %{stream_path: stream_path, protocol: protocol, encryption: encryption} = tv_stream} =
+        Factory.insert(:tv_stream, %{linear_channel_id: linear_channel.id})
+
+      {:ok,
+       %{epg_id: epg_id, start_datetime: start_datetime, end_datetime: end_datetime} = program} =
+        Factory.insert(:program, %{linear_channel_id: linear_channel.id})
+
+      Factory.insert(:program_record, %{program_id: program.id})
+
+      standard =
+        {:ok,
+         %{
+           arg0: %{
+             plannedStartTime: Time.soap_datetime(start_datetime),
+             plannedEndTime: Time.soap_datetime(end_datetime),
+             assetToCapture: "http://#{domain_name}#{stream_path}",
+             placement: "#{code_name}/#{protocol}/#{encryption}/#{epg_id}",
+             params:
+               "format=#{String.downcase(protocol)};encryption=#{String.downcase(encryption)};channel=#{
+                 code_name
+               };storageID=#{storage_id}"
            }
          }}
 

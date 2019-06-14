@@ -16,21 +16,24 @@ defmodule CtiKaltura.ContentTest do
       description: "some description",
       dvr_enabled: false,
       epg_id: "some epg_id",
-      name: "some name"
+      name: "some name",
+      storage_id: 1
     }
     @update_attrs %{
       code_name: "some updated code_name",
       description: "some updated description",
       dvr_enabled: true,
       epg_id: "some updated epg_id",
-      name: "some updated name"
+      name: "some updated name",
+      storage_id: 2
     }
     @invalid_attrs %{
       code_name: nil,
       description: nil,
       dvr_enabled: nil,
       epg_id: nil,
-      name: nil
+      name: nil,
+      storage_id: 0
     }
 
     def linear_channel_fixture(attrs \\ %{}) do

@@ -115,7 +115,7 @@ defmodule CtiKaltura.ProgramScheduling.SoapRequests do
           params:
             "format=#{String.downcase(protocol)};encryption=#{String.downcase(encryption)};channel=#{
               code_name
-            }"
+            }#{storage_id_parameter(linear_channel)}"
         }
 
         {:ok, %{arg0: request_params}}
@@ -133,6 +133,12 @@ defmodule CtiKaltura.ProgramScheduling.SoapRequests do
   def get_params(_, _) do
     {:error, :invalid_params}
   end
+
+  defp storage_id_parameter(%{storage_id: storage_id}) when is_integer(storage_id) do
+    ";storageID=#{storage_id}"
+  end
+
+  defp storage_id_parameter(_), do: ""
 
   defp perform_request(operation, params, dvr_server_domain, true) do
     DvrSoapRequestsWorker.async_request(operation, params, dvr_server_domain)

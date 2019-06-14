@@ -55,6 +55,43 @@ defmodule KalturaAdmin.LinearChannelTest do
     end
   end
 
+  describe "Validations" do
+    setup do
+      {:ok, linear_channel} = Factory.insert(:linear_channel)
+      {:ok, linear_channel: linear_channel}
+    end
+
+    test "Valid if storage_id is nil", %{linear_channel: linear_channel} do
+      changeset = LinearChannel.changeset(linear_channel, %{storage_id: nil})
+      assert %{valid?: true} = changeset
+    end
+
+    test "Invalid if storage_id less than 1 #1", %{linear_channel: linear_channel} do
+      changeset = LinearChannel.changeset(linear_channel, %{storage_id: 0})
+      assert %{valid?: false, errors: [storage_id: _]} = changeset
+    end
+
+    test "Invalid if storage_id less than 1 #2", %{linear_channel: linear_channel} do
+      changeset = LinearChannel.changeset(linear_channel, %{storage_id: -5})
+      assert %{valid?: false, errors: [storage_id: _]} = changeset
+    end
+
+    test "Valid if storage_id is 1", %{linear_channel: linear_channel} do
+      changeset = LinearChannel.changeset(linear_channel, %{storage_id: 1})
+      assert %{valid?: true} = changeset
+    end
+
+    test "Valid if storage_id is 10", %{linear_channel: linear_channel} do
+      changeset = LinearChannel.changeset(linear_channel, %{storage_id: 10})
+      assert %{valid?: true} = changeset
+    end
+
+    test "Invalid if storage_id more than 1", %{linear_channel: linear_channel} do
+      changeset = LinearChannel.changeset(linear_channel, %{storage_id: 11})
+      assert %{valid?: false, errors: [storage_id: _]} = changeset
+    end
+  end
+
   describe "UNIQUE constraints : " do
     setup do
       {:ok, linear_channel} = Factory.insert(:linear_channel)
