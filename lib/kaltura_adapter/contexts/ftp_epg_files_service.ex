@@ -3,9 +3,6 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesService do
   Содерижт функции, для скачивания файлов с FTP.
   """
 
-  # TODO удалить после отладки
-  # use CtiKaltura.KalturaLogger, metadata: [domain: :epg_files]
-
   @connection_error_prefix "FTP Connection problem."
   @epg_file_regex ~r/[\w\d]+\.xml/
 
@@ -73,8 +70,8 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesService do
   @spec query_ftp_files_batch(pid, integer) ::
           {:ok, :no_files} | {:ok, {list, list}} | {:error, any}
   def query_ftp_files_batch(pid, batch_size) do
-    with {:ok, pwd_result} <- :ftp.ls(pid),
-         epg_files <- epg_files_list(pwd_result),
+    with {:ok, ls_result} <- :ftp.nlist(pid),
+         epg_files <- epg_files_list(ls_result),
          batch_epg_files when length(batch_epg_files) > 0 <- Enum.take(epg_files, batch_size),
          files_download_result <- download_files(pid, batch_epg_files) do
       make_response(files_download_result)
@@ -87,8 +84,8 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesService do
     end
   end
 
-  defp epg_files_list(pwd_result) do
-    pwd_result
+  defp epg_files_list(ls_result) do
+    ls_result
     |> to_charlist()
     |> to_string()
     |> String.split("\n")
@@ -127,9 +124,14 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesService do
   @doc """
   Принимает pid Inets процесса и список файлов и удаляет их с FTP сервера.
   """
-  @spec delete_ftp_files(pid, list) :: :ok | {:error, binary}
-  def delete_ftp_files(pid, files_list) do
-    Enum.map(files_list, fn file -> {file, :ftp.delete(pid, file)} end)
+  @spec delete_ftp_file(pid, binary, binary) :: :ok | {:error, binary}
+  def delete_ftp_file(pid, remote_file_folder, file_name) do
+    with :ok <- :ftp.cd(pid, remote_file_folder),
+         :ok <- :ftp.delete(pid, file_name) do
+      :ok
+    else
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   @doc """

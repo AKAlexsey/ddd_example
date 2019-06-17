@@ -33,7 +33,7 @@ defmodule CtiKaltura.ProgramScheduling.EpgFileParser do
          linear_channel <- get_linear_channel(file),
          programs_list <- get_programs_data(file) do
       move_file_to_processed(file_path, processed_files_directory)
-      {:ok, %{linear_channel: linear_channel, programs: programs_list}}
+      {:ok, %{linear_channel: linear_channel, programs: programs_list, file_path: file_path}}
     else
       :no_file -> {:ok, :no_file}
       {:error, reason} -> {:error, reason}

@@ -60,6 +60,13 @@ defmodule CtiKaltura.LinearChannelView do
         :mode => [:table, :show, :edit, :create]
       },
       %{
+        :header => "Storage ID",
+        :type => :select,
+        :field => :storage_id,
+        :items => storage_id_range(),
+        :mode => [:table, :show, :edit, :create]
+      },
+      %{
         :header => "Recording server group",
         :type => :select_entity,
         :field => :server_group_id,

@@ -12,7 +12,8 @@ defmodule CtiKaltura.LinearChannelFactory do
       description: Faker.Lorem.sentence(),
       dvr_enabled: false,
       epg_id: "#{Faker.Lorem.word()}_#{:rand.uniform(1000)}#{:rand.uniform(10000)}",
-      server_group_id: nil
+      server_group_id: nil,
+      storage_id: nil
     }
 
   def build(attrs) do

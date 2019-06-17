@@ -15,9 +15,12 @@ defmodule CtiKaltura.Content.LinearChannel do
     :description,
     :dvr_enabled,
     :epg_id,
-    :server_group_id
+    :server_group_id,
+    :storage_id
   ]
   @required_fields [:name, :code_name, :epg_id]
+  @minimum_storage_id_value 1
+  @maximum_storage_id_value 10
 
   @type t :: %__MODULE__{}
 
@@ -27,6 +30,7 @@ defmodule CtiKaltura.Content.LinearChannel do
     field(:description, :string, null: true)
     field(:dvr_enabled, :boolean, default: false)
     field(:epg_id, :string, unique: true)
+    field(:storage_id, :integer, null: true)
 
     belongs_to(:server_group, ServerGroup)
 
@@ -35,6 +39,9 @@ defmodule CtiKaltura.Content.LinearChannel do
 
     timestamps()
   end
+
+  def minimum_storage_id_value, do: @minimum_storage_id_value
+  def maximum_storage_id_value, do: @maximum_storage_id_value
 
   @doc false
   def changeset(tv_stream, attrs) do
@@ -46,15 +53,20 @@ defmodule CtiKaltura.Content.LinearChannel do
     |> unique_constraint(:code_name)
     |> unique_constraint(:epg_id)
     |> validate_server_group_id_if_necessary()
+    |> validate_number(
+      :storage_id,
+      greater_than_or_equal_to: @minimum_storage_id_value,
+      less_than_or_equal_to: @maximum_storage_id_value
+    )
     |> cast_tv_streams(attrs)
   end
 
-  def validate_server_group_id_if_necessary(%{changes: %{dvr_enabled: true}} = changeset) do
+  defp validate_server_group_id_if_necessary(%{changes: %{dvr_enabled: true}} = changeset) do
     changeset
     |> validate_required([:server_group_id])
   end
 
-  def validate_server_group_id_if_necessary(changeset), do: changeset
+  defp validate_server_group_id_if_necessary(changeset), do: changeset
 
   defp cast_tv_streams(changeset, %{tv_streams: tv_stream_attributes}) do
     perform_casting_tv_streams(changeset, tv_stream_attributes)
