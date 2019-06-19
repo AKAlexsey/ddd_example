@@ -30,9 +30,11 @@ config :cti_kaltura, :public_api, module: CtiKaltura.PublicApi
 
 config :cti_kaltura, domain_model_handler: CtiKaltura.Handlers.DomainModelHandler
 
+config :cti_kaltura, :pagination, default_per_page: 100
+
 # Таймаут запуска колбеков (миллисекунды)
 config :cti_kaltura, after_start_callback_timeout: 3000
-config :cti_kaltura, servers_activity_checking_timeout: 10000
+config :cti_kaltura, servers_activity_checking_timeout: 10_000
 
 config :cti_kaltura, CtiKaltura.RequestProcessing.MainRouter,
   http_port: [
@@ -121,7 +123,7 @@ config :cti_kaltura, :program_records_scheduler,
   # Включение и отключение планирование статуса записей
   enabled: true,
   # Интервал с которым будет производиться планирование записей (миллисекунды)
-  run_interval: 15000,
+  run_interval: 15_000,
   # Время, через которое должны начинаться программы, для которых будет осуществляться планирование записей(секунды)
   seconds_after: 1200
 
@@ -129,13 +131,13 @@ config :cti_kaltura, :program_records_status,
   # актуализации статуса записей
   enabled: true,
   # Интервал с которым будет производиться проверка состояния записей (миллисекунды)
-  run_interval: 15000
+  run_interval: 15_000
 
 config :cti_kaltura, :program_records_cleaner,
   # Включение и отключение функции очистки устареших записей программ из БД и с DVR сервера
   enabled: true,
   # Интервал с которым будет осуществляться очистка устаревших записей и программ (миллисекунды)
-  run_interval: 30000,
+  run_interval: 30_000,
   # Время хранения записей программы (часы)
   storing_hours: 48
 
@@ -143,7 +145,7 @@ config :cti_kaltura, :programs_cleaner,
   # Включение и отключение функции очистки устареших программ из БД и с DVR сервера
   enabled: true,
   # Интервал с которым будет осуществляться очистка устаревших записей и программ (миллисекунды)
-  run_interval: 30000,
+  run_interval: 30_000,
   # Время хранения программы (часы)
   storing_hours: 48
 
@@ -164,7 +166,7 @@ config :cti_kaltura, :epg_files_downloading,
   # Включение и отключение функции автоматического скачивания EPG файлов
   enabled: false,
   # Интервал с которым будет происходить проверка FTP папки
-  run_interval: 30000,
+  run_interval: 30_000,
   # Количество файлов, скачиваемых за одну итерацию
   batch_size: 10,
   # Хост FTP. Должен быть именно в одинарных кавычках.

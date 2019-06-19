@@ -53,7 +53,9 @@ echo -e "${BOLD}${YELLOW}START DEPLOYING RELEASE"
 DELIVER_TO=$DELIVER_TO MIX_ENV=$ENV LINK_VM_ARGS=$LINK_VM_ARGS mix edeliver deploy release to $DEPLOY_ENVIRONMENT --clean-deploy --mix-env=$ENV --host=$SERVER_IP --version=$VERSION
 
 echo -e "${BOLD}${YELLOW}RESTART PROJECT"
+ssh $BUILD_USER@$SERVER_IP "sudo service keepalived stop"
 ssh $BUILD_USER@$SERVER_IP "${COMPILED_PROJECT_PATH} stop ; ${COMPILED_PROJECT_PATH} start"
+ssh $BUILD_USER@$SERVER_IP "sudo service keepalived start"
 
 echo -e "${BOLD}${YELLOW}RUNNING MIGRATIONS"
 ssh $BUILD_USER@$SERVER_IP "${COMPILED_PROJECT_PATH} migrate"

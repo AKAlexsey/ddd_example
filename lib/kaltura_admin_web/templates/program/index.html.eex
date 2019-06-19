@@ -3,9 +3,78 @@
       link_create:   program_path(@conn, :new)
 %>
 
-<%= render CtiKaltura.LayoutView, "table.html",
-      items:           @programs,
-      conn:            @conn,
-      entity_link_fn:  &program_path/3,
-      meta:            meta()
+<div class="entity-header">
+  <%= render CtiKaltura.PaginationView, "pagination.html",
+        pagination_meta: @pagination_meta,
+        path_function: fn params -> program_path(@conn, :index, params) end
+  %>
+
+  <%= render CtiKaltura.PaginationView, "filtering.html",
+        pagination_meta: @pagination_meta,
+        path: program_path(@conn, :index),
+        conn: @conn,
+        collection: linear_channels_for_filtering()
+  %>
+</div>
+
+<table class="<%= if assigns[:style_class] do "table table-data #{@style_class}" else "table table-data" end  %>">
+  <thead>
+    <tr>
+      <th>
+        <%= render CtiKaltura.PaginationView, "ordering.html",
+                        pagination_meta: @pagination_meta,
+                        label: "Name",
+                        field: :name,
+                        path_function: fn params -> program_path(@conn, :index, params) end %>
+      </th>
+      <th>
+        <%= render CtiKaltura.PaginationView, "ordering.html",
+                        pagination_meta: @pagination_meta,
+                        label: "Period",
+                        field: :start_datetime,
+                        path_function: fn params -> program_path(@conn, :index, params) end  %>
+      </th>
+      <th>
+        <%= render CtiKaltura.PaginationView, "ordering.html",
+                        pagination_meta: @pagination_meta,
+                        label: "EPG ID",
+                        field: :epg_id,
+                        path_function: fn params -> program_path(@conn, :index, params) end  %>
+      </th>
+      <th>TV channel</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% linear_channels_list = linear_channels() %>
+    <%= for program <- @programs do %>
+        <tr>
+          <td class="clickable" data-click-path="<%= program_path(@conn, :show, program) %>">
+            <%= Map.get(program, :name) %>
+          </td>
+          <td class="clickable" data-click-path="<%= program_path(@conn, :show, program) %>">
+            <%= raw(as_html_period(program)) %>
+          </td>
+          <td class="clickable" data-click-path="<%= program_path(@conn, :show, program) %>">
+            <%= Map.get(program, :epg_id) %>
+          </td>
+          <td class="clickable" data-click-path="<%= program_path(@conn, :show, program) %>">
+            <%= {label, id} = Enum.find(linear_channels_list, {"" , 0} ,fn {_, item_id} -> item_id == Map.get(program, :linear_channel_id) end)
+                if id > 0, do: raw("<span class=\"elem\">#{label}</span>"), else: ""
+            %>
+          </td>
+
+          <td class="row-btns">
+            <%= render CtiKaltura.LayoutView, "record_btns.html",
+                  link_edit:   program_path(@conn, :edit,   program) ,
+                  link_delete: program_path(@conn, :delete, program)  %>
+          </td>
+        </tr>
+    <%end%>
+  </tbody>
+</table>
+
+<%= render CtiKaltura.PaginationView, "pagination.html",
+      pagination_meta: @pagination_meta,
+      path_function: fn params -> program_path(@conn, :index, params) end
 %>
