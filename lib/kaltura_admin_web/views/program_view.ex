@@ -10,6 +10,11 @@ defmodule CtiKaltura.ProgramView do
     |> Enum.map(fn %{id: id, name: name} -> {name, id} end)
   end
 
+  def linear_channels_for_filtering do
+    Content.list_linear_channels()
+    |> Enum.map(fn %{id: id, name: name} -> {name, "linear_channel_id:#{id}"} end)
+  end
+
   def as_html_period(item) do
     "<span class=\"date\">#{Util.date_to_string(item.start_datetime)}</span> [ #{
       Util.time_to_string(item.start_datetime)

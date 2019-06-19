@@ -30,7 +30,6 @@ defmodule CtiKaltura.ProgramScheduling.DownloadEpgFilesWorker do
           log_error("Error during requesting files: #{inspect(reason)}")
 
         {:ok, :no_files} ->
-          log_info("No files")
           :ok
       end
     end)

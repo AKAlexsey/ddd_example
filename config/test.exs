@@ -33,6 +33,8 @@ config :cti_kaltura, :epg_file_parser,
 
 config :logger, backends: []
 
+config :cti_kaltura, :pagination, default_per_page: 25
+
 config :cti_kaltura, :program_records_scheduler, enabled: false
 
 config :cti_kaltura, :program_records_status, enabled: false

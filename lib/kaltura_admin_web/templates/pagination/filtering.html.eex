@@ -1,0 +1,19 @@
+
+<%= form_for @conn, @path, [method: :get, class: "form-inline"], fn f -> %>
+  <%= if Map.get(@pagination_meta, :page) do %>
+    <%= hidden_input(f, :page, value: 1) %>
+  <% end %>
+  <%= if Map.get(@pagination_meta, :per_page) do %>
+    <%= hidden_input(f, :per_page, value: Map.get(@pagination_meta, :per_page)) %>
+  <% end %>
+  <%= if Map.get(@pagination_meta, :order_by) do %>
+    <%= hidden_input(f, :order_by, value: Map.get(@pagination_meta, :order_by)) %>
+  <% end %>
+  <div class="form-group">
+   <%= select(f, :filter_by, @collection, prompt: "Select LinearChannel", selected: Map.get(@pagination_meta, :filter_by, nil), class: "form-control") %>
+  </div>
+  <div class="form-group">
+    <%= submit "Filter", class: "btn btn-primary" %>
+    <a class="btn btn-primary" href=<%= @path %>>Reset filters</a>
+  </div>
+<% end %>

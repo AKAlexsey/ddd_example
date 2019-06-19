@@ -172,10 +172,7 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesServiceTest do
         {
           :ftp,
           [],
-          delete: fn
-            :pid, 'file1.xml' -> :ok
-          end,
-          cd: fn :pid, _ -> :ok end
+          delete: fn :pid, 'file1.xml' -> :ok end, cd: fn :pid, _ -> :ok end
         }
       ]) do
         assert :ok == FtpEpgFilesService.delete_ftp_file(:pid, '4cti', 'file1.xml')

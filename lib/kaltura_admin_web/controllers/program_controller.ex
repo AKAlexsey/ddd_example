@@ -1,12 +1,19 @@
 defmodule CtiKaltura.ProgramController do
   use CtiKalturaWeb, :controller
 
-  alias CtiKaltura.{Content, ErrorHelpers}
+  alias CtiKaltura.{Content, ContentPagination, ErrorHelpers}
   alias CtiKaltura.Content.Program
 
-  def index(conn, _params) do
-    programs = Content.list_programs([:linear_channel])
-    render(conn, "index.html", programs: programs, current_user: load_user(conn))
+  def index(conn, params) do
+    {programs, pagination_meta} = ContentPagination.programs_pagination(params, [:linear_channel])
+
+    render(
+      conn,
+      "index.html",
+      programs: programs,
+      current_user: load_user(conn),
+      pagination_meta: pagination_meta
+    )
   end
 
   def new(conn, _params) do

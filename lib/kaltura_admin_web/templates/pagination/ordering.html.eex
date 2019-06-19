@@ -1,0 +1,1 @@
+<a href="<%= ordering_link(@pagination_meta, @field, @path_function) %>"><%= ordering_label(@pagination_meta, @field, @label) %></a>

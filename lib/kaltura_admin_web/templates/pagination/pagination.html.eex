@@ -1,0 +1,17 @@
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    <li class="<%= previous_page_class(@pagination_meta) %>">
+      <a href="<%= @path_function.(put_pagination(@pagination_meta, %{page: previous_page(@pagination_meta)})) %>" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <%= Enum.map(pages_list(@pagination_meta), fn {page_number, active_class} -> %>
+       <li class="<%= active_class %>"><a href="<%= @path_function.(put_pagination(@pagination_meta, %{page: page_number})) %>"><%= page_number %></a></li>
+    <% end) %>
+    <li class="<%= next_page_class(@pagination_meta) %>">
+      <a href="<%= @path_function.(put_pagination(@pagination_meta, %{page: next_page(@pagination_meta)})) %>" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

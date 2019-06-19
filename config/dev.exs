@@ -88,6 +88,14 @@ config :cti_kaltura, :epg_file_parser,
   # Путь до папки куда будут складываться отработанные файлы
   processed_files_directory: "#{File.cwd!()}/ftp_files/processed"
 
+config :cti_kaltura, :program_records_scheduler, enabled: false
+
+config :cti_kaltura, :program_records_status, enabled: false
+
+config :cti_kaltura, :program_records_cleaner, enabled: false
+
+config :cti_kaltura, :programs_cleaner, enabled: false
+
 if File.exists?("config/dev.custom.exs") do
   import_config("dev.custom.exs")
 end
