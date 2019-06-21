@@ -28,11 +28,11 @@ defmodule CtiKaltura.ProgramScheduling.CreateProgramsWorker do
   def handle_cast({:schedule_programs, program_schedule_data}, state) do
     log_info("Event received schedule_programs")
 
-    case ProgramScheduler.perform(program_schedule_data) do
-      :ok ->
+    case ProgramScheduler.perform(program_schedule_data, threshold_seconds()) do
+      {:ok, %{linear_channel: linear_channel, programs: created_programs}} ->
         log_info(
-          "Programs for #{inspect(program_schedule_data.linear_channel)} has been created. Programs count #{
-            length(program_schedule_data.programs)
+          "Programs for #{linear_channel} has been created. Programs count #{
+            length(created_programs)
           }."
         )
 
@@ -48,5 +48,9 @@ defmodule CtiKaltura.ProgramScheduling.CreateProgramsWorker do
     end
 
     {:noreply, state}
+  end
+
+  def threshold_seconds do
+    Application.get_env(:cti_kaltura, :program_scheudling)[:threshold_seconds]
   end
 end

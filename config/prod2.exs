@@ -53,7 +53,11 @@ config :cti_kaltura, :epg_file_parser,
 
 config :cti_kaltura, :epg_files_downloading,
   enabled: true,
-  delete_downloaded_files: true
+  delete_downloaded_files: true,
+  batch_size: 50,
+  ftp_host: 'ftp.epgservice.ru',
+  ftp_user: 'kzprod2',
+  ftp_password: '9SNJ716Y'
 
 config :logger, compile_time_purge_level: :info
 

@@ -10,16 +10,29 @@ defmodule CtiKaltura.ProgramScheduling.ProgramScheduler do
   @doc """
   По данным из EPG файла осущетсвляет инициализацию ProgramRecord для созданного в базе канала.
   Если канала с заданным EPG не существует, возаращет соответствующую ошибку.
+
+  Второй аргумент добавлен в целях тестирования и для "Чистоты" функции.
   """
-  @spec perform(map()) ::
+  @spec perform(map(), integer, NaiveDateTime.t()) ::
           :ok
           | {:error, :linear_channel_does_not_exist}
           | {:error, :linear_channel_dvr_does_not_enabled}
-  def perform(%{linear_channel: %{epg_id: epg_id}, programs: programs}) do
+  def perform(program_params, threshold_seconds, time \\ nil)
+
+  def perform(program_params, threshold_seconds, nil) do
+    perform(program_params, threshold_seconds, NaiveDateTime.utc_now())
+  end
+
+  def perform(
+        %{linear_channel: %{epg_id: epg_id}, programs: programs},
+        threshold_seconds,
+        current_time
+      ) do
     case Content.get_linear_channel_by_epg(epg_id) do
       %{id: linear_channel_id, dvr_enabled: true} ->
-        create_programs(programs, linear_channel_id)
-        :ok
+        programs
+        |> filter_appropriate_programs(threshold_seconds, current_time)
+        |> create_programs(linear_channel_id)
 
       %{dvr_enabled: false} ->
         {:error, :linear_channel_dvr_does_not_enabled}
@@ -29,9 +42,16 @@ defmodule CtiKaltura.ProgramScheduling.ProgramScheduler do
     end
   end
 
-  defp create_programs([], _linear_channel_id) do
-    :ok
+  defp filter_appropriate_programs(programs, threshold_seconds, current_time) do
+    threshold_time = NaiveDateTime.add(current_time, threshold_seconds)
+
+    programs
+    |> Enum.filter(fn %{start_datetime: start_datetime} ->
+      NaiveDateTime.diff(Time.time_to_utc(start_datetime), threshold_time) > 0
+    end)
   end
+
+  defp create_programs([], _), do: :ok
 
   defp create_programs(programs_list, linear_channel_id) do
     delete_old_programs(programs_list, linear_channel_id)
@@ -48,8 +68,8 @@ defmodule CtiKaltura.ProgramScheduling.ProgramScheduler do
     Content.delete_programs_from_interval(start_datetime, end_datetime, linear_channel_id)
   end
 
-  defp create_new_programs(programs_list, linear_channel_id) do
-    programs_list
+  defp create_new_programs(filtered_programs_list, linear_channel_id) do
+    filtered_programs_list
     |> Enum.each(fn program_params ->
       program_params
       |> Map.put(:linear_channel_id, linear_channel_id)
@@ -57,6 +77,8 @@ defmodule CtiKaltura.ProgramScheduling.ProgramScheduler do
       |> Map.update!(:end_datetime, &Time.time_to_utc/1)
       |> Content.create_program()
     end)
+
+    {:ok, %{programs: filtered_programs_list, linear_channel: linear_channel_id}}
   end
 
   @doc """
