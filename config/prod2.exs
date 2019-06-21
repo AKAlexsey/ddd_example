@@ -57,7 +57,8 @@ config :cti_kaltura, :epg_files_downloading,
   batch_size: 50,
   ftp_host: 'ftp.epgservice.ru',
   ftp_user: 'kzprod2',
-  ftp_password: '9SNJ716Y'
+  ftp_password: '9SNJ716Y',
+  ftp_folder: ''
 
 config :logger, compile_time_purge_level: :info
 
