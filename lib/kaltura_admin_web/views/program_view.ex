@@ -13,6 +13,12 @@ defmodule CtiKaltura.ProgramView do
   def linear_channels_for_filtering do
     Content.list_linear_channels()
     |> Enum.map(fn %{id: id, name: name} -> {name, "linear_channel_id:#{id}"} end)
+    |> Enum.sort_by(fn {name, _value} ->
+      name
+      |> String.downcase()
+      |> String.to_charlist()
+      |> (fn list -> if(list == [], do: 0, else: hd(list)) end).()
+    end)
   end
 
   def as_html_period(item) do

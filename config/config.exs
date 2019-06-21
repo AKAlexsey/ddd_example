@@ -161,6 +161,10 @@ config :cti_kaltura, :dvr_soap_requests,
   # SOAP пользователь для Basic ваторизации
   soap_password: "passcti"
 
+config :cti_kaltura, :program_scheudling,
+  # Планирование программ осуществляется EPG файлам для программ, начинающихся позже чем заданная граница
+  threshold_seconds: 1800
+
 # https://stackoverflow.com/questions/29889881/an-example-ftp-session-using-elixir Answer for downloading
 config :cti_kaltura, :epg_files_downloading,
   # Включение и отключение функции автоматического скачивания EPG файлов

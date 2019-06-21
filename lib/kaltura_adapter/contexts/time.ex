@@ -67,5 +67,5 @@ defmodule CtiKaltura.ProgramScheduling.Time do
     }:#{pad_leading(seconds)}+00:00"
   end
 
-  defp pad_leading(number), do: String.pad_leading("#{number}", 2, "0")
+  def pad_leading(number), do: String.pad_leading("#{number}", 2, "0")
 end
