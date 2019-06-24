@@ -20,6 +20,9 @@ defmodule CtiKaltura.ProgramScheduling.ProgramRecordsSchedulerWorker do
             inspect(metadata[:created_ids])
           } has been created.\nErrors: #{inspect(metadata[:errors])}"
         )
+
+      {:error, reason} ->
+        log_error("Error during scheduling #{inspect(reason)}")
     end
 
     :ok

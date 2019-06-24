@@ -78,7 +78,7 @@ defmodule CtiKaltura.ProgramScheduling.ProgramSchedulerTest do
     } do
       before_program_count = Repo.aggregate(Program, :count, :id)
 
-      assert :ok ==
+      assert {:ok, %{linear_channel: linear_channel.id, programs: []}} ==
                ProgramScheduler.perform(
                  %{
                    linear_channel: %{epg_id: linear_channel.epg_id},
@@ -151,16 +151,28 @@ defmodule CtiKaltura.ProgramScheduling.ProgramSchedulerTest do
                ProgramScheduler.perform(program_data, @threshold_seconds)
     end
 
-    test "Return error if LinearChannel dvr_enabled if false", %{
+    test "Create programs if dvr_enabled false", %{
       program_data: program_data,
-      linear_channel: linear_channel
+      linear_channel: linear_channel,
+      program_epg_ids: program_epg_ids
     } do
       linear_channel
       |> LinearChannel.changeset(%{dvr_enabled: false})
       |> Repo.update!()
 
-      assert {:error, :linear_channel_dvr_does_not_enabled} ==
-               ProgramScheduler.perform(program_data, @threshold_seconds)
+      before_program_count = Repo.aggregate(Program, :count, :id)
+      assert [] == Repo.all(from(p in Program, where: p.epg_id in ^program_epg_ids))
+
+      assert {:ok, _} = ProgramScheduler.perform(program_data, @threshold_seconds)
+
+      assert before_program_count + 3 == Repo.aggregate(Program, :count, :id)
+
+      assert 3 =
+               Repo.aggregate(
+                 from(p in Program, where: p.epg_id in ^program_epg_ids),
+                 :count,
+                 :id
+               )
     end
   end
 

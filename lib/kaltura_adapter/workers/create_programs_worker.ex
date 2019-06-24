@@ -53,4 +53,8 @@ defmodule CtiKaltura.ProgramScheduling.CreateProgramsWorker do
   def threshold_seconds do
     Application.get_env(:cti_kaltura, :program_scheudling)[:threshold_seconds]
   end
+
+  def terminate(reason, state) do
+    log_error("Terminating server with reason: #{inspect(reason)}\nState: #{inspect(state)}")
+  end
 end

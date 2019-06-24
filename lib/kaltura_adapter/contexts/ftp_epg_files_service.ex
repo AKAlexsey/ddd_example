@@ -45,7 +45,7 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesService do
   @spec set_folders(pid, binary, binary) :: :ok | {:error, any}
   def set_folders(pid, local_files_folder, remote_files_folder) do
     with {:local, :ok} <- {:local, :ftp.lcd(pid, local_files_folder)},
-         {:remote, :ok} <- {:remote, :ftp.cd(pid, remote_files_folder)} do
+         {:remote, :ok} <- {:remote, safe_cd(pid, remote_files_folder)} do
       :ok
     else
       {:local, {:error, :epath}} ->
@@ -126,7 +126,7 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesService do
   """
   @spec delete_ftp_file(pid, binary, binary) :: :ok | {:error, binary}
   def delete_ftp_file(pid, remote_file_folder, file_name) do
-    with :ok <- :ftp.cd(pid, remote_file_folder),
+    with :ok <- safe_cd(pid, remote_file_folder),
          :ok <- :ftp.delete(pid, file_name) do
       :ok
     else
@@ -141,4 +141,7 @@ defmodule CtiKaltura.ProgramScheduling.FtpEpgFilesService do
   def close_connection(pid) do
     :inets.stop(:ftpc, pid)
   end
+
+  defp safe_cd(_pid, ''), do: :ok
+  defp safe_cd(pid, remote_file_folder), do: :ftp.cd(pid, remote_file_folder)
 end

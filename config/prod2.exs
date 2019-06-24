@@ -52,7 +52,7 @@ config :cti_kaltura, :epg_file_parser,
   processed_files_directory: "/home/admintv/cti_kaltura/ftp_files/processed"
 
 config :cti_kaltura, :epg_files_downloading,
-  enabled: true,
+  enabled: false,
   delete_downloaded_files: true,
   batch_size: 50,
   ftp_host: 'ftp.epgservice.ru',

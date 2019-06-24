@@ -1,7 +1,7 @@
 defmodule CtiKaltura.ProgramScheduling.ProgramRecordSchedulerTest do
   use CtiKaltura.ModelCase, async: false
 
-  alias CtiKaltura.Content.ProgramRecord
+  alias CtiKaltura.Content.{LinearChannel, ProgramRecord}
   alias CtiKaltura.ProgramScheduling.{ProgramRecordScheduler, SoapRequests}
   alias CtiKaltura.Repo
   alias CtiKaltura.Servers.Server
@@ -57,7 +57,8 @@ defmodule CtiKaltura.ProgramScheduling.ProgramRecordSchedulerTest do
         program3: program3,
         tv_stream: tv_stream,
         dvr_server: dvr_server,
-        server_group: server_group
+        server_group: server_group,
+        linear_channel: linear_channel
       }
     end
 
@@ -164,6 +165,20 @@ defmodule CtiKaltura.ProgramScheduling.ProgramRecordSchedulerTest do
 
     test "Return {:ok, :no_programs} if there are no programs in given interval" do
       assert {:ok, :no_programs} == ProgramRecordScheduler.perform(1)
+    end
+
+    test "Return {:ok, :no_programs} if LinearChannel :dvr_enabled false", %{
+      linear_channel: linear_channel
+    } do
+      LinearChannel
+      |> Repo.get(linear_channel.id)
+      |> LinearChannel.changeset(%{dvr_enabled: false})
+      |> Repo.update!()
+
+      before_program_records_count = Repo.aggregate(ProgramRecord, :count, :id)
+
+      assert {:ok, :no_programs} = ProgramRecordScheduler.perform(3200)
+      assert before_program_records_count == Repo.aggregate(ProgramRecord, :count, :id)
     end
   end
 

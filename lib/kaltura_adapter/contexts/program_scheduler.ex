@@ -29,13 +29,10 @@ defmodule CtiKaltura.ProgramScheduling.ProgramScheduler do
         current_time
       ) do
     case Content.get_linear_channel_by_epg(epg_id) do
-      %{id: linear_channel_id, dvr_enabled: true} ->
+      %{id: linear_channel_id} ->
         programs
         |> filter_appropriate_programs(threshold_seconds, current_time)
         |> create_programs(linear_channel_id)
-
-      %{dvr_enabled: false} ->
-        {:error, :linear_channel_dvr_does_not_enabled}
 
       nil ->
         {:error, :linear_channel_does_not_exist}
@@ -51,7 +48,9 @@ defmodule CtiKaltura.ProgramScheduling.ProgramScheduler do
     end)
   end
 
-  defp create_programs([], _), do: :ok
+  defp create_programs([], linear_channel_id) do
+    {:ok, %{programs: [], linear_channel: linear_channel_id}}
+  end
 
   defp create_programs(programs_list, linear_channel_id) do
     delete_old_programs(programs_list, linear_channel_id)
