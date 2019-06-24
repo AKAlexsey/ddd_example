@@ -32,6 +32,7 @@ fi
 
 # Общие для любодго деплоя параметры
 RELEASE_PATH=/home/$BUILD_USER/cti_kaltura
+PROJECT_API_PATH=$RELEASE_PATH/api
 COMPILED_PROJECT_PATH=$RELEASE_PATH/bin/cti_kaltura
 BUILD_AT=/home/$BUILD_USER/cti_kaltura_build/builds
 VERSION=1.0.0
@@ -54,7 +55,7 @@ DELIVER_TO=$DELIVER_TO MIX_ENV=$ENV LINK_VM_ARGS=$LINK_VM_ARGS mix edeliver depl
 
 echo -e "${BOLD}${YELLOW}RESTART PROJECT"
 ssh $BUILD_USER@$SERVER_IP "sudo service keepalived stop"
-ssh $BUILD_USER@$SERVER_IP "${COMPILED_PROJECT_PATH} stop ; ${COMPILED_PROJECT_PATH} start"
+ssh $BUILD_USER@$SERVER_IP "sudo ${PROJECT_API_PATH}/stop_cti_kaltura.sh; sudo ${PROJECT_API_PATH}/start_cti_kaltura.sh"
 ssh $BUILD_USER@$SERVER_IP "sudo service keepalived start"
 
 echo -e "${BOLD}${YELLOW}RUNNING MIGRATIONS"
