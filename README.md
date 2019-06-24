@@ -218,6 +218,73 @@ ssl_certificate_key /path/to/certificate/file.key;
 * Подключиться к работающему проекту `/home/admintv/cti_kaltura/bin/cti_kaltura remote_console`;
 * Запустить проект и подключиться к консоли(при выходе проект завершится) `/home/admintv/cti_kaltura/bin/cti_kaltura console`.
 
+# Автозапуск
+
+Автоматический перезапуск реализован с помощью Monit. Алгоритм перезапуска следующий:
+
+1. Проверка запущен ли процесс, указанный в pid файле;
+2. Если соответствующий процесс не запущен, выполняется рестарт проекта, с помощью скрипта;
+3. Скрипт стартует проект грепает по списку процессов PID и записывает его в pid файл;
+4. Если процесс не запущен - цикл повторяется с пункта 2, иначе - завершение.
+
+## Детали реализации
+
+### Monit
+
+В конфигурации monit, в файле `/etc/monit.conf` добавлены настройки:
+
+```
+set daemon 10
+set logfile /var/log/monit.log
+# Include all files from /etc/monit.d/
+include /etc/monit.d/*
+```
+
+В папку `/etc/monit.d` добавлен файл `cti_kaltura`, содержащий следующий код:
+
+```bash
+check process cti_kaltura with pidfile "/var/run/cti_kaltura.pid"
+        start program = "/bin/bash -c '/home/admintv/cti_kaltura/api/start_cti_kaltura.sh'"
+        stop program = "/bin/bash -c '/home/admintv/cti_kaltura/api/stop_cti_kaltura.sh'"
+```
+
+Файл /var/run/cti_kaltura.pid имеет следующие разарешения:
+
+```
+-rwxr-xr-x.  1 admintv  admintv     6 Июн 24 21:15 cti_kaltura.pid
+```
+
+### Скрипты
+
+В папку /home/admintv/cti_kaltura/api помещены следующие скрипты:
+ 
+`start_cti_kaltura.sh`
+
+```bash
+#!/bin/bash
+
+runuser -l admintv -c '/home/admintv/cti_kaltura/bin/cti_kaltura start'
+
+sleep 3
+
+echo `ps aux | grep beam | grep -Po "^admintv\s+(\d+).+/home/admintv/cti_kaltura" | grep -Po "^admintv\s+(\d+)" | grep -Po "\d+"` > /var/run/cti_kaltura.pid
+
+exit 0
+```
+
+`stop_cti_kaltura.sh`
+
+```bash
+#!/bin/bash
+
+runuser -l admintv -c '/home/admintv/cti_kaltura/bin/cti_kaltura stop'
+
+sudo echo > /var/run/cti_kaltura.pid
+
+exit 0
+```
+
+Разрешены для исполнения. Перезапуск при деплое осуществляется с их помощью. 
 
 # Кластеризация
 
