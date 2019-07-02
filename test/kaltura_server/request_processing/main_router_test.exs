@@ -645,7 +645,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           weight: 25
         })
 
-      %{port: port, domain_name: domain_name2} =
+      %{domain_name: domain_name2} =
         Factory.insert(:server, %{
           id: edge_server2_id,
           server_group_ids: [server_group_id],
@@ -673,22 +673,22 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           ip_address: "123.123.123.123"
         })
 
-      redirect_path_without_port = "http://#{domain_name1}/vod/#{vod_path}"
-      redirect_path_with_port = "http://#{domain_name2}:#{port}/vod/#{vod_path}"
+      redirect_path_1 = "http://#{domain_name1}/vod/#{vod_path}"
+      redirect_path_2 = "http://#{domain_name2}/vod/#{vod_path}"
 
       {
         :ok,
         conn: conn,
-        redirect_path_with_port: redirect_path_with_port,
-        redirect_path_without_port: redirect_path_without_port,
+        redirect_path_1: redirect_path_1,
+        redirect_path_2: redirect_path_2,
         port_server_id: edge_server2_id
       }
     end
 
     test "Redirect to right path if appropriate server exist #1", %{
       conn: conn,
-      redirect_path_without_port: redirect_path1,
-      redirect_path_with_port: redirect_path2
+      redirect_path_1: redirect_path_1,
+      redirect_path_2: redirect_path_2,
     } do
       assert %{
                status: 302,
@@ -698,12 +698,12 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
-      assert redirect_path in [redirect_path1, redirect_path2]
+      assert redirect_path in [redirect_path_1, redirect_path_2]
     end
 
     test "Redirect to right path if appropriate server exist #2", %{
       conn: conn,
-      redirect_path_without_port: redirect_path,
+      redirect_path_1: redirect_path,
       port_server_id: port_server_id
     } do
       Amnesia.transaction(fn -> DomainModel.Server.delete(port_server_id) end)
@@ -751,7 +751,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           weight: 25
         })
 
-      %{port: port, domain_name: domain_name2} =
+      %{domain_name: domain_name2} =
         Factory.insert(:server, %{
           id: edge_server2_id,
           server_group_ids: [server_group_id],
@@ -779,22 +779,22 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
           ip_address: "123.123.123.123"
         })
 
-      redirect_path_without_port = "https://#{domain_name1}/vod/#{vod_path}"
-      redirect_path_with_port = "http://#{domain_name2}:#{port}/vod/#{vod_path}"
+      redirect_path_1 = "http://#{domain_name1}/vod/#{vod_path}"
+      redirect_path_2 = "http://#{domain_name2}/vod/#{vod_path}"
 
       {
         :ok,
         conn: conn,
-        redirect_path_with_port: redirect_path_with_port,
-        redirect_path_without_port: redirect_path_without_port,
+        redirect_path_1: redirect_path_1,
+        redirect_path_2: redirect_path_2,
         port_server_id: edge_server2_id
       }
     end
 
     test "Redirect to right path if appropriate server exist #1", %{
       conn: conn,
-      redirect_path_without_port: redirect_path1,
-      redirect_path_with_port: redirect_path2
+      redirect_path_1: redirect_path_1,
+      redirect_path_2: redirect_path_2,
     } do
       assert %{
                status: 302,
@@ -804,12 +804,12 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
 
-      assert redirect_path in [redirect_path1, redirect_path2]
+      assert redirect_path in [redirect_path_1, redirect_path_2]
     end
 
     test "Redirect to right path if appropriate server exist #2", %{
       conn: conn,
-      redirect_path_without_port: redirect_path,
+      redirect_path_1: redirect_path_1,
       port_server_id: port_server_id
     } do
       Amnesia.transaction(fn -> DomainModel.Server.delete(port_server_id) end)
@@ -818,7 +818,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
                status: 302,
                resp_headers: [
                  {"cache-control", "max-age=0, private, must-revalidate"},
-                 {"Location", ^redirect_path}
+                 {"Location", ^redirect_path_1}
                ]
              } = MainRouter.call(conn, MainRouter.init([]))
     end

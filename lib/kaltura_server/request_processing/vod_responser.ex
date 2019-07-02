@@ -55,11 +55,11 @@ defmodule CtiKaltura.RequestProcessing.VodResponser do
     {conn, 404, "Server not found"}
   end
 
+  # Make redirect for VOD content over HTTP ONLY !!! (NOT HTTPS. Requirements by 2DAY)
   defp make_live_redirect_path(%{
          domain_name: domain_name,
-         port: port,
          vod_path: vod_path
        }) do
-    ServerUtil.prepare_url(domain_name, port, "/vod/#{vod_path}")
+    ServerUtil.prepare_url(domain_name, 80, "/vod/#{vod_path}")
   end
 end
