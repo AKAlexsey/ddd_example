@@ -1,8 +1,8 @@
-defmodule CtiKaltura.RequestProcessing.VodResponserTest do
+defmodule CtiKaltura.RequestProcessing.StaticResponserTest do
   Faker.start()
 
   use CtiKaltura.PlugTestCase
-  alias CtiKaltura.RequestProcessing.VodResponser
+  alias CtiKaltura.RequestProcessing.StaticResponser
 
   describe "#make_response application_layer_protocol: http" do
     setup do
@@ -55,18 +55,17 @@ defmodule CtiKaltura.RequestProcessing.VodResponserTest do
         server_ids: [server1_id, server2_id]
       })
 
-      vod_path = "#{Faker.Lorem.word()}/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
+      static_path = "#{Faker.Lorem.word()}/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
 
       conn =
-        conn(:get, "/vod/#{vod_path}")
+        conn(:get, "/static/#{static_path}")
         |> Map.put(:assigns, %{
-          vod_path: vod_path,
           ip_address: {123, 123, 123, 123}
         })
         |> Map.put(:remote_ip, {123, 123, 123, 123})
 
-      redirect_path_1 = "http://#{domain_name1}/vod/#{vod_path}"
-      redirect_path_2 = "http://#{domain_name2}/vod/#{vod_path}"
+      redirect_path_1 = "http://#{domain_name1}/static/#{static_path}"
+      redirect_path_2 = "http://#{domain_name2}/static/#{static_path}"
 
       {:ok,
        conn: conn,
@@ -85,7 +84,7 @@ defmodule CtiKaltura.RequestProcessing.VodResponserTest do
                   {"cache-control", "max-age=0, private, must-revalidate"},
                   {"Location", redirect_path}
                 ]
-              }, 302, ""} = VodResponser.make_response(conn)
+              }, 302, ""} = StaticResponser.make_response(conn)
 
       assert redirect_path in [redirect_path1, redirect_path2]
     end
@@ -96,7 +95,7 @@ defmodule CtiKaltura.RequestProcessing.VodResponserTest do
       port_server_id: port_server_id
     } do
       Amnesia.transaction(fn -> DomainModel.Server.delete(port_server_id) end)
-      assert {redirect_conn, 302, ""} = VodResponser.make_response(conn)
+      assert {redirect_conn, 302, ""} = StaticResponser.make_response(conn)
 
       assert redirect_conn.resp_headers == [
                {"cache-control", "max-age=0, private, must-revalidate"},
@@ -107,11 +106,8 @@ defmodule CtiKaltura.RequestProcessing.VodResponserTest do
 
   describe "#make_response fail scenarios" do
     setup do
-      vod_path = "#{Faker.Lorem.word()}/#{Faker.Lorem.word()}/#{Faker.Lorem.word()}"
-
       conn = %Plug.Conn{
         assigns: %{
-          vod_path: vod_path,
           ip_address: {124, 123, 123, 123}
         },
         remote_ip: {124, 123, 123, 123},
@@ -125,11 +121,11 @@ defmodule CtiKaltura.RequestProcessing.VodResponserTest do
       conn: %{assigns: assigns}
     } do
       invalid_conn = %{assigns: assigns}
-      assert {^invalid_conn, 400, "Request invalid"} = VodResponser.make_response(invalid_conn)
+      assert {^invalid_conn, 400, "Request invalid"} = StaticResponser.make_response(invalid_conn)
     end
 
     test "Return 404 error if server can not be found", %{conn: conn} do
-      assert {^conn, 404, "Server not found"} = VodResponser.make_response(conn)
+      assert {^conn, 404, "Server not found"} = StaticResponser.make_response(conn)
     end
   end
 end

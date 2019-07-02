@@ -688,7 +688,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
     test "Redirect to right path if appropriate server exist #1", %{
       conn: conn,
       redirect_path_1: redirect_path_1,
-      redirect_path_2: redirect_path_2,
+      redirect_path_2: redirect_path_2
     } do
       assert %{
                status: 302,
@@ -794,7 +794,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouterTest do
     test "Redirect to right path if appropriate server exist #1", %{
       conn: conn,
       redirect_path_1: redirect_path_1,
-      redirect_path_2: redirect_path_2,
+      redirect_path_2: redirect_path_2
     } do
       assert %{
                status: 302,

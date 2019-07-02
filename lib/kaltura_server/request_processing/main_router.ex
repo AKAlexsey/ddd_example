@@ -9,6 +9,7 @@ defmodule CtiKaltura.RequestProcessing.MainRouter do
     CatchupResponser,
     DataReader,
     LiveResponser,
+    StaticResponser,
     VodResponser
   }
 
@@ -29,8 +30,13 @@ defmodule CtiKaltura.RequestProcessing.MainRouter do
     send_resp(response_conn, status, body)
   end
 
-  get "/vod/*_vod_path" do
+  get "/vod/*_rest" do
     {response_conn, status, body} = VodResponser.make_response(conn)
+    send_resp(response_conn, status, body)
+  end
+
+  get "/static/*_rest" do
+    {response_conn, status, body} = StaticResponser.make_response(conn)
     send_resp(response_conn, status, body)
   end
 
