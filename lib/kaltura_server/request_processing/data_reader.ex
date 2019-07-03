@@ -9,7 +9,7 @@ defmodule CtiKaltura.RequestProcessing.DataReader do
 
   @request_type_regex "(catchup|live)\/"
   @stream_meta "(hls|mpd)(_(wv|pr))?\/"
-  @resource_regex "(\\w+)$"
+  @resource_regex "(\\w+)(.m3u8|.mpd)?$"
   @path_data_regex Regex.compile!("#{@request_type_regex}#{@stream_meta}#{@resource_regex}")
   @external_address_ip_header "x-real-ip"
 
@@ -25,7 +25,7 @@ defmodule CtiKaltura.RequestProcessing.DataReader do
 
   defp assign_request_data(%Plug.Conn{request_path: "/btv/" <> rest_path} = conn) do
     case Regex.run(@path_data_regex, rest_path) do
-      [_whole_path, _type, protocol, _dirty_encryption, encryption, resource_id] ->
+      [_whole_path, _type, protocol, _dirty_encryption, encryption, resource_id | _] ->
         conn
         |> assign(:protocol, protocol)
         |> assign(:encryption, encryption)
