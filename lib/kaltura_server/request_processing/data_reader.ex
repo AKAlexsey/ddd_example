@@ -41,6 +41,10 @@ defmodule CtiKaltura.RequestProcessing.DataReader do
     |> assign(:vod_path, vod_path)
   end
 
+  defp assign_request_data(%Plug.Conn{request_path: "/static/" <> _} = conn) do
+    conn
+  end
+
   defp assign_request_data(%Plug.Conn{request_path: request_path} = conn) do
     log_debug("Wrong request path #{request_path}")
     conn
