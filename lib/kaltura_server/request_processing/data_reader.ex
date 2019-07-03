@@ -8,7 +8,7 @@ defmodule CtiKaltura.RequestProcessing.DataReader do
   import Plug.Conn
 
   @request_type_regex "(catchup|live)\/"
-  @stream_meta "(hls|mpd)(_(wv|pr))?\/"
+  @stream_meta "(hls|mpd)(_(wv|pr|cenc))?\/"
   @resource_regex "(\\w+)(.m3u8|.mpd)?$"
   @path_data_regex Regex.compile!("#{@request_type_regex}#{@stream_meta}#{@resource_regex}")
   @external_address_ip_header "x-real-ip"

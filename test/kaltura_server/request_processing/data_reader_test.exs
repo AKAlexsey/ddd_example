@@ -96,6 +96,20 @@ defmodule CtiKaltura.RequestProcessing.DataReaderTest do
              } = DataReader.call(build_conn(ip_address, "/btv/live/mpd_pr/#{res_id}"), %{})
     end
 
+    test "Direct request set assigns right. request: live, stream_meta: mpd_cenc", %{
+      ip_address: ip_address,
+      resource_id: res_id
+    } do
+      assert %Plug.Conn{
+               assigns: %{
+                 protocol: "mpd",
+                 encryption: "cenc",
+                 resource_id: ^res_id,
+                 ip_address: ^ip_address
+               }
+             } = DataReader.call(build_conn(ip_address, "/btv/live/mpd_cenc/#{res_id}"), %{})
+    end
+
     test "Direct request set assigns right. request: catchup, stream_meta: hls", %{
       ip_address: ip_address,
       resource_id: res_id
@@ -178,6 +192,20 @@ defmodule CtiKaltura.RequestProcessing.DataReaderTest do
                  ip_address: ^ip_address
                }
              } = DataReader.call(build_conn(ip_address, "/btv/catchup/mpd_pr/#{res_id}"), %{})
+    end
+
+    test "Direct request set assigns right. request: catchup, stream_meta: mpd_cenc", %{
+      ip_address: ip_address,
+      resource_id: res_id
+    } do
+      assert %Plug.Conn{
+               assigns: %{
+                 protocol: "mpd",
+                 encryption: "cenc",
+                 resource_id: ^res_id,
+                 ip_address: ^ip_address
+               }
+             } = DataReader.call(build_conn(ip_address, "/btv/catchup/mpd_cenc/#{res_id}"), %{})
     end
 
     test "Direct request set assigns right. request: vod", %{

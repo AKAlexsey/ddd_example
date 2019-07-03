@@ -60,6 +60,7 @@ defmodule CtiKaltura.RequestProcessing.RequestHelperTest do
     test "all types" do
       assert normalize_encryption("pr") == "PLAYREADY"
       assert normalize_encryption("wv") == "WIDEVINE"
+      assert normalize_encryption("cenc") == "CENC"
       assert normalize_encryption("") == "NONE"
       assert normalize_encryption("unknown") == "unknown"
     end

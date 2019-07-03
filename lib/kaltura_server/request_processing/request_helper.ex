@@ -4,6 +4,7 @@ defmodule CtiKaltura.RequestProcessing.RequestHelper do
   """
   def normalize_encryption("pr"), do: "PLAYREADY"
   def normalize_encryption("wv"), do: "WIDEVINE"
+  def normalize_encryption("cenc"), do: "CENC"
   def normalize_encryption(""), do: "NONE"
   def normalize_encryption(enc), do: enc
 
