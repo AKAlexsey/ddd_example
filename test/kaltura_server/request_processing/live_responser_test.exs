@@ -14,7 +14,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
       mpd_wv_tv_stream_id = 777
       mpd_pr_tv_stream_id = 778
       mpd_none_tv_stream_id = 779
-      mpd_common_tv_stream_id = 780
+      mpd_cenc_tv_stream_id = 780
       hls_tv_stream_id = 781
       hls_common_tv_stream_id = 782
 
@@ -62,7 +62,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
             mpd_wv_tv_stream_id,
             mpd_pr_tv_stream_id,
             mpd_none_tv_stream_id,
-            mpd_common_tv_stream_id,
+            mpd_cenc_tv_stream_id,
             hls_tv_stream_id,
             hls_common_tv_stream_id
           ]
@@ -76,9 +76,9 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
           encryption: "PLAYREADY"
         })
 
-      %{stream_path: mpd_common_stream_path} =
+      %{stream_path: mpd_cenc_stream_path} =
         Factory.insert(:tv_stream, %{
-          id: mpd_common_tv_stream_id,
+          id: mpd_cenc_tv_stream_id,
           linear_channel_id: linear_channel_id,
           protocol: "MPD",
           encryption: "CENC"
@@ -128,6 +128,16 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
         |> Map.put(:assigns, %{
           protocol: "mpd",
           encryption: "pr",
+          resource_id: epg_id,
+          ip_address: {123, 123, 123, 123}
+        })
+        |> Map.put(:remote_ip, {123, 123, 123, 123})
+
+      mpd_cenc_conn =
+        conn(:get, "/btv/live/mpd_cenc/#{epg_id}")
+        |> Map.put(:assigns, %{
+          protocol: "mpd",
+          encryption: "cenc",
           resource_id: epg_id,
           ip_address: {123, 123, 123, 123}
         })
@@ -185,10 +195,9 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
 
       mpd_pr_redirect_path_without_port = "http://#{domain_name1}/#{mpd_pr_stream_path}"
       mpd_pr_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_pr_stream_path}"
-      mpd_common_redirect_path_without_port = "http://#{domain_name1}/#{mpd_common_stream_path}"
+      mpd_cenc_redirect_path_without_port = "http://#{domain_name1}/#{mpd_cenc_stream_path}"
 
-      mpd_common_redirect_path_with_port =
-        "http://#{domain_name2}:#{port}/#{mpd_common_stream_path}"
+      mpd_cenc_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_cenc_stream_path}"
 
       mpd_wv_redirect_path_without_port = "http://#{domain_name1}/#{mpd_wv_stream_path}"
       mpd_wv_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_wv_stream_path}"
@@ -205,6 +214,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
       {
         :ok,
         mpd_pr_conn: mpd_pr_conn,
+        mpd_cenc_conn: mpd_cenc_conn,
         mpd_wv_conn: mpd_wv_conn,
         mpd_conn: mpd_conn,
         hls_conn: hls_conn,
@@ -212,8 +222,8 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
         hls_wv_conn: hls_wv_conn,
         mpd_pr_redirect_path_with_port: mpd_pr_redirect_path_with_port,
         mpd_pr_redirect_path_without_port: mpd_pr_redirect_path_without_port,
-        mpd_common_redirect_path_with_port: mpd_common_redirect_path_with_port,
-        mpd_common_redirect_path_without_port: mpd_common_redirect_path_without_port,
+        mpd_cenc_redirect_path_with_port: mpd_cenc_redirect_path_with_port,
+        mpd_cenc_redirect_path_without_port: mpd_cenc_redirect_path_without_port,
         mpd_wv_redirect_path_with_port: mpd_wv_redirect_path_with_port,
         mpd_wv_redirect_path_without_port: mpd_wv_redirect_path_without_port,
         mpd_none_redirect_path_with_port: mpd_none_redirect_path_with_port,
@@ -226,7 +236,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
         hls_wv_redirect_path_without_port: hls_wv_redirect_path_without_port,
         port_server_id: best_server2_id,
         mpd_pr_tv_stream_id: mpd_pr_tv_stream_id,
-        mpd_common_tv_stream_id: mpd_common_tv_stream_id
+        mpd_cenc_tv_stream_id: mpd_cenc_tv_stream_id
       }
     end
 
@@ -276,12 +286,27 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
 
     test "Redirect to right path if appropriate server exist #4 stream_meta mpd_pr", %{
       mpd_pr_conn: conn,
-      mpd_common_redirect_path_without_port: redirect_path1,
-      mpd_common_redirect_path_with_port: redirect_path2,
+      mpd_cenc_redirect_path_without_port: redirect_path1,
+      mpd_cenc_redirect_path_with_port: redirect_path2,
       mpd_pr_tv_stream_id: tv_stream_id
     } do
       Amnesia.transaction(fn -> DomainModel.TvStream.delete(tv_stream_id) end)
 
+      assert {%{
+                resp_headers: [
+                  {"cache-control", "max-age=0, private, must-revalidate"},
+                  {"Location", redirect_path}
+                ]
+              }, 302, ""} = LiveResponser.make_response(conn)
+
+      assert redirect_path in [redirect_path1, redirect_path2]
+    end
+
+    test "Redirect to right path if appropriate server exist #3 stream_meta mpd_cenc", %{
+      mpd_cenc_conn: conn,
+      mpd_cenc_redirect_path_without_port: redirect_path1,
+      mpd_cenc_redirect_path_with_port: redirect_path2
+    } do
       assert {%{
                 resp_headers: [
                   {"cache-control", "max-age=0, private, must-revalidate"},
@@ -310,7 +335,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
     test "Return error if there is no TvStream with given codec and protocol", %{
       mpd_pr_conn: conn,
       mpd_pr_tv_stream_id: tv_stream_id1,
-      mpd_common_tv_stream_id: tv_stream_id2
+      mpd_cenc_tv_stream_id: tv_stream_id2
     } do
       Amnesia.transaction(fn ->
         DomainModel.TvStream.delete(tv_stream_id1)
@@ -377,7 +402,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
       mpd_wv_tv_stream_id = 777
       mpd_pr_tv_stream_id = 778
       mpd_none_tv_stream_id = 779
-      mpd_common_tv_stream_id = 780
+      mpd_cenc_tv_stream_id = 780
       hls_tv_stream_id = 781
       hls_common_tv_stream_id = 782
 
@@ -425,7 +450,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
             mpd_wv_tv_stream_id,
             mpd_pr_tv_stream_id,
             mpd_none_tv_stream_id,
-            mpd_common_tv_stream_id,
+            mpd_cenc_tv_stream_id,
             hls_tv_stream_id,
             hls_common_tv_stream_id
           ]
@@ -439,9 +464,9 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
           encryption: "PLAYREADY"
         })
 
-      %{stream_path: mpd_common_stream_path} =
+      %{stream_path: mpd_cenc_stream_path} =
         Factory.insert(:tv_stream, %{
-          id: mpd_common_tv_stream_id,
+          id: mpd_cenc_tv_stream_id,
           linear_channel_id: linear_channel_id,
           protocol: "MPD",
           encryption: "CENC"
@@ -548,10 +573,9 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
 
       mpd_pr_redirect_path_without_port = "https://#{domain_name1}/#{mpd_pr_stream_path}"
       mpd_pr_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_pr_stream_path}"
-      mpd_common_redirect_path_without_port = "https://#{domain_name1}/#{mpd_common_stream_path}"
+      mpd_cenc_redirect_path_without_port = "https://#{domain_name1}/#{mpd_cenc_stream_path}"
 
-      mpd_common_redirect_path_with_port =
-        "http://#{domain_name2}:#{port}/#{mpd_common_stream_path}"
+      mpd_cenc_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_cenc_stream_path}"
 
       mpd_wv_redirect_path_without_port = "https://#{domain_name1}/#{mpd_wv_stream_path}"
       mpd_wv_redirect_path_with_port = "http://#{domain_name2}:#{port}/#{mpd_wv_stream_path}"
@@ -576,8 +600,8 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
         hls_wv_conn: hls_wv_conn,
         mpd_pr_redirect_path_with_port: mpd_pr_redirect_path_with_port,
         mpd_pr_redirect_path_without_port: mpd_pr_redirect_path_without_port,
-        mpd_common_redirect_path_with_port: mpd_common_redirect_path_with_port,
-        mpd_common_redirect_path_without_port: mpd_common_redirect_path_without_port,
+        mpd_cenc_redirect_path_with_port: mpd_cenc_redirect_path_with_port,
+        mpd_cenc_redirect_path_without_port: mpd_cenc_redirect_path_without_port,
         mpd_wv_redirect_path_with_port: mpd_wv_redirect_path_with_port,
         mpd_wv_redirect_path_without_port: mpd_wv_redirect_path_without_port,
         mpd_none_redirect_path_with_port: mpd_none_redirect_path_with_port,
@@ -588,7 +612,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
         hls_common_redirect_path_without_port: hls_common_redirect_path_without_port,
         port_server_id: best_server2_id,
         mpd_pr_tv_stream_id: mpd_pr_tv_stream_id,
-        mpd_common_tv_stream_id: mpd_common_tv_stream_id
+        mpd_cenc_tv_stream_id: mpd_cenc_tv_stream_id
       }
     end
 
@@ -638,8 +662,8 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
 
     test "Redirect to right path if appropriate server exist #4 stream_meta mpd_pr", %{
       mpd_pr_conn: conn,
-      mpd_common_redirect_path_without_port: redirect_path1,
-      mpd_common_redirect_path_with_port: redirect_path2,
+      mpd_cenc_redirect_path_without_port: redirect_path1,
+      mpd_cenc_redirect_path_with_port: redirect_path2,
       mpd_pr_tv_stream_id: tv_stream_id
     } do
       Amnesia.transaction(fn -> DomainModel.TvStream.delete(tv_stream_id) end)
@@ -672,7 +696,7 @@ defmodule CtiKaltura.RequestProcessing.LiveResponserTest do
     test "Return error if there is no TvStream with given codec and protocol", %{
       mpd_pr_conn: conn,
       mpd_pr_tv_stream_id: tv_stream_id1,
-      mpd_common_tv_stream_id: tv_stream_id2
+      mpd_cenc_tv_stream_id: tv_stream_id2
     } do
       Amnesia.transaction(fn ->
         DomainModel.TvStream.delete(tv_stream_id1)
