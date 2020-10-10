@@ -10,19 +10,19 @@ if [ "$#" -eq 1 ]; then
 fi
 
 if [ "$ENV" == "stage1" ]; then
-  SERVER_IP=172.16.2.143
+  SERVER_IP=<REMOVED>
   DEPLOY_ENVIRONMENT=staging
   BUILD_USER="app"
 elif [ "$ENV" == "stage2" ]; then
-  SERVER_IP=172.16.2.6
+  SERVER_IP=<REMOVED>
   DEPLOY_ENVIRONMENT=staging
   BUILD_USER="app"
 elif [ "$ENV" == "prod1" ]; then
-  SERVER_IP=10.15.2.20
+  SERVER_IP=<REMOVED>
   DEPLOY_ENVIRONMENT=production
   BUILD_USER="admintv"
 elif [ "$ENV" == "prod2" ]; then
-  SERVER_IP=10.15.2.25
+  SERVER_IP=<REMOVED>
   DEPLOY_ENVIRONMENT=production
   BUILD_USER="admintv"
 elif true; then

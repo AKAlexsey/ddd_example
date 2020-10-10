@@ -250,7 +250,7 @@
   </wsdl:binding>
   <wsdl:service name="DvrApi">
     <wsdl:port binding="tns:DvrApiSoapBinding" name="DvrServiceApiImplPort">
-      <soap:address location="http://10.15.6.158:8085/cti-dvr/dvr-service"/>
+      <soap:address location="http://<REMOVED>:8085/cti-dvr/dvr-service"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
